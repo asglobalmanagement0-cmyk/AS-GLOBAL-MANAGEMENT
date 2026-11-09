@@ -1,679 +1,1109 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AS Global Management — Professional Pest Control Booking</title>
-<meta name="description" content="Book certified pest control services online in minutes. Cockroach, termite, bed bug, rodent treatments with eco-safe chemicals and a 30-day service warranty.">
+<title>AS Global Management — Certified Pest Control & Disinfection</title>
+<meta name="description" content="Book government-certified pest control in 60 seconds. Odorless chemicals, 30-day warranty, and pay after service. Call/WhatsApp +91 95501 07466.">
+
+<!-- ============ Rich WhatsApp & Social Media Open Graph Tags ============ -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://asglobal.com/">
+<meta property="og:title" content="AS Global Management — Certified Pest Control from ₹799">
+<meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Re-Service Warranty. Pay cash or UPI after treatment. Call +91 95501 07466.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AS Global Management — Certified Pest Control">
+<meta name="twitter:description" content="Safe & odorless pest treatments with written 30-day warranty. Book in 60s.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --green:#0e6b43;
-    --green-dark:#0a4d30;
-    --green-soft:#eaf5ef;
-    --green-softer:#f2f9f5;
-    --amber:#e8a13c;
-    --ink:#0d1f17;
-    --ink-2:#33463c;
-    --muted:#66776e;
-    --line:#e4ece7;
-    --bg:#f7faf8;
-    --card:#ffffff;
-    --danger:#c0392b;
-    --radius:16px;
-    --shadow-sm:0 1px 2px rgba(13,40,28,.06),0 1px 3px rgba(13,40,28,.08);
-    --shadow-md:0 4px 14px rgba(13,40,28,.07),0 1px 3px rgba(13,40,28,.05);
-    --shadow-lg:0 16px 40px rgba(13,40,28,.12);
+    --primary:#059669;
+    --primary-glow:rgba(5,150,105,.28);
+    --primary-dark:#065f46;
+    --primary-deep:#022c22;
+    --primary-light:#ecfdf5;
+    --accent:#f59e0b;
+    --accent-glow:rgba(245,158,11,.24);
+    --whatsapp:#25d366;
+    --whatsapp-dark:#1da851;
+    --slate-900:#0f172a;
+    --slate-800:#1e293b;
+    --slate-600:#475569;
+    --slate-400:#94a3b8;
+    --line:rgba(15,23,42,.08);
+    --bg:#f8fafc;
+    --danger:#ef4444;
+    --radius:18px;
+    --radius-lg:26px;
+    --ease-spring:cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out:cubic-bezier(0.16, 1, 0.3, 1);
   }
+
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    font-family:'Inter',system-ui,-apple-system,sans-serif;
-    background:var(--bg);color:var(--ink);
-    -webkit-font-smoothing:antialiased;line-height:1.55;
+    font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(120% 80% at 50% -20%, #d1fae5 0%, #f8fafc 55%, #f1f5f9 100%);
+    color:var(--slate-900);
+    -webkit-font-smoothing:antialiased;line-height:1.6;
+    min-height:100vh;display:flex;flex-direction:column;
+    overflow-x:hidden;
   }
-  h1,h2,h3,.brand-name{font-family:'Sora','Inter',sans-serif;letter-spacing:-.02em}
-  button{font-family:inherit}
-  a{color:var(--green);text-decoration:none}
-  a:hover{text-decoration:underline}
+  h1,h2,h3,.brand-title,.price-tag{font-family:'Space Grotesk',sans-serif;letter-spacing:-.03em}
+  button{font-family:inherit;cursor:pointer;outline:none}
+  a{color:var(--primary);text-decoration:none}
 
-  /* ============ Header ============ */
+  /* Ripple Wave */
+  .ripple-target{position:relative;overflow:hidden}
+  .ripple-wave{
+    position:absolute;border-radius:50%;pointer-events:none;
+    transform:scale(0);background:rgba(5,150,105,.25);
+    animation:rippleEffect .55s ease-out forwards;
+  }
+  .btn.is-cta .ripple-wave, .btn.whatsapp-btn .ripple-wave{background:rgba(255,255,255,.45)}
+  @keyframes rippleEffect{to{transform:scale(4);opacity:0}}
+
+  /* Emergency Bar */
+  .emergency-bar{
+    background:linear-gradient(90deg, #022c22, #065f46, #022c22);
+    color:#a7f3d0;padding:9px 16px;font-size:.83rem;font-weight:600;
+    display:flex;align-items:center;justify-content:center;gap:12px;text-align:center;
+  }
+  .pulse-dot{
+    width:10px;height:10px;border-radius:50%;background:#34d399;
+    box-shadow:0 0 0 0 rgba(52,211,153,.8);animation:beacon 1.8s infinite;flex:none;
+  }
+  @keyframes beacon{0%{box-shadow:0 0 0 0 rgba(52,211,153,.9)}70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+
+  /* Header */
   header{
-    position:sticky;top:0;z-index:60;
-    background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:70;
+    background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(15,23,42,.07);box-shadow:0 4px 20px rgba(15,23,42,.03);
   }
   .header-inner{
-    max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,32px);
-    height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,32px);
+    height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
-  .logo{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+  .logo{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;transition:transform .2s var(--ease-spring)}
+  .logo:hover{transform:scale(1.02)}
+  .logo:active{transform:scale(.97)}
   .logo-mark{
-    width:42px;height:42px;border-radius:12px;flex:none;
-    background:linear-gradient(145deg,var(--green),var(--green-dark));
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:var(--shadow-sm);
+    width:46px;height:46px;border-radius:14px;flex:none;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px var(--primary-glow);
   }
-  .logo-mark svg{width:24px;height:24px}
-  .brand-name{font-size:1.02rem;font-weight:800;color:var(--ink);line-height:1.15;white-space:nowrap}
-  .brand-name small{display:block;font-family:'Inter';font-size:.66rem;font-weight:600;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
-  nav{display:flex;align-items:center;gap:4px}
+  .logo-mark svg{width:26px;height:26px}
+  .brand-title{font-size:1.06rem;font-weight:800;color:var(--slate-900);line-height:1.15}
+  .brand-title small{display:block;font-family:'Plus Jakarta Sans';font-size:.66rem;font-weight:700;color:var(--slate-400);letter-spacing:.12em;text-transform:uppercase}
+  nav{display:flex;align-items:center;gap:6px}
   .nav-link{
-    position:relative;padding:9px 15px;border-radius:10px;cursor:pointer;
-    font-size:.9rem;font-weight:600;color:var(--ink-2);background:transparent;border:none;
-    transition:.2s;white-space:nowrap;
+    padding:9px 15px;border-radius:12px;font-size:.88rem;font-weight:700;
+    color:var(--slate-600);background:transparent;border:none;transition:all .2s var(--ease-out);
   }
-  .nav-link:hover{background:var(--green-softer);color:var(--green-dark)}
-  .nav-link.active{color:var(--green-dark);background:var(--green-soft)}
-  .nav-link.is-cta{background:var(--green);color:#fff;padding:9px 18px;border-radius:999px;box-shadow:var(--shadow-sm)}
-  .nav-link.is-cta:hover{background:var(--green-dark);color:#fff}
+  .nav-link:hover{background:var(--primary-light);color:var(--primary)}
+  .nav-link:active{transform:scale(.95)}
+  .nav-link.active{color:var(--primary);background:var(--primary-light)}
+  .nav-link.is-cta{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;padding:10px 20px;border-radius:999px;
+    box-shadow:0 6px 20px var(--primary-glow);transition:all .25s var(--ease-spring);
+  }
+  .nav-link.is-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(5,150,105,.4)}
   .cart-badge{
     display:inline-flex;align-items:center;justify-content:center;
-    min-width:20px;height:20px;padding:0 5px;margin-left:7px;border-radius:999px;
-    background:#fff;color:var(--green-dark);font-size:.7rem;font-weight:800;
-    border:1.5px solid rgba(255,255,255,.6);
+    min-width:20px;height:20px;padding:0 6px;margin-left:7px;border-radius:999px;
+    background:#fff;color:var(--primary-dark);font-size:.72rem;font-weight:800;
   }
+  .cart-badge.bump{animation:badgePop .4s var(--ease-spring)}
+  @keyframes badgePop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
 
-  /* ============ Views / layout ============ */
+  /* Main & Views */
+  main{flex:1}
   .view{display:none}
-  .view.show{display:block;animation:fadeUp .35s ease}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
+  .view.show{display:block;animation:viewIn .4s var(--ease-out)}
+  @keyframes viewIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
   .page{padding-top:44px;padding-bottom:80px}
 
-  .sec-head{margin-bottom:30px;max-width:640px}
+  .sec-head{margin-bottom:34px;max-width:680px}
   .eyebrow{
     display:inline-flex;align-items:center;gap:7px;
-    font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--green-dark);background:var(--green-soft);
-    padding:7px 14px;border-radius:999px;margin-bottom:16px;
+    font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--primary-dark);background:var(--primary-light);
+    padding:6px 14px;border-radius:999px;margin-bottom:14px;
+    border:1px solid rgba(5,150,105,.2);
   }
-  .sec-head h2{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:8px}
-  .sec-head p{color:var(--muted);font-size:1rem}
+  .sec-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);margin-bottom:8px;line-height:1.18}
+  .sec-head p{color:var(--slate-600);font-size:1.02rem}
 
-  /* ============ Hero ============ */
+  /* Property Calculator Switcher */
+  .calc-bar{
+    background:#fff;border:1.5px solid rgba(5,150,105,.25);border-radius:20px;
+    padding:16px 22px;display:flex;align-items:center;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;margin-bottom:34px;box-shadow:0 8px 30px var(--primary-glow);
+  }
+  .calc-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;color:var(--slate-800)}
+  .bhk-pill-group{display:flex;gap:6px;flex-wrap:wrap}
+  .bhk-btn{
+    background:#f1f5f9;color:var(--slate-600);border:1px solid rgba(15,23,42,.08);
+    padding:8px 16px;border-radius:999px;font-size:.82rem;font-weight:700;
+    transition:all .2s var(--ease-spring);
+  }
+  .bhk-btn:hover{background:var(--primary-light);color:var(--primary)}
+  .bhk-btn.active{
+    background:var(--primary);color:#fff;border-color:var(--primary);
+    box-shadow:0 4px 14px var(--primary-glow);transform:scale(1.04);
+  }
+
+  /* Hero */
   .hero{
-    max-width:1180px;margin:0 auto;padding:56px clamp(16px,4vw,32px) 0;
-    display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,64px);align-items:center;
+    max-width:1200px;margin:0 auto;padding:48px clamp(16px,4vw,32px) 0;
+    display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,60px);align-items:center;
   }
-  @media(max-width:900px){.hero{grid-template-columns:1fr;padding-top:44px}}
-  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
-  .g-item{
-    border-radius:16px;overflow:hidden;border:1px solid var(--line);
-    box-shadow:var(--shadow-sm);position:relative;aspect-ratio:4/3;background:#fff;
+  @media(max-width:920px){.hero{grid-template-columns:1fr;padding-top:28px}}
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:9px;background:#fef3c7;border:1px solid #fde68a;
+    padding:6px 14px;border-radius:999px;color:#92400e;font-size:.8rem;font-weight:700;margin-bottom:16px;
   }
-  .g-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
-  .g-item:hover img{transform:scale(1.05)}
-  .hero-text h1{font-size:clamp(2rem,5vw,3.15rem);line-height:1.12;margin-bottom:18px}
-  .hero-text h1 em{font-style:normal;color:var(--green);position:relative;white-space:nowrap}
-  .hero-text h1 em::after{
-    content:"";position:absolute;left:2%;right:2%;bottom:4px;height:10px;z-index:-1;
-    background:rgba(14,107,67,.14);border-radius:999px;
+  .hero-text h1{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.1;margin-bottom:18px}
+  .hero-text h1 span{
+    background:linear-gradient(135deg,var(--primary),#065f46);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   }
-  .hero-text p{color:var(--muted);font-size:1.07rem;max-width:520px;margin-bottom:26px}
+  .hero-text p{color:var(--slate-600);font-size:1.08rem;max-width:520px;margin-bottom:28px}
   .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px}
+
   .btn{
     display:inline-flex;align-items:center;gap:9px;cursor:pointer;
-    background:var(--green);color:#fff;border:none;
-    padding:14px 27px;border-radius:12px;font-size:.98rem;font-weight:700;
-    transition:.2s;box-shadow:0 8px 20px rgba(14,107,67,.25);
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;border:none;padding:14px 28px;border-radius:14px;font-size:.95rem;font-weight:700;
+    transition:all .2s var(--ease-spring);box-shadow:0 8px 24px var(--primary-glow);user-select:none;
   }
-  .btn:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 12px 26px rgba(10,77,48,.3)}
-  .btn:active{transform:none}
-  .btn.ghost{background:#fff;color:var(--green-dark);border:1.5px solid var(--line);box-shadow:var(--shadow-sm)}
-  .btn.ghost:hover{border-color:var(--green);background:var(--green-softer);transform:translateY(-2px)}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(5,150,105,.38)}
+  .btn:active{transform:scale(.95) translateY(0);box-shadow:0 4px 12px var(--primary-glow)}
+  .btn.ghost{
+    background:rgba(255,255,255,.9);color:var(--primary-dark);
+    border:1.5px solid rgba(15,23,42,.1);box-shadow:0 2px 8px rgba(0,0,0,.04);
+  }
+  .btn.ghost:hover{border-color:var(--primary);background:var(--primary-light)}
+  .btn.whatsapp-btn{background:linear-gradient(135deg,#25d366,#1da851);color:#fff;box-shadow:0 8px 24px rgba(37,211,102,.35)}
+  .btn.whatsapp-btn:hover{box-shadow:0 12px 30px rgba(37,211,102,.5)}
   .btn.block{width:100%;justify-content:center}
-  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
-  .hero-stats{display:flex;gap:clamp(20px,3vw,44px);flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px}
-  .hero-stats .stat b{display:block;font-family:'Sora';font-size:1.35rem;font-weight:800;color:var(--ink)}
-  .hero-stats .stat span{font-size:.8rem;color:var(--muted);font-weight:600}
 
-  /* hero side card */
+  .hero-stats{display:flex;gap:clamp(18px,3vw,40px);flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px}
+  .hero-stats .stat b{display:block;font-family:'Space Grotesk';font-size:1.45rem;font-weight:800;color:var(--slate-900)}
+  .hero-stats .stat span{font-size:.8rem;color:var(--slate-400);font-weight:600}
+
+  .hero-card-wrap{position:relative}
   .hero-img{
-    position:relative;border-radius:18px;overflow:hidden;
-    box-shadow:var(--shadow-lg);border:1px solid var(--line);margin-bottom:16px;aspect-ratio:4/3;
+    position:relative;border-radius:var(--radius-lg);overflow:hidden;
+    box-shadow:0 20px 45px -12px rgba(15,23,42,.2);border:1px solid rgba(255,255,255,.8);margin-bottom:18px;aspect-ratio:16/10;
   }
   .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
-  .img-cap{
-    position:absolute;left:0;right:0;bottom:0;padding:30px 16px 12px;
-    background:linear-gradient(transparent,rgba(10,40,28,.78));color:#fff;
-    font-size:.8rem;font-weight:600;
+  .img-badge{
+    position:absolute;bottom:14px;left:14px;right:14px;background:rgba(15,23,42,.8);
+    backdrop-filter:blur(10px);color:#fff;padding:10px 14px;border-radius:14px;
+    font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:8px;
   }
   .hero-card{
-    background:var(--card);border:1px solid var(--line);border-radius:22px;
-    box-shadow:var(--shadow-lg);padding:28px;position:relative;overflow:hidden;
+    background:rgba(255,255,255,.85);backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.9);border-radius:var(--radius);
+    box-shadow:0 12px 30px rgba(15,23,42,.06);padding:24px;position:relative;overflow:hidden;
   }
   .hero-card::before{
-    content:"";position:absolute;inset:0 0 auto 0;height:6px;
-    background:linear-gradient(90deg,var(--green),var(--amber));
+    content:"";position:absolute;inset:0 0 auto 0;height:4px;
+    background:linear-gradient(90deg,var(--primary),var(--accent));
   }
-  .hero-card h3{font-size:1.02rem;margin-bottom:18px}
-  .benefit{display:flex;gap:14px;padding:12px 0;border-bottom:1px dashed var(--line)}
-  .benefit:last-child{border:none;padding-bottom:0}
-  .benefit .b-icon{
-    width:40px;height:40px;flex:none;border-radius:11px;background:var(--green-soft);
-    display:flex;align-items:center;justify-content:center;font-size:1.15rem;
-  }
-  .benefit b{display:block;font-size:.92rem;font-weight:700}
-  .benefit span{font-size:.8rem;color:var(--muted)}
-  .hero-card .mini-review{
-    margin-top:18px;background:var(--green-softer);border-radius:12px;padding:14px 16px;
-    font-size:.84rem;color:var(--ink-2);line-height:1.5;
-  }
-  .hero-card .mini-review b{color:var(--green-dark)}
+  .benefit-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .b-item{display:flex;gap:10px;align-items:flex-start}
+  .b-item .icon{font-size:1.25rem}
+  .b-item b{font-size:.88rem;display:block}
+  .b-item span{font-size:.76rem;color:var(--slate-400)}
 
-  /* ============ How it works strip ============ */
-  .how{
-    max-width:1180px;margin:44px auto 0;padding:0 clamp(16px,4vw,32px);
+  /* ============ Combo Packages ============ */
+  .combos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;margin-bottom:56px}
+  .combo-card{
+    background:#fff;border:2px solid rgba(5,150,105,.3);border-radius:var(--radius);
+    padding:26px;position:relative;box-shadow:0 10px 30px var(--primary-glow);
+    display:flex;flex-direction:column;gap:14px;transition:transform .25s var(--ease-spring);
   }
-  .how-grid{
-    background:linear-gradient(135deg,var(--green-dark),var(--green));
-    border-radius:22px;padding:34px clamp(20px,4vw,44px);
-    display:grid;grid-template-columns:repeat(3,1fr);gap:26px;color:#fff;
-    box-shadow:var(--shadow-lg);
+  .combo-card:hover{transform:translateY(-6px);border-color:var(--primary)}
+  .combo-ribbon{
+    position:absolute;top:-12px;right:20px;background:linear-gradient(135deg,#f59e0b,#d97706);
+    color:#fff;font-size:.74rem;font-weight:800;padding:4px 12px;border-radius:999px;letter-spacing:.05em;
   }
-  @media(max-width:820px){.how-grid{grid-template-columns:1fr;gap:18px}}
-  .how-step{display:flex;gap:16px;align-items:flex-start}
-  .how-step .num{
-    width:44px;height:44px;flex:none;border-radius:50%;
-    background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.35);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Sora';font-weight:800;font-size:1.05rem;
-  }
-  .how-step b{display:block;font-size:.98rem;margin-bottom:3px}
-  .how-step span{font-size:.83rem;opacity:.82;line-height:1.45}
-  .how-title{grid-column:1/-1;font-family:'Sora';font-size:1.15rem;font-weight:700}
+  .combo-services{font-size:.86rem;color:var(--slate-600);line-height:1.6}
+  .combo-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px dashed var(--line)}
+  .strike-price{font-size:.9rem;color:var(--slate-400);text-decoration:line-through;margin-right:6px}
 
-  /* ============ Cards / services ============ */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:20px}
+  /* ============ Before & After Slider ============ */
+  .ba-box{
+    position:relative;max-width:880px;margin:0 auto 60px;aspect-ratio:16/9;
+    border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 20px 45px rgba(0,0,0,.15);
+    user-select:none;touch-action:none;border:3px solid #fff;
+  }
+  .ba-box img{width:100%;height:100%;object-fit:cover;display:block}
+  .ba-after{position:absolute;inset:0;overflow:hidden;width:50%}
+  .ba-after img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;max-width:none}
+  .ba-handle{
+    position:absolute;top:0;bottom:0;left:50%;width:4px;background:#fff;
+    transform:translateX(-50%);cursor:ew-resize;box-shadow:0 0 14px rgba(0,0,0,.4);
+  }
+  .ba-badge-btn{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:42px;height:42px;border-radius:50%;background:#fff;color:var(--primary-dark);
+    display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);
+    font-size:1.1rem;font-weight:800;border:2px solid var(--primary);
+  }
+  .ba-tag{
+    position:absolute;bottom:14px;padding:6px 14px;border-radius:8px;
+    font-size:.75rem;font-weight:800;color:#fff;backdrop-filter:blur(8px);
+  }
+  .ba-tag-before{left:14px;background:rgba(239,68,68,.8)}
+  .ba-tag-after{right:14px;background:rgba(5,150,105,.85)}
+
+  /* ============ Service Cards ============ */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
   .card{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    padding:24px;display:flex;flex-direction:column;gap:11px;
-    transition:transform .2s,box-shadow .2s,border-color .2s;
-    box-shadow:var(--shadow-sm);
+    background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
+    border:1px solid rgba(15,23,42,.07);border-radius:var(--radius);
+    padding:24px;display:flex;flex-direction:column;gap:12px;
+    transition:transform .25s var(--ease-spring), box-shadow .25s var(--ease-spring), border-color .2s;
+    box-shadow:0 4px 16px rgba(15,23,42,.03);position:relative;user-select:none;
   }
-  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:#cfe2d7}
-  .card.selected{border-color:var(--green);background:var(--green-softer)}
+  .card:hover{transform:translateY(-6px);box-shadow:0 16px 36px -8px var(--primary-glow);border-color:rgba(5,150,105,.35)}
+  .card:active{transform:scale(.98)}
+  .card.selected{border-color:var(--primary);background:var(--primary-light)}
   .card-top{display:flex;align-items:center;justify-content:space-between}
-  .card .icon{
-    width:50px;height:50px;border-radius:13px;background:var(--green-soft);
-    display:flex;align-items:center;justify-content:center;font-size:1.55rem;
+  .card .icon-box{
+    width:54px;height:54px;border-radius:16px;background:var(--primary-light);
+    display:flex;align-items:center;justify-content:center;font-size:1.65rem;
+    transition:transform .3s var(--ease-spring);
   }
+  .card:hover .icon-box{transform:scale(1.1) rotate(4deg)}
   .rating{
-    display:inline-flex;align-items:center;gap:5px;font-size:.78rem;font-weight:700;
-    color:var(--ink-2);background:var(--bg);border:1px solid var(--line);
-    padding:4px 10px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:700;
+    color:var(--slate-900);background:#fff;border:1px solid var(--line);padding:3px 10px;border-radius:999px;
   }
-  .rating .star{color:var(--amber)}
-  .card h3{font-size:1.05rem}
-  .card p{color:var(--muted);font-size:.875rem;flex:1}
+  .card h3{font-size:1.1rem}
+  .card p{color:var(--slate-600);font-size:.87rem;flex:1}
   .chips{display:flex;gap:6px;flex-wrap:wrap}
   .chip{
-    font-size:.7rem;font-weight:600;color:var(--ink-2);
-    background:var(--bg);border:1px solid var(--line);
-    padding:3px 10px;border-radius:999px;
+    font-size:.72rem;font-weight:700;color:var(--slate-600);
+    background:rgba(241,245,249,.8);border:1px solid rgba(15,23,42,.06);padding:3px 10px;border-radius:999px;
   }
   .price-row{display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding-top:14px;border-top:1px solid var(--line)}
-  .price{font-family:'Sora';font-weight:800;color:var(--green-dark);font-size:1.12rem}
-  .price small{font-family:'Inter';font-weight:600;color:var(--muted);font-size:.72rem}
+  .price-tag{font-size:1.22rem;font-weight:800;color:var(--primary-dark)}
   .add-btn{
-    background:#fff;color:var(--green-dark);border:1.5px solid var(--green);
-    border-radius:999px;padding:8px 18px;font-weight:700;font-size:.85rem;cursor:pointer;transition:.2s;
+    background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);
+    border-radius:999px;padding:8px 20px;font-weight:700;font-size:.84rem;
+    transition:all .2s var(--ease-spring);
   }
-  .add-btn:hover{background:var(--green-soft)}
-  .add-btn.added{background:var(--green);color:#fff;border-color:var(--green)}
-  .add-btn.added:hover{background:var(--green-dark)}
+  .add-btn:hover{background:var(--primary-light);transform:scale(1.05)}
+  .add-btn:active{transform:scale(.92)}
+  .add-btn.added{background:var(--primary);color:#fff;border-color:var(--primary)}
 
-  /* ============ Booking ============ */
-  .booking-layout{display:grid;grid-template-columns:1.35fr .95fr;gap:26px;align-items:start}
+  /* ============ Live Booking Toast ============ */
+  #recent-booking-toast{
+    position:fixed;bottom:26px;left:26px;z-index:90;
+    background:#fff;border:1px solid rgba(5,150,105,.3);border-radius:16px;
+    padding:12px 16px;box-shadow:0 12px 30px rgba(0,0,0,.15);
+    display:flex;align-items:center;gap:12px;transform:translateY(120px);opacity:0;
+    transition:all .45s var(--ease-spring);max-width:320px;pointer-events:none;
+  }
+  #recent-booking-toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+  .rb-avatar{
+    width:38px;height:38px;border-radius:50%;background:var(--primary-light);color:var(--primary-dark);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex:none;
+  }
+  .rb-info b{display:block;font-size:.84rem;color:var(--slate-900)}
+  .rb-info span{display:block;font-size:.72rem;color:var(--slate-400)}
+
+  /* Reviews */
+  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
+  .review-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;box-shadow:0 4px 16px rgba(15,23,42,.03);display:flex;flex-direction:column;gap:12px;
+  }
+  .review-top{display:flex;align-items:center;justify-content:space-between}
+  .rev-user{display:flex;align-items:center;gap:12px}
+  .rev-avatar{
+    width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary-light),#a7f3d0);
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary-dark);font-size:.92rem;
+  }
+  .rev-name{font-weight:700;font-size:.94rem}
+  .rev-loc{font-size:.75rem;color:var(--slate-400)}
+  .verified-badge{
+    font-size:.7rem;font-weight:700;color:var(--primary-dark);background:var(--primary-light);
+    padding:3px 9px;border-radius:999px;display:inline-flex;align-items:center;gap:4px;
+  }
+
+  /* Booking Layout */
+  .booking-layout{display:grid;grid-template-columns:1.35fr .95fr;gap:28px;align-items:start}
   @media(max-width:880px){.booking-layout{grid-template-columns:1fr}}
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:28px}
-  .panel h3{font-size:1.12rem;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-  .side{position:sticky;top:92px}
+  .panel{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
+    box-shadow:0 6px 24px rgba(15,23,42,.04);padding:30px;
+  }
+  .panel h3{font-size:1.18rem;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .side{position:sticky;top:94px}
   @media(max-width:880px){.side{position:static}}
   .field{margin-bottom:16px}
-  .field label{display:block;font-size:.82rem;font-weight:700;margin-bottom:7px;color:var(--ink-2)}
-  .field label .opt{font-weight:500;color:var(--muted)}
+  .field label{display:block;font-size:.82rem;font-weight:700;margin-bottom:7px;color:var(--slate-800)}
   .field input,.field select,.field textarea{
-    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:11px;
-    font-size:.95rem;font-family:inherit;background:var(--bg);color:var(--ink);
-    transition:.18s;appearance:none;
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;
+    font-size:.95rem;font-family:inherit;background:#f8fafc;color:var(--slate-900);transition:all .2s;
   }
-  .field textarea{resize:vertical}
-  .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2366776e' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
   .field input:focus,.field select:focus,.field textarea:focus{
-    outline:none;border-color:var(--green);background:#fff;
-    box-shadow:0 0 0 4px rgba(14,107,67,.12);
+    outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px var(--primary-glow);
   }
-  .field .err{color:var(--danger);font-size:.77rem;margin-top:5px;display:none;font-weight:600}
-  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--danger);animation:shake .3s}
+  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--danger)}
+  .field .err{color:var(--danger);font-size:.76rem;margin-top:5px;display:none;font-weight:600}
   .field.invalid .err{display:block}
-  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:480px){.row2{grid-template-columns:1fr}}
-  .secure-note{display:flex;align-items:center;gap:8px;justify-content:center;color:var(--muted);font-size:.78rem;margin-top:14px}
+  @media(max-width:500px){.row2{grid-template-columns:1fr}}
 
-  /* summary card */
-  .sum-item{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
-  .sum-item:last-of-type{border-bottom:none}
-  .sum-item .s-icon{font-size:1rem}
+  /* Cart */
+  .sum-item{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
   .sum-item .s-main{flex:1}
-  .sum-item .s-main b{display:block;font-size:.9rem}
-  .sum-item .s-main span{font-size:.75rem;color:var(--muted)}
-  .sum-item .s-price{font-weight:700;color:var(--ink);white-space:nowrap}
-  .sum-item .s-x{
-    background:none;border:none;color:var(--danger);cursor:pointer;
-    font-size:.72rem;font-weight:700;opacity:.7;padding:2px;align-self:center;
-  }
-  .sum-item .s-x:hover{opacity:1}
+  .sum-item .s-main b{display:block;font-size:.92rem}
+  .sum-item .s-main span{font-size:.76rem;color:var(--slate-400)}
+  .sum-item .s-price{font-weight:700;color:var(--slate-900);white-space:nowrap}
+  .sum-item .s-x{background:none;border:none;color:var(--danger);cursor:pointer;font-size:.8rem;padding:2px 6px}
   .empty-cart{
-    color:var(--muted);font-size:.88rem;text-align:center;padding:22px 12px;
-    background:var(--bg);border:1.5px dashed var(--line);border-radius:12px;line-height:1.7;
+    color:var(--slate-400);font-size:.9rem;text-align:center;padding:26px 14px;
+    background:#f8fafc;border:1.5px dashed var(--line);border-radius:14px;line-height:1.7;
   }
-  .empty-cart a{font-weight:700}
-  .sum-total-row{display:flex;justify-content:space-between;font-weight:800;padding-top:16px;border-top:2px solid var(--ink);margin-top:6px}
-  .sum-total-row .amt{font-family:'Sora';color:var(--green-dark);font-size:1.2rem}
-  .pay-note{
-    display:flex;gap:10px;align-items:flex-start;background:var(--green-soft);
-    border-radius:12px;padding:13px 15px;font-size:.8rem;color:var(--green-dark);
-    margin-top:16px;line-height:1.55;
+  .sum-total-row{display:flex;justify-content:space-between;font-weight:800;padding-top:16px;border-top:2px solid var(--slate-900);margin-top:6px}
+  .sum-total-row .amt{font-family:'Space Grotesk';color:var(--primary-dark);font-size:1.35rem}
+  .pay-badge{
+    background:var(--primary-light);border:1px solid rgba(5,150,105,.25);border-radius:14px;
+    padding:14px 16px;font-size:.82rem;color:var(--primary-dark);margin-top:16px;line-height:1.55;
   }
-  .pay-note b{display:block;font-size:.82rem}
 
-  /* steps indicator */
-  .steps{display:flex;gap:8px;margin-bottom:30px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-sm)}
-  .steps .step{flex:1;text-align:center;position:relative;font-size:.78rem;color:var(--muted);font-weight:600}
+  .steps{display:flex;gap:8px;margin-bottom:28px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 20px}
+  .steps .step{flex:1;text-align:center;font-size:.78rem;color:var(--slate-400);font-weight:700}
   .steps .dot{
-    width:28px;height:28px;border-radius:50%;background:var(--bg);border:1.5px solid var(--line);
-    color:var(--muted);display:flex;align-items:center;justify-content:center;
-    margin:0 auto 6px;font-weight:800;font-size:.8rem;transition:.2s;
+    width:30px;height:30px;border-radius:50%;background:#f1f5f9;border:1.5px solid var(--line);
+    color:var(--slate-400);display:flex;align-items:center;justify-content:center;
+    margin:0 auto 6px;font-weight:800;font-size:.82rem;
   }
-  .steps .step.active .dot{background:var(--green);border-color:var(--green);color:#fff}
-  .steps .step.active{color:var(--green-dark)}
-  .steps .step.done .dot{background:var(--green-soft);border-color:var(--green);color:var(--green-dark)}
+  .steps .step.active .dot{background:var(--primary);border-color:var(--primary);color:#fff}
+  .steps .step.active{color:var(--primary-dark)}
 
-  /* ============ Success ============ */
-  .success-box{text-align:center;padding:64px 20px;max-width:560px;margin:0 auto}
-  .success-box .check{
-    width:88px;height:88px;border-radius:50%;background:var(--green);color:#fff;
-    font-size:2.5rem;display:flex;align-items:center;justify-content:center;
-    margin:0 auto 24px;animation:pop .55s cubic-bezier(.2,1.6,.4,1);
-    box-shadow:0 14px 34px rgba(14,107,67,.35);
+  /* Confirmation */
+  .success-box{text-align:center;padding:48px 20px;max-width:620px;margin:0 auto}
+  .success-check{
+    width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;font-size:2.6rem;display:flex;align-items:center;justify-content:center;
+    margin:0 auto 20px;box-shadow:0 16px 36px var(--primary-glow);
   }
-  @keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
-  .success-box h2{font-size:1.7rem;margin-bottom:8px}
-  .success-box>div>p{color:var(--muted);margin-bottom:6px}
-  .ref-chip{
-    display:inline-block;font-family:'Sora';font-weight:800;color:var(--green-dark);
-    background:var(--green-soft);border:1.5px dashed var(--green);
-    padding:10px 22px;border-radius:12px;font-size:1.2rem;margin:16px 0 20px;letter-spacing:.05em;
+  .ref-pill{
+    display:inline-block;font-family:'Space Grotesk';font-weight:800;font-size:1.3rem;
+    color:var(--primary-dark);background:var(--primary-light);border:1.5px dashed var(--primary);
+    padding:10px 26px;border-radius:14px;margin:16px 0;letter-spacing:.05em;
   }
-  .success-box .detail{color:var(--ink-2);font-size:.95rem;line-height:1.7}
-  .success-actions{display:flex;gap:12px;justify-content:center;margin-top:30px;flex-wrap:wrap}
+  .success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
 
-  /* ============ My bookings ============ */
-  .booking{
-    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    box-shadow:var(--shadow-sm);padding:22px 24px;margin-bottom:16px;transition:.2s;
+  /* Bookings list */
+  .booking-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;margin-bottom:16px;box-shadow:0 4px 16px rgba(15,23,42,.03);
   }
-  .booking:hover{box-shadow:var(--shadow-md)}
-  .b-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
-  .b-ref{font-family:'Sora';font-weight:800;font-size:.95rem}
-  .b-ref code{background:var(--green-soft);color:var(--green-dark);padding:4px 12px;border-radius:8px;font-size:.85rem}
-  .status{padding:6px 14px;border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.08em}
-  .status.confirmed{background:var(--green-soft);color:var(--green-dark);border:1px solid #c4e2d2}
-  .b-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px 20px}
-  .b-item span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-  .b-item b{font-size:.9rem;font-weight:600;color:var(--ink)}
+  .b-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+  .b-ref-tag{font-family:'Space Grotesk';font-weight:800;font-size:.95rem}
+  .b-ref-tag code{background:var(--primary-light);color:var(--primary-dark);padding:4px 10px;border-radius:8px}
+  .status-tag{padding:5px 12px;border-radius:999px;font-size:.72rem;font-weight:800}
+  .status-tag.confirmed{background:var(--primary-light);color:var(--primary-dark)}
+  .b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 20px}
+  .b-col span{display:block;font-size:.68rem;font-weight:700;color:var(--slate-400);text-transform:uppercase}
+  .b-col b{font-size:.92rem;color:var(--slate-900)}
   .b-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px}
-  .b-total{font-family:'Sora';font-weight:800;font-size:1.05rem;color:var(--green-dark);font-size:1.1rem}
-  .cancel-btn{
-    background:none;border:1.5px solid var(--line);color:var(--danger);
-    border-radius:9px;padding:7px 16px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;
-  }
-  .cancel-btn:hover{border-color:var(--danger);background:#fdf2f0}
-  .empty-bookings{
-    text-align:center;padding:56px 20px;background:var(--card);border:1.5px dashed var(--line);
-    border-radius:var(--radius);color:var(--muted);line-height:1.8;
-  }
-  .empty-bookings a{font-weight:700}
 
-  /* ============ Footer ============ */
-  footer{
-    background:#0b1a13;color:#9db3a7;margin-top:30px;
+  /* Floating WhatsApp */
+  .floating-wa{
+    position:fixed;bottom:26px;right:26px;z-index:90;display:flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg,#25d366,#1da851);color:#fff;padding:13px 22px 13px 15px;border-radius:999px;
+    box-shadow:0 12px 30px rgba(37,211,102,.45);font-weight:700;font-size:.9rem;
+    cursor:pointer;transition:all .3s var(--ease-spring);text-decoration:none;
+    animation:floatBob 3.5s ease-in-out infinite;
   }
+  @keyframes floatBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .floating-wa svg{width:26px;height:26px;fill:#fff;flex:none}
+  .floating-wa-badge{position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:#ef4444;border-radius:50%;border:2px solid #fff}
+
+  /* Toast Notification */
+  #toast{
+    position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(90px);
+    background:var(--slate-900);color:#fff;padding:13px 26px;border-radius:999px;
+    font-weight:600;font-size:.88rem;transition:.35s var(--ease-spring);
+    z-index:120;box-shadow:0 12px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;
+  }
+  #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  /* Modals */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);
+    backdrop-filter:blur(8px);z-index:200;padding:20px;overflow-y:auto;align-items:center;justify-content:center;
+  }
+  .modal-overlay.show{display:flex}
+  .certificate-card{
+    background:#fff;max-width:680px;width:100%;border-radius:20px;padding:36px;
+    position:relative;box-shadow:0 25px 60px rgba(0,0,0,.2);border:2px solid #cbe4d6;
+  }
+  .cert-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--line);padding-bottom:18px;margin-bottom:20px}
+  .cert-seal{border:2px dashed var(--primary);border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-size:.65rem;font-weight:800;color:var(--primary)}
+  .cert-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88rem}
+  .cert-table td{padding:8px 0;border-bottom:1px solid #f0f4f2}
+  .cert-table td:last-child{text-align:right;font-weight:700}
+  .cert-warranty-box{background:#f4fbf7;border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:20px 0}
+  .cert-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:20px}
+
+  /* ============ Admin Dashboard Modal ============ */
+  .admin-box{
+    background:#fff;max-width:940px;width:100%;border-radius:20px;padding:30px;
+    box-shadow:0 25px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;
+  }
+  .admin-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:20px}
+  .admin-stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+  .astat{background:#f8fafc;padding:12px 18px;border-radius:12px;border:1px solid var(--line);flex:1;min-width:140px}
+  .astat b{font-size:1.3rem;display:block;color:var(--primary-dark);font-family:'Space Grotesk'}
+  .astat span{font-size:.76rem;color:var(--slate-400);font-weight:700;text-transform:uppercase}
+  .admin-table{width:100%;border-collapse:collapse;font-size:.85rem}
+  .admin-table th,.admin-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f5f9}
+  .admin-table th{background:#f8fafc;font-size:.74rem;color:var(--slate-600);text-transform:uppercase}
+  .admin-select{padding:4px 8px;border-radius:6px;border:1px solid var(--line);font-size:.8rem}
+
+  @media print{
+    body *{visibility:hidden}
+    #print-modal, #print-modal *{visibility:visible}
+    #print-modal{position:absolute;left:0;top:0;background:none;padding:0;width:100%}
+    .certificate-card{border:none;box-shadow:none;max-width:100%}
+    .cert-actions{display:none !important}
+  }
+
+  /* Footer */
+  footer{background:#022c22;color:#94a3b8;margin-top:auto}
   .foot-inner{
-    max-width:1180px;margin:0 auto;padding:52px clamp(16px,4vw,32px) 28px;
+    max-width:1200px;margin:0 auto;padding:54px clamp(16px,4vw,32px) 28px;
     display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;
   }
   @media(max-width:760px){.foot-inner{grid-template-columns:1fr;gap:30px}}
-  .foot-brand .brand-name{color:#fff}
-  .foot-brand .brand-name small{color:#6f887c}
-  .foot-brand p{font-size:.86rem;line-height:1.7;margin-top:14px;max-width:340px}
-  footer h4{color:#fff;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;font-family:'Inter'}
-  .foot-col div{font-size:.88rem;margin-bottom:10px;line-height:1.5}
+  .foot-brand p{font-size:.88rem;line-height:1.7;margin-top:14px;max-width:340px}
+  footer h4{color:#fff;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+  .foot-col div{font-size:.88rem;margin-bottom:10px}
   .foot-bottom{
-    border-top:1px solid #1d2f25;padding:18px clamp(16px,4vw,32px);text-align:center;
-    font-size:.78rem;color:#6f887c;
+    border-top:1px solid #064e3b;padding:18px clamp(16px,4vw,32px);text-align:center;
+    font-size:.78rem;color:#64786e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
   }
-  .foot-bottom b{color:#9db3a7}
-
-  /* ============ Toast ============ */
-  #toast{
-    position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(90px);
-    background:var(--ink);color:#fff;padding:13px 26px;border-radius:999px;
-    font-weight:600;font-size:.9rem;transition:.35s cubic-bezier(.2,.9,.3,1.2);
-    z-index:100;box-shadow:var(--shadow-lg);opacity:0;max-width:88vw;text-align:center;
-  }
-  #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
   @media(max-width:640px){
     .header-inner{height:auto;padding:12px 16px;flex-direction:column;align-items:stretch;gap:10px}
     .logo{align-self:flex-start}
     nav{justify-content:space-between;gap:2px;overflow-x:auto}
-    .nav-link{padding:7px 10px;font-size:.82rem}
-    .hero{padding-top:36px}
-    .hero-card{padding:22px}
-    .steps .step span.step-label{display:none}
+    .nav-link{padding:7px 10px;font-size:.8rem}
+    .benefit-row{grid-template-columns:1fr}
+    .floating-wa span{display:none}
+    .floating-wa{padding:14px;bottom:20px;right:20px}
   }
 </style>
 </head>
 <body>
 
+<!-- Emergency Dispatch Banner -->
+<div class="emergency-bar">
+  <span class="pulse-dot"></span>
+  <span>⚡ <b>Emergency Dispatch Active:</b> Certified team on duty in your area (Arrival within 60–90 mins)</span>
+</div>
+
+<!-- Header -->
 <header>
   <div class="header-inner">
-    <div class="logo" onclick="go('home')" title="Go to home">
+    <div class="logo ripple-target" onclick="handleLogoClick()" title="AS Global Management Home (Click 3 times for Admin)">
       <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 24 24" fill="none">
           <path d="M12 2.5 4.5 5.2v5.6c0 4.6 3.1 8.2 7.5 10.7 4.4-2.5 7.5-6.1 7.5-10.7V5.2L12 2.5Z" fill="#fff" fill-opacity=".95"/>
-          <path d="m8.4 12 2.5 2.7 4.7-5.2" stroke="#0e6b43" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="m8.4 12 2.5 2.7 4.7-5.2" stroke="#059669" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <div class="brand-name">AS GLOBAL MANAGEMENT<small>Pest Control Services</small></div>
+      <div class="brand-title">AS GLOBAL MANAGEMENT<small>Pest Control &amp; Disinfection</small></div>
     </div>
     <nav>
-      <button id="nav-home" class="nav-link" onclick="go('home')">Home</button>
-      <button id="nav-services" class="nav-link" onclick="go('services')">Services</button>
-      <button id="nav-bookings" class="nav-link" onclick="go('bookings')">My Bookings</button>
-      <button id="nav-book" class="nav-link is-cta" onclick="go('book')">Book Now<span class="cart-badge" id="cart-badge">0</span></button>
+      <button id="nav-home" class="nav-link active ripple-target" onclick="go('home')">Home</button>
+      <button id="nav-services" class="nav-link ripple-target" onclick="go('services')">Services</button>
+      <button id="nav-reviews" class="nav-link ripple-target" onclick="go('reviews')">Reviews</button>
+      <button id="nav-bookings" class="nav-link ripple-target" onclick="go('bookings')">My Bookings</button>
+      <button id="nav-book" class="nav-link is-cta ripple-target" onclick="go('book')">Book Now<span class="cart-badge" id="cart-badge">0</span></button>
     </nav>
   </div>
 </header>
 
-<!-- ================= HOME ================= -->
-<section class="view" id="view-home">
-  <div class="hero">
-    <div class="hero-text">
-      <span class="eyebrow">✓ Government-certified &amp; licensed operators</span>
-      <h1>A pest-free home, <em>booked in minutes.</em></h1>
-      <p>Professional pest control from AS Global Management — trained technicians, eco-safe government-approved chemicals and a written 30-day service warranty. No advance payment. Pay only after the job is done.</p>
-      <div class="hero-cta">
-        <button class="btn" onclick="go('services')">Book a Service →</button>
-        <button class="btn ghost" onclick="go('bookings')">View My Bookings</button>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><b>12,000+</b><span>Services completed</span></div>
-        <div class="stat"><b>4.9 ★</b><span>Average rating</span></div>
-        <div class="stat"><b>30-day</b><span>Free re-service</span></div>
-        <div class="stat"><b>100%</b><span>Pay after service</span></div>
-      </div>
-    </div>
-    <div>
-      <div class="hero-img">
-        <img src="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1000&q=80&fm=jpg" alt="AS Global Management technician spraying pest treatment on a home porch" loading="eager">
-        <span class="img-cap">🧑‍🔧 On-site treatment by a certified technician</span>
-      </div>
-      <div class="hero-card">
-      <h3>Why customers trust us</h3>
-      <div class="benefit">
-        <div class="b-icon">🎓</div>
-        <div><b>Certified technicians</b><span>Background-verified, uniformed &amp; trained on global protocols</span></div>
-      </div>
-      <div class="benefit">
-        <div class="b-icon">🌿</div>
-        <div><b>Eco-safe chemicals</b><span>Odourless, kid-safe &amp; pet-safe, government-approved only</span></div>
-      </div>
-      <div class="benefit">
-        <div class="b-icon">🔁</div>
-        <div><b>Written 30-day warranty</b><span>Pests return within a month? We re-service for free</span></div>
-      </div>
-      <div class="mini-review">
-        <b>"Booked at 10 AM, treatment done by 2 PM. The team was punctual and professional."</b><br>— Meera K., 3 BHK customer
-      </div>
-    </div>
-    </div>
-  </div>
+<main>
+  <!-- ================= HOME VIEW ================= -->
+  <section class="view show" id="view-home">
+    <div class="hero">
+      <div class="hero-text">
+        <div class="hero-tag">
+          <span>🛡️ Govt-Certified &amp; 30-Day Free Re-Service Warranty</span>
+        </div>
+        <h1>Safe, odorless pest control <span>booked in 60 seconds.</span></h1>
+        <p>Professional pest elimination by AS Global Management. Odorless, kid-safe, pet-safe chemicals with written warranties. <b>Pay only after service is completed.</b></p>
+        
+        <div class="hero-cta">
+          <button class="btn ripple-target" onclick="go('services')">Book a Service →</button>
+          <button class="btn whatsapp-btn ripple-target" onclick="openGeneralWhatsApp()">
+            <svg style="width:19px;height:19px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
+            WhatsApp (9550107466)
+          </button>
+        </div>
 
-  <div class="how">
-    <div class="how-grid">
-      <div class="how-title">How booking works</div>
-      <div class="how-step"><div class="num">1</div><div><b>Pick your service</b><span>Choose one or more treatments and add them to your booking.</span></div></div>
-      <div class="how-step"><div class="num">2</div><div><b>Schedule the visit</b><span>Select a date and time slot that suits you — we confirm by call.</span></div></div>
-      <div class="how-step"><div class="num">3</div><div><b>Pay after service</b><span>Inspection, treatment &amp; warranty card — pay only when it's done.</span></div></div>
-    </div>
-  </div>
-
-  <div class="wrap page" style="padding-top:52px">
-    <div class="sec-head">
-      <span class="eyebrow">Gallery</span>
-      <h2>Our work in action</h2>
-      <p>A glimpse of the treatments we deliver every day.</p>
-    </div>
-    <div class="gallery">
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1591735115730-4bf3a351cfe8?w=900&q=80&fm=jpg" alt="Treating a wasp nest in a wooden window frame" loading="lazy">
-        <span class="img-cap">🐝 Wasp nest removal — precision work</span>
+        <div class="hero-stats">
+          <div class="stat"><b>14,500+</b><span>Treatments done</span></div>
+          <div class="stat"><b>4.9 ★</b><span>Google rated</span></div>
+          <div class="stat"><b>30 Days</b><span>Free re-treatment</span></div>
+          <div class="stat"><b>₹0</b><span>Advance fee</span></div>
+        </div>
       </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1581578017093-cd30fce4eeb7?w=900&q=80&fm=jpg" alt="Safe garden and terrace pest treatment" loading="lazy">
-        <span class="img-cap">🌿 Safe outdoor &amp; garden treatment</span>
-      </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=900&q=80&fm=jpg" alt="Deep disinfection of a home interior" loading="lazy">
-        <span class="img-cap">🧴 Deep disinfection for homes &amp; offices</span>
-      </div>
-    </div>
 
-    <div class="sec-head" style="margin-top:56px">
-      <span class="eyebrow">Most booked</span>
-      <h2>Popular services</h2>
-      <p>Treatments customers trust the most this month.</p>
-    </div>
-    <div class="grid" id="home-grid"></div>
-    <div style="margin-top:28px;text-align:center">
-      <button class="btn ghost" onclick="go('services')">View all 8 services →</button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SERVICES ================= -->
-<section class="view" id="view-services">
-  <div class="wrap page">
-    <div class="sec-head">
-      <span class="eyebrow">Full catalogue</span>
-      <h2>All pest control services</h2>
-      <p>Every treatment includes inspection, treatment, warranty card and a follow-up call. Select one or more services, then tap <b>Book Now</b> to schedule your visit.</p>
-    </div>
-    <div class="grid" id="services-grid"></div>
-    <div style="margin-top:32px;text-align:center">
-      <button class="btn" onclick="go('book')">Continue to booking →</button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= BOOK ================= -->
-<section class="view" id="view-book">
-  <div class="wrap page">
-    <div class="steps">
-      <div class="step done"><div class="dot">✓</div><span class="step-label">Choose services</span></div>
-      <div class="step active"><div class="dot">2</div><span class="step-label">Schedule visit</span></div>
-      <div class="step"><div class="dot">3</div><span class="step-label">Confirmation</span></div>
-    </div>
-    <div class="booking-layout">
-      <form class="panel" id="book-form" novalidate onsubmit="confirmBooking(event)">
-        <h3>📋 Your details</h3>
-        <div class="row2">
-          <div class="field" id="f-name">
-            <label>Full name</label>
-            <input type="text" id="in-name" placeholder="e.g. Priya Sharma" autocomplete="name">
-            <div class="err">Please enter your name (minimum 2 letters).</div>
-          </div>
-          <div class="field" id="f-phone">
-            <label>Phone number</label>
-            <input type="tel" id="in-phone" placeholder="98765 43210" maxlength="14" autocomplete="tel">
-            <div class="err">Enter a valid 10-digit Indian mobile number.</div>
+      <div class="hero-card-wrap">
+        <div class="hero-img">
+          <img src="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1000&q=80&fm=jpg" alt="Certified pest control operator at work">
+          <div class="img-badge">
+            <span>🧑‍🔧 Uniformed, background-verified technician</span>
           </div>
         </div>
-        <div class="field" id="f-type">
-          <label>Property type</label>
-          <select id="in-type">
-            <option value="">Select property type…</option>
-            <option>1 BHK / Studio</option>
-            <option>2 BHK</option>
-            <option>3 BHK</option>
-            <option>Villa / Independent house</option>
-            <option>Restaurant / Commercial kitchen</option>
-            <option>Office / Other commercial</option>
-          </select>
-          <div class="err">Please choose a property type.</div>
-        </div>
-        <div class="field" id="f-address">
-          <label>Service address</label>
-          <textarea id="in-address" rows="2" placeholder="Flat / house no, building, street, area, city, pincode"></textarea>
-          <div class="err">Please enter the complete address (at least 10 characters).</div>
-        </div>
-        <div class="row2">
-          <div class="field" id="f-date">
-            <label>Preferred date</label>
-            <input type="date" id="in-date">
-            <div class="err">Pick a valid date (today or later).</div>
+        <div class="hero-card">
+          <div class="benefit-row">
+            <div class="b-item">
+              <span class="icon">🌿</span>
+              <div><b>Eco-Safe Chemicals</b><span>Odorless &amp; kid-safe</span></div>
+            </div>
+            <div class="b-item">
+              <span class="icon">📜</span>
+              <div><b>Written Warranty</b><span>Certificate provided</span></div>
+            </div>
+            <div class="b-item">
+              <span class="icon">⚡</span>
+              <div><b>Same-Day Slots</b><span>Arrival in 60-90m</span></div>
+            </div>
+            <div class="b-item">
+              <span class="icon">💳</span>
+              <div><b>Post-Pay Only</b><span>Pay via UPI / Cash</span></div>
+            </div>
           </div>
-          <div class="field" id="f-slot">
-            <label>Time slot</label>
-            <select id="in-slot">
-              <option value="">Select time slot…</option>
-              <option>08 AM – 11 AM</option>
-              <option>11 AM – 02 PM</option>
-              <option>02 PM – 05 PM</option>
-              <option>05 PM – 08 PM</option>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Interactive Before / After Visual Proof Slider ============ -->
+    <div class="wrap page" style="padding-top:60px">
+      <div class="sec-head">
+        <span class="eyebrow">Real Visual Results</span>
+        <h2>Before &amp; After Treatment Proof</h2>
+        <p>Drag the slider left and right to see the immediate transformation after our odorless deep treatment.</p>
+      </div>
+
+      <div class="ba-box" id="ba-slider">
+        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200&q=80&fm=jpg" alt="Pest Infestation Before Treatment">
+        <div class="ba-after" id="ba-after">
+          <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1200&q=80&fm=jpg" alt="Clean Sanitized Kitchen After Treatment">
+        </div>
+        <div class="ba-handle" id="ba-handle">
+          <div class="ba-badge-btn">↔</div>
+        </div>
+        <div class="ba-tag ba-tag-before">⚠️ BEFORE (Severe Infestation)</div>
+        <div class="ba-tag ba-tag-after">✨ AFTER (100% Pest-Free &amp; Sanitized)</div>
+      </div>
+
+      <!-- ============ Property-Based Dynamic Price Calculator ============ -->
+      <div class="calc-bar">
+        <div class="calc-title">
+          <span>🏠 Select Property Size for Instant Pricing:</span>
+        </div>
+        <div class="bhk-pill-group">
+          <button class="bhk-btn active" onclick="setBHK('1bhk', this)">1 BHK</button>
+          <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
+          <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
+          <button class="bhk-btn" onclick="setBHK('villa', this)">Villa / 4+ BHK</button>
+          <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial / Office</button>
+        </div>
+      </div>
+
+      <!-- ============ Package Combo Discounts ============ -->
+      <div class="sec-head">
+        <span class="eyebrow">Best Value Combos</span>
+        <h2>Save Big with All-in-One Packages</h2>
+        <p>Multi-pest protection combos bundled with maximum discounts.</p>
+      </div>
+      <div class="combos-grid" id="combos-grid"></div>
+
+      <!-- Popular Individual Treatments -->
+      <div class="sec-head" style="margin-top:20px">
+        <span class="eyebrow">Individual Treatments</span>
+        <h2>Popular Pest Services</h2>
+        <p>Targeted solutions with long-lasting residual protection.</p>
+      </div>
+      <div class="grid" id="home-grid"></div>
+      <div style="margin-top:32px;text-align:center">
+        <button class="btn ghost ripple-target" onclick="go('services')">View all services →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES VIEW ================= -->
+  <section class="view" id="view-services">
+    <div class="wrap page">
+      <div class="sec-head">
+        <span class="eyebrow">Full Treatments Catalog</span>
+        <h2>Certified Pest Control Services</h2>
+        <p>Select your required services and proceed to schedule your preferred date &amp; time.</p>
+      </div>
+
+      <!-- Property Size Switcher on Services Page too -->
+      <div class="calc-bar">
+        <div class="calc-title"><span>🏠 Property Size:</span></div>
+        <div class="bhk-pill-group">
+          <button class="bhk-btn active" onclick="setBHK('1bhk', this)">1 BHK</button>
+          <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
+          <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
+          <button class="bhk-btn" onclick="setBHK('villa', this)">Villa / 4+ BHK</button>
+          <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial</button>
+        </div>
+      </div>
+
+      <div class="grid" id="services-grid"></div>
+      <div style="margin-top:38px;text-align:center">
+        <button class="btn ripple-target" onclick="go('book')">Continue to schedule visit →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= REVIEWS VIEW ================= -->
+  <section class="view" id="view-reviews">
+    <div class="wrap page">
+      <div class="sec-head">
+        <span class="eyebrow">Customer Feedback</span>
+        <h2>Real customer ratings &amp; reviews</h2>
+        <p>Over 14,000+ homes and offices serviced with a 4.9/5 satisfaction rate.</p>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-top">
+            <div class="rev-user">
+              <div class="rev-avatar">RK</div>
+              <div><div class="rev-name">Rajesh Kumar</div><div class="rev-loc">Madhapur · 3 BHK Flat</div></div>
+            </div>
+            <span class="verified-badge">✓ Verified</span>
+          </div>
+          <div style="color:var(--accent)">★★★★★</div>
+          <p class="review-text">"Had a severe German cockroach issue in our modular kitchen. The gel treatment was completely odorless and worked within 3 days. Loved that I paid only after the technician finished!"</p>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="rev-user">
+              <div class="rev-avatar">PS</div>
+              <div><div class="rev-name">Priya Sundaram</div><div class="rev-loc">Banjara Hills · Independent Villa</div></div>
+            </div>
+            <span class="verified-badge">✓ Verified</span>
+          </div>
+          <div style="color:var(--accent)">★★★★★</div>
+          <p class="review-text">"Punctual technician, wore full protective gear, and explained the termite drill &amp; inject procedure in detail. The 30-day warranty certificate gave us complete peace of mind."</p>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="rev-user">
+              <div class="rev-avatar">AM</div>
+              <div><div class="rev-name">Anand Mishra</div><div class="rev-loc">Gachibowli · Tech Park Office</div></div>
+            </div>
+            <span class="verified-badge">✓ Verified</span>
+          </div>
+          <div style="color:var(--accent)">★★★★★</div>
+          <p class="review-text">"Booked on WhatsApp at 11 AM and the team arrived by 1:30 PM for emergency rodent control. Extremely systematic entry sealing and bait placements. Highly recommended."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BOOK VIEW ================= -->
+  <section class="view" id="view-book">
+    <div class="wrap page">
+      <div class="steps">
+        <div class="step done"><div class="dot">✓</div><span>1. Pick service</span></div>
+        <div class="step active"><div class="dot">2</div><span>2. Schedule &amp; address</span></div>
+        <div class="step"><div class="dot">3</div><span>3. Warranty &amp; invoice</span></div>
+      </div>
+
+      <div class="booking-layout">
+        <form class="panel" id="book-form" novalidate onsubmit="confirmBooking(event)">
+          <h3>📋 Schedule Service Visit</h3>
+          
+          <div class="row2">
+            <div class="field" id="f-name">
+              <label>Full name</label>
+              <input type="text" id="in-name" placeholder="e.g. Priya Sharma" autocomplete="name">
+              <div class="err">Please enter your full name (minimum 2 characters).</div>
+            </div>
+            <div class="field" id="f-phone">
+              <label>Phone number (10-digit)</label>
+              <input type="tel" id="in-phone" placeholder="95501 07466" maxlength="14" autocomplete="tel">
+              <div class="err">Please enter a valid 10-digit mobile number.</div>
+            </div>
+          </div>
+
+          <div class="field" id="f-type">
+            <label>Property type</label>
+            <select id="in-type" onchange="syncBHKFromDropdown(this.value)">
+              <option value="1bhk">1 BHK / Studio</option>
+              <option value="2bhk">2 BHK</option>
+              <option value="3bhk">3 BHK</option>
+              <option value="villa">Villa / Row House</option>
+              <option value="commercial">Office / Commercial Space</option>
             </select>
-            <div class="err">Choose a time slot.</div>
           </div>
-        </div>
-        <div class="field">
-          <label>Special instructions <span class="opt">(optional)</span></label>
-          <textarea id="in-notes" rows="2" placeholder="Anything we should know? e.g. toddler at home, gate code, heat-sensitive furniture…"></textarea>
-        </div>
-        <button type="submit" class="btn block" id="confirm-btn">Confirm booking — pay after service ✔</button>
-        <div class="secure-note">🔒 Your details are stored only on this device. No spam calls.</div>
-      </form>
 
-      <aside class="panel side">
-        <h3>🧾 Booking summary</h3>
-        <div id="cart-items"></div>
-        <div class="sum-total-row" style="display:none" id="total-row"><span>Total payable</span><span class="amt" id="cart-total">₹0</span></div>
-        <div class="pay-note">
-          <span>💡</span>
-          <span><b>No advance payment</b>Pay cash or UPI to our technician after the service is completed &amp; inspected. Free re-service within 30 days. Reschedule anytime up to 2 hours before the visit.</span>
-        </div>
-      </aside>
-    </div>
-  </div>
-</section>
+          <div class="field" id="f-address">
+            <label>Complete address &amp; landmark</label>
+            <textarea id="in-address" rows="2" placeholder="Flat/House number, Building name, Street, Landmark, Pincode"></textarea>
+            <div class="err">Please provide a detailed address for the technician (at least 10 letters).</div>
+          </div>
 
-<!-- ================= SUCCESS ================= -->
-<section class="view" id="view-success">
-  <div class="wrap page">
-    <div class="success-box">
-      <div class="check">✓</div>
-      <h2>Booking confirmed</h2>
-      <div class="ref-chip" id="ref-no">ASM-000000</div>
-      <p style="color:var(--muted);font-size:.82rem">Save this reference number for support calls</p>
-      <p class="detail" id="success-detail" style="margin-top:14px"></p>
-      <div class="success-actions">
-        <button class="btn" onclick="go('bookings')">📋 View my bookings</button>
-        <button class="btn ghost" onclick="go('services')">Book another service</button>
+          <div class="row2">
+            <div class="field" id="f-date">
+              <label>Preferred appointment date</label>
+              <input type="date" id="in-date">
+              <div class="err">Please select today or a future date.</div>
+            </div>
+            <div class="field" id="f-slot">
+              <label>Arrival slot</label>
+              <select id="in-slot">
+                <option value="">Select time slot…</option>
+                <option>⚡ Immediate / Emergency (Within 90 mins)</option>
+                <option>08:00 AM – 11:00 AM</option>
+                <option>11:00 AM – 02:00 PM</option>
+                <option>02:00 PM – 05:00 PM</option>
+                <option>05:00 PM – 08:00 PM</option>
+              </select>
+              <div class="err">Please select a time slot.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Specific pest notes <span style="font-weight:400;color:var(--slate-400)">(optional)</span></label>
+            <textarea id="in-notes" rows="2" placeholder="e.g. Infestation in kitchen cabinets, kids or pets at home, gate entry code…"></textarea>
+          </div>
+
+          <button type="submit" class="btn block ripple-target" id="confirm-btn">Confirm Visit (Pay Post-Service) ✔</button>
+          <p style="text-align:center;font-size:.78rem;color:var(--slate-400);margin-top:12px">🔒 No advance payment needed. Pay after inspection &amp; treatment.</p>
+        </form>
+
+        <aside class="panel side">
+          <h3>🧾 Treatment Summary</h3>
+          <div id="cart-items"></div>
+          <div class="sum-total-row" id="total-row" style="display:none">
+            <span>Total payable</span>
+            <span class="amt" id="cart-total">₹0</span>
+          </div>
+          <div class="pay-badge">
+            <b>🛡️ 30-Day Zero Pest Guarantee</b>
+            <span>If pests reappear within 30 days, we perform a 100% free re-treatment. Pay by Cash/UPI to technician after work.</span>
+          </div>
+        </aside>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= MY BOOKINGS ================= -->
-<section class="view" id="view-bookings">
-  <div class="wrap page">
-    <div class="sec-head">
-      <span class="eyebrow">Your account</span>
-      <h2>My bookings</h2>
-      <p>All bookings are stored securely on this device.</p>
+  <!-- ================= SUCCESS VIEW ================= -->
+  <section class="view" id="view-success">
+    <div class="wrap page">
+      <div class="success-box">
+        <div class="success-check">✓</div>
+        <h2>Booking Confirmed!</h2>
+        <p style="color:var(--slate-400);font-size:.92rem">Our team is dispatching a certified technician.</p>
+        <div class="ref-pill" id="ref-no">ASM-000000</div>
+        
+        <p id="success-detail" style="line-height:1.7;color:var(--slate-600)"></p>
+
+        <div class="success-actions">
+          <button class="btn whatsapp-btn ripple-target" id="wa-confirm-btn" onclick="sendWhatsAppConfirmation()">
+            <svg style="width:19px;height:19px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
+            Send to WhatsApp (9550107466)
+          </button>
+          <button class="btn ghost ripple-target" onclick="openPrintModalCurrent()">🖨️ Print Warranty &amp; Invoice</button>
+          <button class="btn ghost ripple-target" onclick="go('bookings')">View My Bookings</button>
+        </div>
+      </div>
     </div>
-    <div id="bookings-list"></div>
+  </section>
+
+  <!-- ================= MY BOOKINGS VIEW ================= -->
+  <section class="view" id="view-bookings">
+    <div class="wrap page">
+      <div class="sec-head">
+        <span class="eyebrow">Your Records</span>
+        <h2>My Service Bookings</h2>
+        <p>Stored locally on this device. You can download or print your 30-day warranty certificates anytime.</p>
+      </div>
+      <div id="bookings-list"></div>
+    </div>
+  </section>
+</main>
+
+<!-- Live Recent Booking Popup -->
+<div id="recent-booking-toast">
+  <div class="rb-avatar" id="rb-avatar">RK</div>
+  <div class="rb-info">
+    <b id="rb-title">Rajesh from Madhapur</b>
+    <span id="rb-desc">Booked Cockroach Gel · 3 mins ago</span>
   </div>
-</section>
+</div>
+
+<!-- Modal: Printable Invoice / Warranty -->
+<div id="print-modal" class="modal-overlay" onclick="if(event.target===this)closePrintModal()">
+  <div class="certificate-card">
+    <div class="cert-header">
+      <div>
+        <h2 style="font-size:1.4rem;color:var(--primary-dark)">AS GLOBAL MANAGEMENT</h2>
+        <p style="font-size:.8rem;color:var(--slate-400)">Govt. Approved Pest Management &amp; Disinfection Services</p>
+        <p style="font-size:.78rem;color:var(--slate-400)">📞 +91 95501 07466 · ✉️ contact@asglobal.com</p>
+      </div>
+      <div class="cert-seal">
+        <span>30-DAY</span><span>SERVICE</span><span>WARRANTY</span>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:14px">
+      <div><b>Booking Reference:</b> <span id="m-ref"></span></div>
+      <div><b>Issued Date:</b> <span id="m-date"></span></div>
+    </div>
+    <table class="cert-table">
+      <tr><td>Customer Name:</td><td id="m-name"></td></tr>
+      <tr><td>Contact Phone:</td><td id="m-phone"></td></tr>
+      <tr><td>Service Address:</td><td id="m-address"></td></tr>
+      <tr><td>Scheduled Slot:</td><td id="m-slot"></td></tr>
+      <tr><td>Treatments Booked:</td><td id="m-services"></td></tr>
+      <tr><td>Total Amount Payable:</td><td id="m-total" style="color:var(--primary-dark);font-size:1.15rem"></td></tr>
+    </table>
+    <div class="cert-warranty-box">
+      <b style="font-size:.85rem;color:var(--primary-dark)">🛡️ 30-Day Re-Service Warranty Policy:</b>
+      <p style="font-size:.78rem;color:var(--slate-600);margin-top:4px">
+        This document entitles the customer to a complimentary re-treatment if the covered pest infestation reoccurs within 30 days of initial service. Please retain this reference code for warranty validation.
+      </p>
+    </div>
+    <div class="cert-actions">
+      <button class="btn ghost ripple-target" onclick="closePrintModal()">Close</button>
+      <button class="btn ripple-target" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Admin Dashboard Modal (PIN Protected) ============ -->
+<div id="admin-modal" class="modal-overlay" onclick="if(event.target===this)closeAdminModal()">
+  <div class="admin-box">
+    <div class="admin-header">
+      <div>
+        <h2 style="font-size:1.3rem;color:var(--slate-900)">🔒 Business Owner Admin Portal</h2>
+        <p style="font-size:.78rem;color:var(--slate-400)">AS Global Management — Live Bookings Management</p>
+      </div>
+      <button class="btn ghost" style="padding:6px 14px;font-size:.8rem" onclick="closeAdminModal()">✕ Close</button>
+    </div>
+
+    <div class="admin-stats">
+      <div class="astat"><b id="adm-count">0</b><span>Total Bookings</span></div>
+      <div class="astat"><b id="adm-rev">₹0</b><span>Expected Revenue</span></div>
+      <div class="astat">
+        <button class="btn" style="padding:8px 16px;font-size:.82rem;width:100%" onclick="exportToCSV()">
+          📥 Export to Excel (CSV)
+        </button>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Ref</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>Services</th>
+            <th>Date &amp; Slot</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="admin-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/919550107466?text=Hello%20AS%20Global%20Management,%20I%20want%20to%20inquire%20about%20pest%20control%20services." target="_blank" class="floating-wa ripple-target" aria-label="Chat on WhatsApp">
+  <span class="floating-wa-badge"></span>
+  <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
+  <span>Book on WhatsApp</span>
+</a>
 
 <div id="toast"></div>
 
+<!-- Footer -->
 <footer>
   <div class="foot-inner">
     <div class="foot-brand">
-      <div class="logo" style="cursor:default" onclick="go('home')">
-        <div class="logo-mark" style="width:38px;height:38px;border-radius:10px">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:21px;height:21px">
-            <path d="M12 2.5 4.5 5.2v5.6c0 4.6 3.1 8.2 7.5 10.7 4.4-2.5 7.5-6.1 7.5-10.7V5.2L12 2.5Z" fill="#fff" fill-opacity=".95"/>
-            <path d="m8.4 12 2.5 2.7 4.7-5.2" stroke="#0e6b43" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="brand-name">AS GLOBAL MANAGEMENT<small>Pest Control Services</small></div>
-      </div>
-      <p>Professional, certified pest management for homes and businesses. Trained technicians, government-approved eco-safe chemicals, and a written 30-day service warranty on every job.</p>
-      <div style="margin-top:14px;font-size:.75rem;color:#6f887c">📸 Photos by Unsplash photographers (free license)</div>
+      <div class="brand-title" style="color:#fff">AS GLOBAL MANAGEMENT<small style="color:#6ee7b7">Pest Control Services</small></div>
+      <p>Government certified, eco-safe pest management solutions for residential and commercial spaces. Odorless treatments with written 30-day warranty coverage.</p>
     </div>
     <div class="foot-col">
       <h4>Services</h4>
-      <div>Cockroach Control</div>
-      <div>Termite Treatment</div>
-      <div>Bed Bugs Removal</div>
+      <div>Cockroach Gel Treatment</div>
+      <div>Termite Drill-and-Inject</div>
+      <div>Bed Bugs Steam Treatment</div>
       <div>Rodent &amp; Mosquito Control</div>
-      <div>Deep Disinfection</div>
+      <div>Commercial Disinfection</div>
     </div>
     <div class="foot-col">
-      <h4>Company</h4>
-      <div>📞 +91 94908 61417</div>
-      <div>✉️ chintu05190@gmail.com</div>
-      <div>🔁 30-day free re-service</div>
-      <div>💳 Pay after service</div>
+      <h4>Direct Contact</h4>
+      <div>📞 +91 95501 07466</div>
+      <div>💬 WhatsApp: +91 95501 07466</div>
+      <div>✉️ contact@asglobal.com</div>
+      <div>⏱️ 7 Days a week: 8 AM – 9 PM</div>
     </div>
   </div>
   <div class="foot-bottom">
-    © 2026 <b>AS GLOBAL MANAGEMENT</b> · All rights reserved · Demo app — bookings are saved on this device only
+    <span>© 2026 <b>AS GLOBAL MANAGEMENT</b> · All rights reserved.</span>
+    <a href="#" onclick="promptAdminLogin();return false" style="color:#a7f3d0;font-size:.76rem;text-decoration:underline">
+      🔒 Owner Admin Portal (Login)
+    </a>
   </div>
 </footer>
 
 <script>
-/* ============ Data ============ */
-const SERVICES = [
-  {id:"cockroach", icon:"🪳", name:"Cockroach Control",      desc:"Gel-based, odourless kitchen-safe treatment for homes, cafés and restaurants.", price:799,  rating:4.8, chips:["Gel treatment","Odourless","Same-day"]},
-  {id:"termite",   icon:"🐜", name:"Termite Treatment",      desc:"Drill-and-inject chemical barrier for walls, floors & woodwork.",              price:2499, rating:4.9, chips:["5-yr option","Soil barrier","Warranty card"]},
-  {id:"bedbugs",   icon:"🛏️", name:"Bed Bugs Removal",       desc:"2-visit spray + steam protocol for mattresses, beds and sofas.",               price:1599, rating:4.7, chips:["2 visits","Steam chamber","Mattress-safe"]},
-  {id:"rodent",    icon:"🐀", name:"Rodent Control",         desc:"Bait stations, glue traps and entry-point sealing for rats & mice.",           price:1199, rating:4.8, chips:["Rodent-proofing","Safe baits","Follow-up"]},
-  {id:"mosquito",  icon:"🦟", name:"Mosquito Treatment",     desc:"Thermal fogging + larvicide for balconies, gardens and terraces.",             price:999,  rating:4.7, chips:["Fogging","Larvicide","Society plans"]},
-  {id:"ants",      icon:"🕸️", name:"Ants & General Pests",   desc:"Barrier spray for ants, spiders, silverfish and crawling pests.",              price:899,  rating:4.6, chips:["Perimeter spray","Residual action","Kid-safe"]},
-  {id:"woodborer", icon:"🪵", name:"Wood Borer Treatment",   desc:"Oil-based injection for furniture, doors and wooden fittings.",                price:1399, rating:4.7, chips:["Furniture-safe","Deep injection","Stain-free"]},
-  {id:"sanitize",  icon:"🧴", name:"Deep Disinfection",      desc:"Full-home sanitization killing bacteria & viruses with safe chemicals.", price:1299, rating:4.9, chips:["Hospital-grade","Eco chemicals","Certificate"]},
+const OWNER_PHONE = "919550107466";
+const OWNER_EMAIL = "contact@asglobal.com";
+const ADMIN_PIN = "1234";
+
+/* ============ Multiplier for Dynamic BHK Pricing ============ */
+let currentBHK = "1bhk";
+const BHK_MULTIPLIERS = {
+  "1bhk": 1.0,
+  "2bhk": 1.25,
+  "3bhk": 1.55,
+  "villa": 2.1,
+  "commercial": 2.4
+};
+
+/* Base Services (1 BHK base price) */
+const BASE_SERVICES = [
+  {id:"cockroach", icon:"🪳", name:"Cockroach Control", desc:"Odorless, herbal gel treatment for modular kitchens and cabinets. 100% kitchen-safe.", basePrice:799, rating:4.9, chips:["Gel treatment","No smell","Kid-safe"]},
+  {id:"termite", icon:"🐜", name:"Termite Treatment", desc:"Drill-and-inject barrier protection for walls, frames, and wooden furniture.", basePrice:2499, rating:4.9, chips:["Wall barrier","Warranty card","Deep drilling"]},
+  {id:"bedbugs", icon:"🛏️", name:"Bed Bugs Treatment", desc:"Double-visit high temperature steam + residual chemical protocol for beds and sofas.", basePrice:1599, rating:4.8, chips:["2 visits","Steam kill","Mattress safe"]},
+  {id:"rodent", icon:"🐀", name:"Rodent Control", desc:"Smart bait stations, non-toxic gum traps and entry-hole proofing for rats.", basePrice:1199, rating:4.7, chips:["Entry sealing","Smart baits","Follow up"]},
+  {id:"mosquito", icon:"🦟", name:"Mosquito Fogging", desc:"Thermal outdoor fogging + anti-larval treatment for terraces, gardens, and societies.", basePrice:999, rating:4.8, chips:["Larvicide","Thermal fog","Society plans"]},
+  {id:"ants", icon:"🕸️", name:"Ants & Spider Control", desc:"Residual perimeter barrier spray targeting ants, spiders, and crawling insects.", basePrice:899, rating:4.7, chips:["Odorless spray","Residual effect","Pet safe"]},
+  {id:"woodborer", icon:"🪵", name:"Wood Borer Control", desc:"Targeted injection treatment preserving precious furniture from powder-falling pests.", basePrice:1399, rating:4.8, chips:["Wood injection","Non-staining","Long lasting"]},
+  {id:"disinfection", icon:"🧴", name:"Hospital Disinfection", desc:"Full premises sanitization wiping out 99.9% viruses and bacteria.", basePrice:1299, rating:4.9, chips:["Hospital grade","Certificate","Safe mist"]},
 ];
 
-/* ============ State ============ */
-const CART_KEY = "asgm_cart", BOOKINGS_KEY = "asgm_bookings";
-const OWNER_EMAIL = "chintu05190@gmail.com";   // ← business owner email for booking notifications
+/* Package Combos with Save ₹300 to ₹1000 */
+const BASE_COMBOS = [
+  {
+    id:"combo-kitchen",
+    name:"Kitchen Shield Combo",
+    discountTag:"SAVE ₹300",
+    desc:"Cockroach Gel Treatment + Ants Barrier Spray",
+    basePrice:1399,
+    originalBase:1698,
+    includedIds:["cockroach", "ants"]
+  },
+  {
+    id:"combo-home",
+    name:"Full Home Protection",
+    discountTag:"SAVE ₹700",
+    desc:"Cockroach Control + Termite Wall Inject + Deep Disinfection",
+    basePrice:3899,
+    originalBase:4597,
+    includedIds:["cockroach", "termite", "disinfection"]
+  },
+  {
+    id:"combo-all",
+    name:"Total Pest Defense (All-in-One)",
+    discountTag:"SAVE ₹1,000",
+    desc:"Cockroach + Rodents + Mosquito Fogging + Ants & Spiders",
+    basePrice:2899,
+    originalBase:3896,
+    includedIds:["cockroach", "rodent", "mosquito", "ants"]
+  }
+];
+
+function getPrice(base){
+  return Math.round((base * BHK_MULTIPLIERS[currentBHK]) / 10) * 10;
+}
+
+const CART_KEY = "asgm_cart_v5", BOOKINGS_KEY = "asgm_bookings_v5";
 let cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+let latestBooking = null;
+
 const $ = id => document.getElementById(id);
 const fmt = n => "₹" + n.toLocaleString("en-IN");
 
-function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); renderCart(); renderCards(); }
+/* ============ Property Switcher ============ */
+function setBHK(bhk, btn){
+  currentBHK = bhk;
+  document.querySelectorAll(".bhk-btn").forEach(b => {
+    b.classList.toggle("active", b.textContent.toLowerCase().includes(bhk.replace("bhk","").trim()));
+  });
+  if(btn) btn.classList.add("active");
+  const dropdown = $("in-type");
+  if(dropdown) dropdown.value = bhk;
+  renderCards();
+  renderCombos();
+  renderCart();
+  toast(`Updated pricing for ${bhk.toUpperCase()}`);
+}
+
+function syncBHKFromDropdown(val){
+  currentBHK = val;
+  document.querySelectorAll(".bhk-btn").forEach(b => {
+    b.classList.toggle("active", b.getAttribute("onclick")?.includes(val));
+  });
+  renderCards();
+  renderCombos();
+  renderCart();
+}
+
+/* ============ Interactive Click Ripple Wave ============ */
+document.addEventListener("click", function(e){
+  const target = e.target.closest(".ripple-target, .btn, .card, .nav-link, .add-btn, .bhk-btn");
+  if(!target) return;
+  const rect = target.getBoundingClientRect();
+  const circle = document.createElement("span");
+  const d = Math.max(rect.width, rect.height);
+  circle.style.width = circle.style.height = `${d}px`;
+  circle.style.left = `${e.clientX - rect.left - d/2}px`;
+  circle.style.top = `${e.clientY - rect.top - d/2}px`;
+  circle.classList.add("ripple-wave");
+  target.appendChild(circle);
+  setTimeout(() => circle.remove(), 600);
+});
+
+function saveCart(){ 
+  localStorage.setItem(CART_KEY, JSON.stringify(cart)); 
+  renderCart(); 
+  renderCards(); 
+  const b = $("cart-badge");
+  b.classList.remove("bump");
+  void b.offsetWidth;
+  b.classList.add("bump");
+}
 function saveBookings(b){ localStorage.setItem(BOOKINGS_KEY, JSON.stringify(b)); }
 
-/* ============ Navigation ============ */
 function go(view){
   document.querySelectorAll(".view").forEach(v => v.classList.remove("show"));
   $("view-" + view).classList.add("show");
@@ -684,209 +1114,389 @@ function go(view){
   window.scrollTo({top:0, behavior:"smooth"});
 }
 
-/* ============ Cards ============ */
 function cardHTML(s){
   const inCart = cart.includes(s.id);
   const chips = (s.chips || []).map(c => `<span class="chip">${c}</span>`).join("");
-  return `<div class="card ${inCart ? "selected" : ""}">
+  const dynamicPrice = getPrice(s.basePrice);
+  return `<div class="card ripple-target ${inCart ? "selected" : ""}">
     <div class="card-top">
-      <div class="icon">${s.icon}</div>
-      <span class="rating"><span class="star">★</span>${s.rating}</span>
+      <div class="icon-box">${s.icon}</div>
+      <span class="rating">★ ${s.rating}</span>
     </div>
     <h3>${s.name}</h3>
     <p>${s.desc}</p>
     <div class="chips">${chips}</div>
     <div class="price-row">
-      <span class="price">${fmt(s.price)} <small>onwards</small></span>
-      <button class="add-btn ${inCart ? "added" : ""}" onclick="toggleCart('${s.id}', this)">
+      <span class="price-tag">${fmt(dynamicPrice)} <small>/ ${currentBHK.toUpperCase()}</small></span>
+      <button class="add-btn ripple-target ${inCart ? "added" : ""}" onclick="toggleCart('${s.id}')">
         ${inCart ? "✓ Added" : "+ Add"}
       </button>
     </div>
   </div>`;
 }
+
 function renderCards(){
-  $("home-grid").innerHTML = SERVICES.slice(0,4).map(cardHTML).join("");
-  $("services-grid").innerHTML = SERVICES.map(cardHTML).join("");
+  $("home-grid").innerHTML = BASE_SERVICES.slice(0,4).map(cardHTML).join("");
+  $("services-grid").innerHTML = BASE_SERVICES.map(cardHTML).join("");
 }
 
-function toggleCart(id, btn){
+function renderCombos(){
+  const box = $("combos-grid");
+  if(!box) return;
+  box.innerHTML = BASE_COMBOS.map(c => {
+    const curP = getPrice(c.basePrice);
+    const origP = getPrice(c.originalBase);
+    const isAdded = c.includedIds.every(id => cart.includes(id));
+    return `
+      <div class="combo-card">
+        <span class="combo-ribbon">${c.discountTag}</span>
+        <h3 style="font-size:1.15rem">${c.name}</h3>
+        <p class="combo-services">${c.desc}</p>
+        <div class="combo-price-row">
+          <div>
+            <span class="strike-price">${fmt(origP)}</span>
+            <span class="price-tag">${fmt(curP)}</span>
+          </div>
+          <button class="btn ripple-target" style="padding:8px 18px;font-size:.82rem" onclick="addCombo('${c.id}')">
+            ${isAdded ? "✓ Package Added" : "Add Package"}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function addCombo(comboId){
+  const combo = BASE_COMBOS.find(c => c.id === comboId);
+  combo.includedIds.forEach(id => {
+    if(!cart.includes(id)) cart.push(id);
+  });
+  saveCart();
+  toast(`✓ Added ${combo.name}!`);
+}
+
+function toggleCart(id){
   if(cart.includes(id)){
     cart = cart.filter(x => x !== id);
-    toast("Removed from booking");
+    toast("Item removed from booking");
   } else {
     cart.push(id);
-    toast("✓ Added to booking");
+    toast("✓ Added to your booking");
   }
   saveCart();
 }
 
-/* ============ Cart summary ============ */
 function renderCart(){
   $("cart-badge").textContent = cart.length;
   const box = $("cart-items");
   if(!box) return;
   if(cart.length === 0){
-    box.innerHTML = `<div class="empty-cart">No services selected yet.<br><a href="#" onclick="go('services');return false">Browse our services →</a></div>`;
+    box.innerHTML = `<div class="empty-cart">No service selected yet.<br><a href="#" onclick="go('services');return false">Explore services →</a></div>`;
     $("total-row").style.display = "none";
   } else {
     box.innerHTML = cart.map(id => {
-      const s = SERVICES.find(x => x.id === id);
+      const s = BASE_SERVICES.find(x => x.id === id);
+      const curPrice = getPrice(s.basePrice);
       return `<div class="sum-item">
-        <span class="s-icon">${s.icon}</span>
-        <span class="s-main"><b>${s.name}</b><span>Includes inspection &amp; warranty card</span></span>
-        <span class="s-price">${fmt(s.price)}<button class="s-x" title="Remove" onclick="toggleCart('${id}')">✕</button></span>
+        <div class="s-main">
+          <b>${s.icon} ${s.name}</b>
+          <span>${currentBHK.toUpperCase()} Plan · Includes 30-day warranty</span>
+        </div>
+        <span class="s-price">${fmt(curPrice)}</span>
+        <button class="s-x" onclick="toggleCart('${id}')" title="Remove">✕</button>
       </div>`;
     }).join("");
     $("total-row").style.display = "flex";
   }
-  const total = cart.reduce((sum,id) => sum + SERVICES.find(s => s.id === id).price, 0);
+  const total = cart.reduce((sum,id) => sum + getPrice(BASE_SERVICES.find(s => s.id === id).basePrice), 0);
   $("cart-total").textContent = fmt(total);
 }
 
-/* ============ Booking form ============ */
 $("in-date").min = new Date().toISOString().split("T")[0];
 
 function validate(){
   const checks = [
-    ["f-name",   $("in-name").value.trim().length >= 2],
-    ["f-phone",  /^[6-9]\d{9}$|^(\+91[\s-]?)?[1-9]\d{9}$/.test($("in-phone").value.replace(/\s/g,""))],
-    ["f-type",   $("in-type").value !== ""],
-    ["f-address",$("in-address").value.trim().length >= 10],
-    ["f-date",   $("in-date").value !== "" && $("in-date").value >= $("in-date").min],
-    ["f-slot",   $("in-slot").value !== ""],
+    ["f-name", $("in-name").value.trim().length >= 2],
+    ["f-phone", /^[6-9]\d{9}$|^(\+91[\s-]?)?[6-9]\d{9}$/.test($("in-phone").value.replace(/\s+/g,""))],
+    ["f-address", $("in-address").value.trim().length >= 10],
+    ["f-date", $("in-date").value !== "" && $("in-date").value >= $("in-date").min],
+    ["f-slot", $("in-slot").value !== ""]
   ];
-  let ok = true;
-  checks.forEach(([id, valid]) => {
-    $(id).classList.toggle("invalid", !valid);
-    if(!valid){
-      ok = false;
-      $(id).scrollIntoView({behavior:"smooth", block:"center"});
-    }
+  let valid = true;
+  checks.forEach(([id, ok]) => {
+    $(id).classList.toggle("invalid", !ok);
+    if(!ok) valid = false;
   });
-  if(!ok) toast("⚠ Please fix the highlighted fields");
-  return ok;
-}
-
-/* ============ Email notification to owner ============ */
-async function sendBookingEmail(b){
-  try{
-    const res = await fetch(`https://formsubmit.co/ajax/${OWNER_EMAIL}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({
-        _subject:    `New booking ${b.ref} | AS GLOBAL MANAGEMENT`,
-        _template:   "table",
-        _captcha:    "false",
-        "Booking ref":           b.ref,
-        "Customer name":         b.name,
-        "Phone":                 b.phone,
-        "Property type":         b.type,
-        "Service address":       b.address,
-        "Preferred date":        new Date(b.date).toDateString(),
-        "Time slot":             b.slot,
-        "Services booked":       b.services,
-        "Total (pay after service)": fmt(b.total),
-        "Special notes":         b.notes || "—",
-        "Booked on":             b.placed,
-      }),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (res.ok && data.success !== "false") return { ok: true };
-    if (res.ok && /activat/i.test(data.message || "")) return { pending: true };
-    return null;
-  } catch(err){ return null; }
+  if(!valid) toast("⚠ Please fill in the highlighted details");
+  return valid;
 }
 
 function confirmBooking(e){
   e.preventDefault();
-  if(cart.length === 0){ toast("⚠ Add at least one service first"); go("services"); return; }
+  if(cart.length === 0){ toast("⚠ Please select at least one service"); go("services"); return; }
   if(!validate()) return;
 
-  const total = cart.reduce((sum,id) => sum + SERVICES.find(s => s.id === id).price, 0);
-  const names = cart.map(id => SERVICES.find(s => s.id === id).name).join(", ");
+  const total = cart.reduce((sum,id) => sum + getPrice(BASE_SERVICES.find(s => s.id === id).basePrice), 0);
+  const names = cart.map(id => BASE_SERVICES.find(s => s.id === id).name).join(", ");
   const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
 
+  const booking = {
+    ref,
+    name: $("in-name").value.trim(),
+    phone: $("in-phone").value.trim(),
+    type: currentBHK.toUpperCase(),
+    address: $("in-address").value.trim(),
+    date: $("in-date").value,
+    slot: $("in-slot").value,
+    notes: $("in-notes").value.trim(),
+    services: names,
+    total,
+    status: "Confirmed",
+    placed: new Date().toLocaleDateString("en-IN")
+  };
+
+  latestBooking = booking;
+
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
-  bookings.unshift({
-    ref, name:$("in-name").value.trim(), phone:$("in-phone").value.trim(),
-    type:$("in-type").value, address:$("in-address").value.trim(),
-    date:$("in-date").value, slot:$("in-slot").value,
-    notes:$("in-notes").value.trim(), services:names, total,
-    status:"confirmed", placed:new Date().toLocaleDateString("en-IN"),
-  });
+  bookings.unshift(booking);
   saveBookings(bookings);
 
   $("ref-no").textContent = ref;
-  $("success-detail").innerHTML =
-    `${names} scheduled for <b>${new Date($("in-date").value).toDateString()}</b>, ${$("in-slot").value}.<br>Total payable after service: <b>${fmt(total)}</b>. Our team will confirm your slot on <b>${$("in-phone").value}</b> within 2 hours.`;
+  $("success-detail").innerHTML = `
+    Treatment <b>${names}</b> scheduled for <b>${new Date(booking.date).toDateString()}</b> (${booking.slot}).<br>
+    Payable amount: <b>${fmt(total)}</b> after completion. Our technician will contact <b>${booking.phone}</b> before arrival.
+  `;
 
   cart = []; saveCart();
   $("book-form").reset();
   go("success");
-
-  // email the booking details to the business owner
-  sendBookingEmail(bookings[0]).then(result => {
-    if(result && result.pending){
-      toast("📩 Setup step: open Gmail and click the FormSubmit 'Activate Form' link (one time)");
-    } else if(result){
-      toast(`📩 Booking ${bookings[0].ref} emailed to AS GLOBAL MANAGEMENT`);
-    } else {
-      toast("⚠ Email failed — booking is still saved in My Bookings");
-    }
-  });
 }
 
-/* ============ My bookings ============ */
+function sendWhatsAppConfirmation(){
+  if(!latestBooking) return;
+  const b = latestBooking;
+  const msg = `*NEW BOOKING CONFIRMATION* %0A` +
+              `--------------------------------%0A` +
+              `*Ref No:* ${b.ref}%0A` +
+              `*Name:* ${b.name}%0A` +
+              `*Phone:* ${b.phone}%0A` +
+              `*Plan:* ${b.type}%0A` +
+              `*Address:* ${b.address}%0A` +
+              `*Date:* ${b.date}%0A` +
+              `*Slot:* ${b.slot}%0A` +
+              `*Services:* ${b.services}%0A` +
+              `*Total:* ${fmt(b.total)} (Pay After Service)%0A` +
+              `*Notes:* ${b.notes || "None"}%0A` +
+              `--------------------------------%0A` +
+              `Please dispatch our technician. Thank you!`;
+  window.open(`https://wa.me/${OWNER_PHONE}?text=${msg}`, "_blank");
+}
+
+function openGeneralWhatsApp(){
+  const msg = encodeURIComponent("Hello AS Global Management, I would like to inquire/book a pest control treatment.");
+  window.open(`https://wa.me/${OWNER_PHONE}?text=${msg}`, "_blank");
+}
+
+/* ============ Printable Certificate & Invoice ============ */
+function openPrintModal(b){
+  $("m-ref").textContent = b.ref;
+  $("m-date").textContent = b.placed || new Date().toLocaleDateString();
+  $("m-name").textContent = b.name;
+  $("m-phone").textContent = b.phone;
+  $("m-address").textContent = `${b.type} — ${b.address}`;
+  $("m-slot").textContent = `${new Date(b.date).toDateString()} (${b.slot})`;
+  $("m-services").textContent = b.services;
+  $("m-total").textContent = fmt(b.total) + " (Pay After Service)";
+  $("print-modal").classList.add("show");
+}
+function openPrintModalCurrent(){ if(latestBooking) openPrintModal(latestBooking); }
+function closePrintModal(){ $("print-modal").classList.remove("show"); }
+
+/* ============ Customer Bookings View ============ */
 function renderBookings(){
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   const list = $("bookings-list");
   if(bookings.length === 0){
-    list.innerHTML = `<div class="empty-bookings">📭 No bookings yet.<br><a href="#" onclick="go('services');return false">Book your first service →</a></div>`;
+    list.innerHTML = `<div class="empty-cart" style="padding:40px">📭 No active bookings found on this device.<br><a href="#" onclick="go('services');return false">Book your first service →</a></div>`;
     return;
   }
-  const icons = ["🐞","🐜","🛏️","🐀","🦟","🕸️","🪵","🧴"];
-  list.innerHTML = bookings.map((b, i) => `
-    <div class="booking">
+  list.innerHTML = bookings.map(b => `
+    <div class="booking-card ripple-target">
       <div class="b-head">
-        <div class="b-ref">${icons[i % icons.length]} <code>${b.ref}</code></div>
-        <button class="status confirmed">● CONFIRMED</button>
+        <div class="b-ref-tag">Booking Ref: <code>${b.ref}</code></div>
+        <span class="status-tag confirmed">● ${b.status.toUpperCase()}</span>
       </div>
-      <div class="b-details">
-        <div class="b-item"><span>Services</span><b>${b.services}</b></div>
-        <div class="b-item"><span>Date &amp; time</span><b>${new Date(b.date).toDateString()} · ${b.slot}</b></div>
-        <div class="b-item"><span>Customer</span><b>${b.name} · ${b.phone}</b></div>
-        <div class="b-item"><span>Address</span><b>${b.type} — ${b.address}</b></div>
+      <div class="b-grid">
+        <div class="b-col"><span>Services</span><b>${b.services}</b></div>
+        <div class="b-col"><span>Visit Schedule</span><b>${new Date(b.date).toDateString()} · ${b.slot}</b></div>
+        <div class="b-col"><span>Customer</span><b>${b.name} (${b.phone})</b></div>
+        <div class="b-col"><span>Property / Address</span><b>${b.type} — ${b.address}</b></div>
       </div>
       <div class="b-foot">
-        <span class="b-total">Pay after service: ${fmt(b.total)}</span>
-        <button class="cancel-btn" onclick="cancelBooking('${b.ref}', this)">✕ Cancel booking</button>
+        <span style="font-weight:800;color:var(--primary-dark)">Total: ${fmt(b.total)}</span>
+        <div style="display:flex;gap:10px">
+          <button class="btn ghost ripple-target" style="padding:6px 14px;font-size:.82rem" onclick='openPrintModal(${JSON.stringify(b)})'>
+            🖨️ Warranty &amp; Bill
+          </button>
+        </div>
       </div>
-    </div>`).join("");
+    </div>
+  `).join("");
 }
 
-function cancelBooking(ref, btn){
-  btn.textContent = "Confirm cancel?";
-  btn.onclick = () => {
-    const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]")
-                     .filter(b => b.ref !== ref);
+/* ============ Interactive Before/After Drag Logic ============ */
+const baSlider = $("ba-slider");
+const baAfter = $("ba-after");
+const baHandle = $("ba-handle");
+let isDragging = false;
+
+function setSliderPos(x){
+  const rect = baSlider.getBoundingClientRect();
+  let pos = ((x - rect.left) / rect.width) * 100;
+  if(pos < 0) pos = 0;
+  if(pos > 100) pos = 100;
+  baAfter.style.width = pos + "%";
+  baHandle.style.left = pos + "%";
+}
+baSlider.addEventListener("mousedown", e => { isDragging = true; setSliderPos(e.clientX); });
+window.addEventListener("mouseup", () => isDragging = false);
+window.addEventListener("mousemove", e => { if(isDragging) setSliderPos(e.clientX); });
+
+baSlider.addEventListener("touchstart", e => { isDragging = true; setSliderPos(e.touches[0].clientX); });
+window.addEventListener("touchend", () => isDragging = false);
+window.addEventListener("touchmove", e => { if(isDragging) setSliderPos(e.touches[0].clientX); });
+
+/* ============ Live "Recent Booking" Social Proof Popups ============ */
+const RECENT_CUSTOMERS = [
+  { name: "Rahul S. from Madhapur", service: "Cockroach Gel Treatment", time: "2 mins ago" },
+  { name: "Sneha K. from Banjara Hills", service: "Termite Wall Injection", time: "5 mins ago" },
+  { name: "Vijay M. from Gachibowli", service: "Full Home Protection Combo", time: "8 mins ago" },
+  { name: "Pooja D. from Kondapur", service: "Bed Bugs Steam Treatment", time: "12 mins ago" },
+  { name: "Arun R. from Hitec City", service: "Kitchen Shield Package", time: "16 mins ago" }
+];
+let rbIdx = 0;
+function showNextRecentBooking(){
+  const toast = $("recent-booking-toast");
+  const c = RECENT_CUSTOMERS[rbIdx % RECENT_CUSTOMERS.length];
+  $("rb-avatar").textContent = c.name.charAt(0);
+  $("rb-title").textContent = c.name;
+  $("rb-desc").textContent = `${c.service} · ${c.time}`;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 4200);
+  rbIdx++;
+}
+setInterval(showNextRecentBooking, 11000);
+setTimeout(showNextRecentBooking, 3000);
+
+/* ============ Hidden Admin Dashboard (PIN: 1234) ============ */
+let logoClickCount = 0;
+function handleLogoClick(){
+  logoClickCount++;
+  if(logoClickCount >= 3){
+    logoClickCount = 0;
+    promptAdminLogin();
+  }
+}
+
+function promptAdminLogin(){
+  const pin = prompt("Enter 4-Digit Owner Admin PIN:", "");
+  if(pin === ADMIN_PIN){
+    openAdminModal();
+  } else if(pin !== null){
+    toast("❌ Incorrect Admin PIN");
+  }
+}
+
+function openAdminModal(){
+  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  $("adm-count").textContent = bookings.length;
+  const rev = bookings.reduce((sum, b) => sum + (b.total || 0), 0);
+  $("adm-rev").textContent = fmt(rev);
+
+  const tbody = $("admin-tbody");
+  if(bookings.length === 0){
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--slate-400)">No bookings registered yet.</td></tr>`;
+  } else {
+    tbody.innerHTML = bookings.map((b, i) => `
+      <tr>
+        <td><b>${b.ref}</b></td>
+        <td>${b.name}</td>
+        <td><a href="tel:${b.phone}">${b.phone}</a></td>
+        <td>${b.services}</td>
+        <td>${b.date} (${b.slot})</td>
+        <td><b>${fmt(b.total)}</b></td>
+        <td>
+          <select class="admin-select" onchange="updateBookingStatus('${b.ref}', this.value)">
+            <option ${b.status==='Confirmed'?'selected':''}>Confirmed</option>
+            <option ${b.status==='Dispatched'?'selected':''}>Dispatched</option>
+            <option ${b.status==='Completed'?'selected':''}>Completed</option>
+            <option ${b.status==='Cancelled'?'selected':''}>Cancelled</option>
+          </select>
+        </td>
+        <td>
+          <button style="background:none;border:none;color:var(--danger);cursor:pointer;font-weight:700" onclick="deleteBookingAdmin('${b.ref}')">✕ Delete</button>
+        </td>
+      </tr>
+    `).join("");
+  }
+  $("admin-modal").classList.add("show");
+}
+
+function closeAdminModal(){ $("admin-modal").classList.remove("show"); }
+
+function updateBookingStatus(ref, newStatus){
+  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  const target = bookings.find(b => b.ref === ref);
+  if(target){
+    target.status = newStatus;
     saveBookings(bookings);
+    toast(`Booking ${ref} status updated to ${newStatus}`);
     renderBookings();
-    toast("Booking " + ref + " cancelled");
-  };
+  }
 }
 
-/* ============ Toast ============ */
-let toastTimer;
-function toast(msg){
+function deleteBookingAdmin(ref){
+  if(confirm(`Delete booking ${ref}?`)){
+    const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]").filter(b => b.ref !== ref);
+    saveBookings(bookings);
+    openAdminModal();
+    renderBookings();
+    toast(`Booking ${ref} deleted`);
+  }
+}
+
+function exportToCSV(){
+  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  if(bookings.length === 0){ toast("No bookings to export"); return; }
+  
+  let csv = "Booking Ref,Date Placed,Customer Name,Phone,Property Type,Address,Service Date,Time Slot,Services Booked,Total Amount,Status,Special Notes\n";
+  bookings.forEach(b => {
+    csv += `"${b.ref}","${b.placed || ''}","${b.name}","${b.phone}","${b.type}","${b.address.replace(/"/g, '""')}","${b.date}","${b.slot}","${b.services.replace(/"/g, '""')}","${b.total}","${b.status}","${(b.notes||'').replace(/"/g, '""')}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", `AS_Global_Bookings_${new Date().toISOString().split("T")[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  toast("📥 Excel / CSV downloaded successfully!");
+}
+
+let toastT;
+function toast(m){
   const t = $("toast");
-  t.textContent = msg;
+  t.textContent = m;
   t.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove("show"), 2400);
 }
 
-/* ============ Init ============ */
-renderCards(); renderCart(); go("home");
+renderCards();
+renderCombos();
+renderCart();
+go("home");
 </script>
 </body>
 </html>
