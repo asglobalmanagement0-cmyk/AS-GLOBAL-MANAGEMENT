@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -12,10 +12,6 @@
 <meta property="og:title" content="AS Global Management — Certified Pest Control from ₹799">
 <meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Re-Service Warranty. Pay cash or UPI after treatment. Call +91 95501 07466.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AS Global Management — Certified Pest Control">
-<meta name="twitter:description" content="Safe & odorless pest treatments with written 30-day warranty. Book in 60s.">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
 
 <!-- ============ Google Local Business Structured Data (SEO) ============ -->
 <script type="application/ld+json">
@@ -220,7 +216,7 @@
   .hero-stats .stat b{display:block;font-family:'Space Grotesk';font-size:1.45rem;font-weight:800;color:var(--slate-900)}
   .hero-stats .stat span{font-size:.8rem;color:var(--slate-400);font-weight:600}
 
-  /* Fixed Clean Hero Visual: Proper Spacing, ZERO Overlaps */
+  /* Fixed Clean Hero Visual: Zero Overlaps */
   .hero-card-wrap{
     display:flex;
     flex-direction:column;
@@ -579,7 +575,7 @@
           <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
           <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
           <button class="bhk-btn" onclick="setBHK('villa', this)">Villa / 4+ BHK</button>
-          <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial / Office</button>
+          <button class="bhk-btn" onclick="setBhk('commercial', this)">Commercial / Office</button>
         </div>
       </div>
 
@@ -691,8 +687,8 @@
               <div class="err">Please enter your full name (minimum 2 characters).</div>
             </div>
             <div class="field" id="f-phone">
-              <label>Phone number (10-digit)</label>
-              <input type="tel" id="in-phone" placeholder="95501 07466" maxlength="14" autocomplete="tel">
+              <label>Phone number</label>
+              <input type="tel" id="in-phone" placeholder="Enter 10-digit mobile number" maxlength="15" autocomplete="tel">
               <div class="err">Please enter a valid 10-digit mobile number.</div>
             </div>
           </div>
@@ -711,7 +707,7 @@
           <div class="field" id="f-address">
             <label>Complete address &amp; landmark</label>
             <textarea id="in-address" rows="2" placeholder="Flat/House number, Building name, Street, Landmark, Pincode"></textarea>
-            <div class="err">Please provide a detailed address for the technician (at least 10 letters).</div>
+            <div class="err">Please provide a detailed address for the technician (at least 8 letters).</div>
           </div>
 
           <div class="row2">
@@ -914,17 +910,26 @@
 </footer>
 
 <script>
-const OWNER_PHONE = "919550107466";
-const OWNER_EMAIL = "contact@asglobal.com";
-const ADMIN_PIN = "5665";
+/* =========================================================================
+   SETTINGS CONFIGURATION (PASTE YOUR TELEGRAM DETAILS HERE)
+   ========================================================================= */
+var OWNER_PHONE = "919550107466";
+var OWNER_EMAIL = "contact@asglobal.com";
+var ADMIN_PIN = "1234";
 
-/* Telegram Bot Configuration */
-const TELEGRAM_BOT_TOKEN = "9037706489:AAEjP-3zV8qt3m5fmWK0gwMx_GiMLWV80HM"; 
-const TELEGRAM_CHAT_ID = "5795622394";   
+// ⚠️ Paste your Token and Chat ID inside quotes below:
+var TELEGRAM_BOT_TOKEN = ""; 
+var TELEGRAM_CHAT_ID = "";   
+
+// Auto-cleaner (Prevents errors from spaces or formatting)
+OWNER_PHONE = String(OWNER_PHONE).replace(/\D/g, "");
+ADMIN_PIN = String(ADMIN_PIN).trim();
+TELEGRAM_BOT_TOKEN = String(TELEGRAM_BOT_TOKEN).trim();
+TELEGRAM_CHAT_ID = String(TELEGRAM_CHAT_ID).trim();
 
 /* Multipliers for Dynamic BHK Pricing */
-let currentBHK = "1bhk";
-const BHK_MULTIPLIERS = {
+var currentBHK = "1bhk";
+var BHK_MULTIPLIERS = {
   "1bhk": 1.0,
   "2bhk": 1.25,
   "3bhk": 1.55,
@@ -933,7 +938,7 @@ const BHK_MULTIPLIERS = {
 };
 
 /* Base Services (1 BHK base price) */
-const BASE_SERVICES = [
+var BASE_SERVICES = [
   {id:"cockroach", icon:"🪳", name:"Cockroach Control", desc:"Odorless, herbal gel treatment for modular kitchens and cabinets. 100% kitchen-safe.", basePrice:799, rating:4.9, chips:["Gel treatment","No smell","Kid-safe"]},
   {id:"termite", icon:"🐜", name:"Termite Treatment", desc:"Drill-and-inject barrier protection for walls, frames, and wooden furniture.", basePrice:2499, rating:4.9, chips:["Wall barrier","Warranty card","Deep drilling"]},
   {id:"bedbugs", icon:"🛏️", name:"Bed Bugs Treatment", desc:"Double-visit high temperature steam + residual chemical protocol for beds and sofas.", basePrice:1599, rating:4.8, chips:["2 visits","Steam kill","Mattress safe"]},
@@ -948,31 +953,31 @@ function getPrice(base){
   return Math.round((base * BHK_MULTIPLIERS[currentBHK]) / 10) * 10;
 }
 
-const CART_KEY = "asgm_cart_v5", BOOKINGS_KEY = "asgm_bookings_v5";
-let cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-let latestBooking = null;
+var CART_KEY = "asgm_cart_v5", BOOKINGS_KEY = "asgm_bookings_v5";
+var cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+var latestBooking = null;
 
-const $ = id => document.getElementById(id);
-const fmt = n => "₹" + n.toLocaleString("en-IN");
+var $ = function(id) { return document.getElementById(id); };
+var fmt = function(n) { return "₹" + n.toLocaleString("en-IN"); };
 
 /* Property Switcher */
 function setBHK(bhk, btn){
   currentBHK = bhk;
-  document.querySelectorAll(".bhk-btn").forEach(b => {
+  document.querySelectorAll(".bhk-btn").forEach(function(b) {
     b.classList.toggle("active", b.textContent.toLowerCase().includes(bhk.replace("bhk","").trim()));
   });
   if(btn) btn.classList.add("active");
-  const dropdown = $("in-type");
+  var dropdown = $("in-type");
   if(dropdown) dropdown.value = bhk;
   renderCards();
   renderCart();
-  toast(`Updated pricing for ${bhk.toUpperCase()}`);
+  toast("Updated pricing for " + bhk.toUpperCase());
 }
 
 function syncBHKFromDropdown(val){
   currentBHK = val;
-  document.querySelectorAll(".bhk-btn").forEach(b => {
-    b.classList.toggle("active", b.getAttribute("onclick")?.includes(val));
+  document.querySelectorAll(".bhk-btn").forEach(function(b) {
+    b.classList.toggle("active", b.getAttribute("onclick") && b.getAttribute("onclick").indexOf(val) !== -1);
   });
   renderCards();
   renderCart();
@@ -980,24 +985,24 @@ function syncBHKFromDropdown(val){
 
 /* Click Ripple Wave */
 document.addEventListener("click", function(e){
-  const target = e.target.closest(".ripple-target, .btn, .card, .nav-link, .add-btn, .bhk-btn");
+  var target = e.target.closest(".ripple-target, .btn, .card, .nav-link, .add-btn, .bhk-btn");
   if(!target) return;
-  const rect = target.getBoundingClientRect();
-  const circle = document.createElement("span");
-  const d = Math.max(rect.width, rect.height);
-  circle.style.width = circle.style.height = `${d}px`;
-  circle.style.left = `${e.clientX - rect.left - d/2}px`;
-  circle.style.top = `${e.clientY - rect.top - d/2}px`;
+  var rect = target.getBoundingClientRect();
+  var circle = document.createElement("span");
+  var d = Math.max(rect.width, rect.height);
+  circle.style.width = circle.style.height = d + "px";
+  circle.style.left = (e.clientX - rect.left - d/2) + "px";
+  circle.style.top = (e.clientY - rect.top - d/2) + "px";
   circle.classList.add("ripple-wave");
   target.appendChild(circle);
-  setTimeout(() => circle.remove(), 600);
+  setTimeout(function() { circle.remove(); }, 600);
 });
 
 function saveCart(){ 
   localStorage.setItem(CART_KEY, JSON.stringify(cart)); 
   renderCart(); 
   renderCards(); 
-  const b = $("cart-badge");
+  var b = $("cart-badge");
   b.classList.remove("bump");
   void b.offsetWidth;
   b.classList.add("bump");
@@ -1005,34 +1010,34 @@ function saveCart(){
 function saveBookings(b){ localStorage.setItem(BOOKINGS_KEY, JSON.stringify(b)); }
 
 function go(view){
-  document.querySelectorAll(".view").forEach(v => v.classList.remove("show"));
+  document.querySelectorAll(".view").forEach(function(v) { v.classList.remove("show"); });
   $("view-" + view).classList.add("show");
-  document.querySelectorAll(".nav-link").forEach(b => b.classList.remove("active"));
-  $("nav-" + view)?.classList.add("active");
+  document.querySelectorAll(".nav-link").forEach(function(b) { b.classList.remove("active"); });
+  if($("nav-" + view)) $("nav-" + view).classList.add("active");
   if(view === "bookings") renderBookings();
   if(view === "book") renderCart();
   window.scrollTo({top:0, behavior:"smooth"});
 }
 
 function cardHTML(s){
-  const inCart = cart.includes(s.id);
-  const chips = (s.chips || []).map(c => `<span class="chip">${c}</span>`).join("");
-  const dynamicPrice = getPrice(s.basePrice);
-  return `<div class="card ripple-target ${inCart ? "selected" : ""}">
-    <div class="card-top">
-      <div class="icon-box">${s.icon}</div>
-      <span class="rating">★ ${s.rating}</span>
-    </div>
-    <h3>${s.name}</h3>
-    <p>${s.desc}</p>
-    <div class="chips">${chips}</div>
-    <div class="price-row">
-      <span class="price-tag">${fmt(dynamicPrice)} <small>/ ${currentBHK.toUpperCase()}</small></span>
-      <button class="add-btn ripple-target ${inCart ? "added" : ""}" onclick="toggleCart('${s.id}')">
-        ${inCart ? "✓ Added" : "+ Add"}
-      </button>
-    </div>
-  </div>`;
+  var inCart = cart.indexOf(s.id) !== -1;
+  var chips = (s.chips || []).map(function(c) { return '<span class="chip">' + c + '</span>'; }).join("");
+  var dynamicPrice = getPrice(s.basePrice);
+  return '<div class="card ripple-target ' + (inCart ? "selected" : "") + '">' +
+    '<div class="card-top">' +
+      '<div class="icon-box">' + s.icon + '</div>' +
+      '<span class="rating">★ ' + s.rating + '</span>' +
+    '</div>' +
+    '<h3>' + s.name + '</h3>' +
+    '<p>' + s.desc + '</p>' +
+    '<div class="chips">' + chips + '</div>' +
+    '<div class="price-row">' +
+      '<span class="price-tag">' + fmt(dynamicPrice) + ' <small>/ ' + currentBHK.toUpperCase() + '</small></span>' +
+      '<button class="add-btn ripple-target ' + (inCart ? "added" : "") + '" onclick="toggleCart(\'' + s.id + '\')">' +
+        (inCart ? "✓ Added" : "+ Add") +
+      '</button>' +
+    '</div>' +
+  '</div>';
 }
 
 function renderCards(){
@@ -1041,8 +1046,8 @@ function renderCards(){
 }
 
 function toggleCart(id){
-  if(cart.includes(id)){
-    cart = cart.filter(x => x !== id);
+  if(cart.indexOf(id) !== -1){
+    cart = cart.filter(function(x) { return x !== id; });
     toast("Item removed from booking");
   } else {
     cart.push(id);
@@ -1053,78 +1058,104 @@ function toggleCart(id){
 
 function renderCart(){
   $("cart-badge").textContent = cart.length;
-  const box = $("cart-items");
+  var box = $("cart-items");
   if(!box) return;
   if(cart.length === 0){
-    box.innerHTML = `<div class="empty-cart">No service selected yet.<br><a href="#" onclick="go('services');return false">Explore services →</a></div>`;
+    box.innerHTML = '<div class="empty-cart">No service selected yet.<br><a href="#" onclick="go(\'services\');return false">Explore services →</a></div>';
     $("total-row").style.display = "none";
   } else {
-    box.innerHTML = cart.map(id => {
-      const s = BASE_SERVICES.find(x => x.id === id);
-      const curPrice = getPrice(s.basePrice);
-      return `<div class="sum-item">
-        <div class="s-main">
-          <b>${s.icon} ${s.name}</b>
-          <span>${currentBHK.toUpperCase()} Plan · Includes 30-day warranty</span>
-        </div>
-        <span class="s-price">${fmt(curPrice)}</span>
-        <button class="s-x" onclick="toggleCart('${id}')" title="Remove">✕</button>
-      </div>`;
+    box.innerHTML = cart.map(function(id) {
+      var s = BASE_SERVICES.find(function(x) { return x.id === id; });
+      var curPrice = getPrice(s.basePrice);
+      return '<div class="sum-item">' +
+        '<div class="s-main">' +
+          '<b>' + s.icon + ' ' + s.name + '</b>' +
+          '<span>' + currentBHK.toUpperCase() + ' Plan · Includes 30-day warranty</span>' +
+        '</div>' +
+        '<span class="s-price">' + fmt(curPrice) + '</span>' +
+        '<button class="s-x" onclick="toggleCart(\'' + id + '\')" title="Remove">✕</button>' +
+      '</div>';
     }).join("");
     $("total-row").style.display = "flex";
   }
-  const total = cart.reduce((sum,id) => sum + getPrice(BASE_SERVICES.find(s => s.id === id).basePrice), 0);
+  var total = cart.reduce(function(sum, id) { 
+    return sum + getPrice(BASE_SERVICES.find(function(s) { return s.id === id; }).basePrice);
+  }, 0);
   $("cart-total").textContent = fmt(total);
 }
 
 $("in-date").min = new Date().toISOString().split("T")[0];
 
+/* Smart Phone Validator */
+function isPhoneValid(val) {
+  var clean = String(val).replace(/\D/g, "");
+  if (clean.length === 10 && /^[6-9]/.test(clean)) return true;
+  if (clean.length === 11 && clean.startsWith("0") && /^[6-9]/.test(clean.slice(1))) return true;
+  if (clean.length === 12 && clean.startsWith("91") && /^[6-9]/.test(clean.slice(2))) return true;
+  return false;
+}
+
 function validate(){
-  const checks = [
+  var checks = [
     ["f-name", $("in-name").value.trim().length >= 2],
-    ["f-phone", /^[6-9]\d{9}$|^(\+91[\s-]?)?[6-9]\d{9}$/.test($("in-phone").value.replace(/\s+/g,""))],
-    ["f-address", $("in-address").value.trim().length >= 10],
+    ["f-phone", isPhoneValid($("in-phone").value)],
+    ["f-address", $("in-address").value.trim().length >= 8],
     ["f-date", $("in-date").value !== "" && $("in-date").value >= $("in-date").min],
     ["f-slot", $("in-slot").value !== ""]
   ];
-  let valid = true;
-  checks.forEach(([id, ok]) => {
+  var valid = true;
+  checks.forEach(function(item) {
+    var id = item[0];
+    var ok = item[1];
     $(id).classList.toggle("invalid", !ok);
-    if(!ok) valid = false;
+    if (!ok) valid = false;
   });
-  if(!valid) toast("⚠ Please fill in the highlighted details");
+  if (!valid) toast("⚠ Please fill in the highlighted details");
   return valid;
 }
 
-/* Background Auto-Lead Dispatch */
+/* Background Auto-Lead Dispatch (Crash-Proof) */
 async function dispatchLeadNotification(booking) {
-  if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
-    const tgMessage = `🚨 *NEW PEST CONTROL BOOKING!*\n` +
-      `--------------------------------\n` +
-      `*Ref No:* \`${booking.ref}\`\n` +
-      `*Customer:* ${booking.name}\n` +
-      `*Phone:* ${booking.phone}\n` +
-      `*Plan:* ${booking.type}\n` +
-      `*Services:* ${booking.services}\n` +
-      `*Payable:* ₹${booking.total} (Post-Service)\n` +
-      `*Address:* ${booking.address}\n` +
-      `*Visit Slot:* ${booking.date} (${booking.slot})\n` +
-      `*Notes:* ${booking.notes || "None"}\n` +
-      `--------------------------------`;
+  var token = TELEGRAM_BOT_TOKEN;
+  var chatId = TELEGRAM_CHAT_ID;
 
-    try {
-      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: tgMessage,
-          parse_mode: "Markdown"
-        })
-      }).catch(e => console.warn("Telegram dispatch failed:", e));
-    } catch (e) {
-      console.warn("Telegram notification error:", e);
-    }
+  if (!token || !chatId) {
+    console.warn("Telegram Token or Chat ID is empty.");
+    return;
+  }
+
+  var text = "🚨 NEW PEST CONTROL BOOKING!\n" +
+             "========================\n" +
+             "Ref No: " + booking.ref + "\n" +
+             "Customer: " + booking.name + "\n" +
+             "Phone: " + booking.phone + "\n" +
+             "Property: " + booking.type + "\n" +
+             "Services: " + booking.services + "\n" +
+             "Total: ₹" + booking.total + " (Pay After Service)\n" +
+             "Address: " + booking.address + "\n" +
+             "Slot: " + booking.date + " (" + booking.slot + ")\n" +
+             "Notes: " + (booking.notes || "None");
+
+  try {
+    fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text
+      })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.ok) {
+        console.error("Telegram API Error:", data.description);
+      } else {
+        console.log("Telegram lead dispatched successfully!");
+      }
+    })
+    .catch(function(e) { console.warn("Telegram dispatch failed:", e); });
+  } catch (e) {
+    console.warn("Telegram notification error:", e);
   }
 }
 
@@ -1133,12 +1164,14 @@ function confirmBooking(e){
   if(cart.length === 0){ toast("⚠ Please select at least one service"); go("services"); return; }
   if(!validate()) return;
 
-  const total = cart.reduce((sum,id) => sum + getPrice(BASE_SERVICES.find(s => s.id === id).basePrice), 0);
-  const names = cart.map(id => BASE_SERVICES.find(s => s.id === id).name).join(", ");
-  const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
+  var total = cart.reduce(function(sum, id) { 
+    return sum + getPrice(BASE_SERVICES.find(function(s) { return s.id === id; }).basePrice);
+  }, 0);
+  var names = cart.map(function(id) { return BASE_SERVICES.find(function(s) { return s.id === id; }).name; }).join(", ");
+  var ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
 
-  const booking = {
-    ref,
+  var booking = {
+    ref: ref,
     name: $("in-name").value.trim(),
     phone: $("in-phone").value.trim(),
     type: currentBHK.toUpperCase(),
@@ -1147,26 +1180,24 @@ function confirmBooking(e){
     slot: $("in-slot").value,
     notes: $("in-notes").value.trim(),
     services: names,
-    total,
+    total: total,
     status: "Confirmed",
     placed: new Date().toLocaleDateString("en-IN")
   };
 
   latestBooking = booking;
 
-  // Persist locally
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   bookings.unshift(booking);
   saveBookings(bookings);
 
-  // Send lead in background
+  // Send lead to Telegram in background
   dispatchLeadNotification(booking);
 
   $("ref-no").textContent = ref;
-  $("success-detail").innerHTML = `
-    Treatment <b>${names}</b> scheduled for <b>${new Date(booking.date).toDateString()}</b> (${booking.slot}).<br>
-    Payable amount: <b>${fmt(total)}</b> after completion. Our technician will contact <b>${booking.phone}</b> before arrival.
-  `;
+  $("success-detail").innerHTML = 
+    "Treatment <b>" + names + "</b> scheduled for <b>" + new Date(booking.date).toDateString() + "</b> (" + booking.slot + ").<br>" +
+    "Payable amount: <b>" + fmt(total) + "</b> after completion. Our technician will contact <b>" + booking.phone + "</b> before arrival.";
 
   cart = []; saveCart();
   $("book-form").reset();
@@ -1175,33 +1206,33 @@ function confirmBooking(e){
 
 function sendWhatsAppConfirmation(){
   if(!latestBooking) return;
-  const b = latestBooking;
-  const msg = `*NEW BOOKING CONFIRMATION* %0A` +
-              `--------------------------------%0A` +
-              `*Ref No:* ${b.ref}%0A` +
-              `*Name:* ${b.name}%0A` +
-              `*Phone:* ${b.phone}%0A` +
-              `*Plan:* ${b.type}%0A` +
-              `*Address:* ${b.address}%0A` +
-              `*Date:* ${b.date}%0A` +
-              `*Slot:* ${b.slot}%0A` +
-              `*Services:* ${b.services}%0A` +
-              `*Total:* ${fmt(b.total)} (Pay After Service)%0A` +
-              `*Notes:* ${b.notes || "None"}%0A` +
-              `--------------------------------%0A` +
-              `Please dispatch our technician. Thank you!`;
-  window.open(`https://wa.me/${OWNER_PHONE}?text=${msg}`, "_blank");
+  var b = latestBooking;
+  var msg = "*NEW BOOKING CONFIRMATION* %0A" +
+            "--------------------------------%0A" +
+            "*Ref No:* " + b.ref + "%0A" +
+            "*Name:* " + b.name + "%0A" +
+            "*Phone:* " + b.phone + "%0A" +
+            "*Plan:* " + b.type + "%0A" +
+            "*Address:* " + b.address + "%0A" +
+            "*Date:* " + b.date + "%0A" +
+            "*Slot:* " + b.slot + "%0A" +
+            "*Services:* " + b.services + "%0A" +
+            "*Total:* " + fmt(b.total) + " (Pay After Service)%0A" +
+            "*Notes:* " + (b.notes || "None") + "%0A" +
+            "--------------------------------%0A" +
+            "Please dispatch our technician. Thank you!";
+  window.open("https://wa.me/" + OWNER_PHONE + "?text=" + msg, "_blank");
 }
 
 function openGeneralWhatsApp(){
-  const msg = encodeURIComponent("Hello AS Global Management, I would like to inquire/book a pest control treatment.");
-  window.open(`https://wa.me/${OWNER_PHONE}?text=${msg}`, "_blank");
+  var msg = encodeURIComponent("Hello AS Global Management, I would like to inquire/book a pest control treatment.");
+  window.open("https://wa.me/" + OWNER_PHONE + "?text=" + msg, "_blank");
 }
 
 /* Print Modal with Safe Reference Lookup */
 function openPrintModalByRef(ref) {
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
-  const found = bookings.find(b => b.ref === ref);
+  var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  var found = bookings.find(function(b) { return b.ref === ref; });
   if (found) {
     openPrintModal(found);
   } else {
@@ -1214,8 +1245,8 @@ function openPrintModal(b){
   $("m-date").textContent = b.placed || new Date().toLocaleDateString();
   $("m-name").textContent = b.name;
   $("m-phone").textContent = b.phone;
-  $("m-address").textContent = `${b.type} — ${b.address}`;
-  $("m-slot").textContent = `${new Date(b.date).toDateString()} (${b.slot})`;
+  $("m-address").textContent = b.type + " — " + b.address;
+  $("m-slot").textContent = new Date(b.date).toDateString() + " (" + b.slot + ")";
   $("m-services").textContent = b.services;
   $("m-total").textContent = fmt(b.total) + " (Pay After Service)";
   $("print-modal").classList.add("show");
@@ -1225,38 +1256,38 @@ function closePrintModal(){ $("print-modal").classList.remove("show"); }
 
 /* Customer Bookings View */
 function renderBookings(){
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
-  const list = $("bookings-list");
+  var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  var list = $("bookings-list");
   if(bookings.length === 0){
-    list.innerHTML = `<div class="empty-cart" style="padding:40px">📭 No active bookings found on this device.<br><a href="#" onclick="go('services');return false">Book your first service →</a></div>`;
+    list.innerHTML = '<div class="empty-cart" style="padding:40px">📭 No active bookings found on this device.<br><a href="#" onclick="go(\'services\');return false">Book your first service →</a></div>';
     return;
   }
-  list.innerHTML = bookings.map(b => `
-    <div class="booking-card ripple-target">
-      <div class="b-head">
-        <div class="b-ref-tag">Booking Ref: <code>${b.ref}</code></div>
-        <span class="status-tag confirmed">● ${b.status.toUpperCase()}</span>
-      </div>
-      <div class="b-grid">
-        <div class="b-col"><span>Services</span><b>${b.services}</b></div>
-        <div class="b-col"><span>Visit Schedule</span><b>${new Date(b.date).toDateString()} · ${b.slot}</b></div>
-        <div class="b-col"><span>Customer</span><b>${b.name} (${b.phone})</b></div>
-        <div class="b-col"><span>Property / Address</span><b>${b.type} — ${b.address}</b></div>
-      </div>
-      <div class="b-foot">
-        <span style="font-weight:800;color:var(--primary-dark)">Total: ${fmt(b.total)}</span>
-        <div style="display:flex;gap:10px">
-          <button class="btn ghost ripple-target" style="padding:6px 14px;font-size:.82rem" onclick="openPrintModalByRef('${b.ref}')">
-            🖨️ Warranty &amp; Bill
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join("");
+  list.innerHTML = bookings.map(function(b) {
+    return '<div class="booking-card ripple-target">' +
+      '<div class="b-head">' +
+        '<div class="b-ref-tag">Booking Ref: <code>' + b.ref + '</code></div>' +
+        '<span class="status-tag confirmed">● ' + b.status.toUpperCase() + '</span>' +
+      '</div>' +
+      '<div class="b-grid">' +
+        '<div class="b-col"><span>Services</span><b>' + b.services + '</b></div>' +
+        '<div class="b-col"><span>Visit Schedule</span><b>' + new Date(b.date).toDateString() + ' · ' + b.slot + '</b></div>' +
+        '<div class="b-col"><span>Customer</span><b>' + b.name + ' (' + b.phone + ')</b></div>' +
+        '<div class="b-col"><span>Property / Address</span><b>' + b.type + ' — ' + b.address + '</b></div>' +
+      '</div>' +
+      '<div class="b-foot">' +
+        '<span style="font-weight:800;color:var(--primary-dark)">Total: ' + fmt(b.total) + '</span>' +
+        '<div style="display:flex;gap:10px">' +
+          '<button class="btn ghost ripple-target" style="padding:6px 14px;font-size:.82rem" onclick="openPrintModalByRef(\'' + b.ref + '\')">' +
+            '🖨️ Warranty &amp; Bill' +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join("");
 }
 
 /* Admin Dashboard */
-let logoClickCount = 0;
+var logoClickCount = 0;
 function handleLogoClick(){
   logoClickCount++;
   if(logoClickCount >= 3){
@@ -1266,7 +1297,7 @@ function handleLogoClick(){
 }
 
 function promptAdminLogin(){
-  const pin = prompt("Enter 4-Digit Owner Admin PIN:", "");
+  var pin = prompt("Enter 4-Digit Owner Admin PIN:", "");
   if(pin === ADMIN_PIN){
     openAdminModal();
   } else if(pin !== null){
@@ -1275,36 +1306,36 @@ function promptAdminLogin(){
 }
 
 function openAdminModal(){
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   $("adm-count").textContent = bookings.length;
-  const rev = bookings.reduce((sum, b) => sum + (b.total || 0), 0);
+  var rev = bookings.reduce(function(sum, b) { return sum + (b.total || 0); }, 0);
   $("adm-rev").textContent = fmt(rev);
 
-  const tbody = $("admin-tbody");
+  var tbody = $("admin-tbody");
   if(bookings.length === 0){
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--slate-400)">No bookings registered yet.</td></tr>`;
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--slate-400)">No bookings registered yet.</td></tr>';
   } else {
-    tbody.innerHTML = bookings.map(b => `
-      <tr>
-        <td><b>${b.ref}</b></td>
-        <td>${b.name}</td>
-        <td><a href="tel:${b.phone}">${b.phone}</a></td>
-        <td>${b.services}</td>
-        <td>${b.date} (${b.slot})</td>
-        <td><b>${fmt(b.total)}</b></td>
-        <td>
-          <select class="admin-select" onchange="updateBookingStatus('${b.ref}', this.value)">
-            <option ${b.status==='Confirmed'?'selected':''}>Confirmed</option>
-            <option ${b.status==='Dispatched'?'selected':''}>Dispatched</option>
-            <option ${b.status==='Completed'?'selected':''}>Completed</option>
-            <option ${b.status==='Cancelled'?'selected':''}>Cancelled</option>
-          </select>
-        </td>
-        <td>
-          <button style="background:none;border:none;color:var(--danger);cursor:pointer;font-weight:700" onclick="deleteBookingAdmin('${b.ref}')">✕ Delete</button>
-        </td>
-      </tr>
-    `).join("");
+    tbody.innerHTML = bookings.map(function(b) {
+      return '<tr>' +
+        '<td><b>' + b.ref + '</b></td>' +
+        '<td>' + b.name + '</td>' +
+        '<td><a href="tel:' + b.phone + '">' + b.phone + '</a></td>' +
+        '<td>' + b.services + '</td>' +
+        '<td>' + b.date + ' (' + b.slot + ')</td>' +
+        '<td><b>' + fmt(b.total) + '</b></td>' +
+        '<td>' +
+          '<select class="admin-select" onchange="updateBookingStatus(\'' + b.ref + '\', this.value)">' +
+            '<option ' + (b.status==='Confirmed'?'selected':'') + '>Confirmed</option>' +
+            '<option ' + (b.status==='Dispatched'?'selected':'') + '>Dispatched</option>' +
+            '<option ' + (b.status==='Completed'?'selected':'') + '>Completed</option>' +
+            '<option ' + (b.status==='Cancelled'?'selected':'') + '>Cancelled</option>' +
+          '</select>' +
+        '</td>' +
+        '<td>' +
+          '<button style="background:none;border:none;color:var(--danger);cursor:pointer;font-weight:700" onclick="deleteBookingAdmin(\'' + b.ref + '\')">✕ Delete</button>' +
+        '</td>' +
+      '</tr>';
+    }).join("");
   }
   $("admin-modal").classList.add("show");
 }
@@ -1312,52 +1343,52 @@ function openAdminModal(){
 function closeAdminModal(){ $("admin-modal").classList.remove("show"); }
 
 function updateBookingStatus(ref, newStatus){
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
-  const target = bookings.find(b => b.ref === ref);
+  var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  var target = bookings.find(function(b) { return b.ref === ref; });
   if(target){
     target.status = newStatus;
     saveBookings(bookings);
-    toast(`Booking ${ref} status updated to ${newStatus}`);
+    toast("Booking " + ref + " status updated to " + newStatus);
     renderBookings();
   }
 }
 
 function deleteBookingAdmin(ref){
-  if(confirm(`Delete booking ${ref}?`)){
-    const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]").filter(b => b.ref !== ref);
+  if(confirm("Delete booking " + ref + "?")){
+    var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]").filter(function(b) { return b.ref !== ref; });
     saveBookings(bookings);
     openAdminModal();
     renderBookings();
-    toast(`Booking ${ref} deleted`);
+    toast("Booking " + ref + " deleted");
   }
 }
 
 function exportToCSV(){
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   if(bookings.length === 0){ toast("No bookings to export"); return; }
   
-  let csv = "Booking Ref,Date Placed,Customer Name,Phone,Property Type,Address,Service Date,Time Slot,Services Booked,Total Amount,Status,Special Notes\n";
-  bookings.forEach(b => {
-    csv += `"${b.ref}","${b.placed || ''}","${b.name}","${b.phone}","${b.type}","${b.address.replace(/"/g, '""')}","${b.date}","${b.slot}","${b.services.replace(/"/g, '""')}","${b.total}","${b.status}","${(b.notes||'').replace(/"/g, '""')}"\n`;
+  var csv = "Booking Ref,Date Placed,Customer Name,Phone,Property Type,Address,Service Date,Time Slot,Services Booked,Total Amount,Status,Special Notes\n";
+  bookings.forEach(function(b) {
+    csv += '"' + b.ref + '","' + (b.placed || '') + '","' + b.name + '","' + b.phone + '","' + b.type + '","' + b.address.replace(/"/g, '""') + '","' + b.date + '","' + b.slot + '","' + b.services.replace(/"/g, '""') + '","' + b.total + '","' + b.status + '","' + (b.notes||'').replace(/"/g, '""') + '"\n';
   });
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
+  var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  var link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.setAttribute("download", `AS_Global_Bookings_${new Date().toISOString().split("T")[0]}.csv`);
+  link.setAttribute("download", "AS_Global_Bookings_" + new Date().toISOString().split("T")[0] + ".csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   toast("📥 Excel / CSV downloaded successfully!");
 }
 
-let toastT;
+var toastT;
 function toast(m){
-  const t = $("toast");
+  var t = $("toast");
   t.textContent = m;
   t.classList.add("show");
   clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.remove("show"), 2400);
+  toastT = setTimeout(function() { t.classList.remove("show"); }, 2400);
 }
 
 renderCards();
