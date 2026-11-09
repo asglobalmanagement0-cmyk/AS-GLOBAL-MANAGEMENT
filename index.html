@@ -1,19 +1,19 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AS Global Management — Certified Pest Control & Disinfection</title>
 <meta name="description" content="Book government-certified pest control in 60 seconds. Odorless chemicals, 30-day warranty, and pay after service. Call/WhatsApp +91 95501 07466.">
 
-<!-- ============ Rich WhatsApp & Social Media Open Graph Tags ============ -->
+<!-- Open Graph Tags -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://asglobal.com/">
 <meta property="og:title" content="AS Global Management — Certified Pest Control from ₹799">
 <meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Re-Service Warranty. Pay cash or UPI after treatment. Call +91 95501 07466.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
 
-<!-- ============ Google Local Business Structured Data (SEO) ============ -->
+<!-- Google Local Business Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,9 +36,7 @@
   },
   "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
-    "dayOfWeek": [
-      "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-    ],
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
     "opens": "08:00",
     "closes": "21:00"
   }
@@ -48,6 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
   :root{
     --primary:#059669;
@@ -78,8 +77,11 @@
     font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
     background:radial-gradient(120% 80% at 50% -20%, #d1fae5 0%, #f8fafc 55%, #f1f5f9 100%);
     color:var(--slate-900);
-    -webkit-font-smoothing:antialiased;line-height:1.6;
-    min-height:100vh;display:flex;flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
     overflow-x:hidden;
   }
   h1,h2,h3,.brand-title,.price-tag{font-family:'Space Grotesk',sans-serif;letter-spacing:-.03em}
@@ -99,7 +101,7 @@
   /* Header */
   header{
     position:sticky;top:0;z-index:70;
-    background:rgba(255,255,255,.92);backdrop-filter:blur(16px);
+    background:rgba(255,255,255,.94);backdrop-filter:blur(16px);
     border-bottom:1px solid rgba(15,23,42,.07);box-shadow:0 4px 20px rgba(15,23,42,.03);
   }
   .header-inner{
@@ -110,24 +112,25 @@
   .logo:hover{transform:scale(1.02)}
   .logo:active{transform:scale(.97)}
   .logo-mark{
-    width:46px;height:46px;border-radius:14px;flex:none;
+    width:44px;height:44px;border-radius:14px;flex:none;
     background:linear-gradient(135deg,var(--primary),var(--primary-dark));
     display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px var(--primary-glow);
   }
-  .logo-mark svg{width:26px;height:26px}
-  .brand-title{font-size:1.06rem;font-weight:800;color:var(--slate-900);line-height:1.15}
-  .brand-title small{display:block;font-family:'Plus Jakarta Sans';font-size:.66rem;font-weight:700;color:var(--slate-400);letter-spacing:.12em;text-transform:uppercase}
+  .logo-mark svg{width:24px;height:24px}
+  .brand-title{font-size:1.02rem;font-weight:800;color:var(--slate-900);line-height:1.15}
+  .brand-title small{display:block;font-family:'Plus Jakarta Sans';font-size:.65rem;font-weight:700;color:var(--slate-400);letter-spacing:.12em;text-transform:uppercase}
   nav{display:flex;align-items:center;gap:6px}
   .nav-link{
     padding:9px 15px;border-radius:12px;font-size:.88rem;font-weight:700;
     color:var(--slate-600);background:transparent;border:none;transition:all .2s var(--ease-out);
+    white-space:nowrap;
   }
   .nav-link:hover{background:var(--primary-light);color:var(--primary)}
   .nav-link:active{transform:scale(.95)}
   .nav-link.active{color:var(--primary);background:var(--primary-light)}
   .nav-link.is-cta{
     background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-    color:#fff;padding:10px 20px;border-radius:999px;
+    color:#fff;padding:9px 18px;border-radius:999px;
     box-shadow:0 6px 20px var(--primary-glow);transition:all .25s var(--ease-spring);
   }
   .nav-link.is-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(5,150,105,.4)}
@@ -142,111 +145,89 @@
   /* Main & Views */
   main{flex:1}
   .view{display:none}
-  .view.show{display:block;animation:viewIn .4s var(--ease-out)}
-  @keyframes viewIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .view.show{display:block;animation:viewIn .35s var(--ease-out)}
+  @keyframes viewIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
-  .page{padding-top:20px;padding-bottom:80px}
+  .page{padding-top:16px;padding-bottom:80px}
 
-  .sec-head{margin-bottom:28px;max-width:680px}
+  .sec-head{margin-bottom:24px;max-width:680px}
   .eyebrow{
     display:inline-flex;align-items:center;gap:7px;
     font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
     color:var(--primary-dark);background:var(--primary-light);
-    padding:6px 14px;border-radius:999px;margin-bottom:14px;
+    padding:6px 14px;border-radius:999px;margin-bottom:12px;
     border:1px solid rgba(5,150,105,.2);
   }
-  .sec-head h2{font-size:clamp(1.7rem,3.4vw,2.4rem);margin-bottom:8px;line-height:1.18}
-  .sec-head p{color:var(--slate-600);font-size:1.02rem}
+  .sec-head h2{font-size:clamp(1.6rem,3.4vw,2.3rem);margin-bottom:8px;line-height:1.2}
+  .sec-head p{color:var(--slate-600);font-size:1rem}
 
   /* Property Calculator Switcher */
   .calc-bar{
     background:#fff;border:1.5px solid rgba(5,150,105,.25);border-radius:20px;
-    padding:16px 22px;display:flex;align-items:center;justify-content:space-between;
-    gap:16px;flex-wrap:wrap;margin:30px 0;box-shadow:0 8px 30px var(--primary-glow);
+    padding:16px 20px;display:flex;align-items:center;justify-content:space-between;
+    gap:14px;flex-wrap:wrap;margin:24px 0;box-shadow:0 8px 30px var(--primary-glow);
   }
-  .calc-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;color:var(--slate-800)}
+  .calc-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.92rem;color:var(--slate-800)}
   .bhk-pill-group{display:flex;gap:6px;flex-wrap:wrap}
   .bhk-btn{
     background:#f1f5f9;color:var(--slate-600);border:1px solid rgba(15,23,42,.08);
     padding:8px 16px;border-radius:999px;font-size:.82rem;font-weight:700;
-    transition:all .2s var(--ease-spring);
+    transition:all .2s var(--ease-spring);white-space:nowrap;
   }
   .bhk-btn:hover{background:var(--primary-light);color:var(--primary)}
   .bhk-btn.active{
     background:var(--primary);color:#fff;border-color:var(--primary);
-    box-shadow:0 4px 14px var(--primary-glow);transform:scale(1.04);
+    box-shadow:0 4px 14px var(--primary-glow);transform:scale(1.02);
   }
 
   /* Hero */
   .hero{
-    max-width:1200px;margin:0 auto;padding:48px clamp(16px,4vw,32px) 24px;
-    display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,60px);align-items:center;
+    max-width:1200px;margin:0 auto;padding:40px clamp(16px,4vw,32px) 20px;
+    display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,50px);align-items:center;
   }
-  @media(max-width:920px){.hero{grid-template-columns:1fr;padding-top:28px}}
   .hero-tag{
-    display:inline-flex;align-items:center;gap:9px;background:#fef3c7;border:1px solid #fde68a;
-    padding:6px 14px;border-radius:999px;color:#92400e;font-size:.8rem;font-weight:700;margin-bottom:16px;
+    display:inline-flex;align-items:center;gap:8px;background:#fef3c7;border:1px solid #fde68a;
+    padding:6px 14px;border-radius:999px;color:#92400e;font-size:.78rem;font-weight:700;margin-bottom:14px;
   }
-  .hero-text h1{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.1;margin-bottom:18px}
+  .hero-text h1{font-size:clamp(2.1rem,4.5vw,3.2rem);line-height:1.15;margin-bottom:16px}
   .hero-text h1 span{
     background:linear-gradient(135deg,var(--primary),#065f46);
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   }
-  .hero-text p{color:var(--slate-600);font-size:1.08rem;max-width:520px;margin-bottom:28px}
-  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px}
+  .hero-text p{color:var(--slate-600);font-size:1.05rem;max-width:520px;margin-bottom:24px}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
 
   .btn{
-    display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;
     background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-    color:#fff;border:none;padding:14px 28px;border-radius:14px;font-size:.95rem;font-weight:700;
+    color:#fff;border:none;padding:13px 24px;border-radius:14px;font-size:.95rem;font-weight:700;
     transition:all .2s var(--ease-spring);box-shadow:0 8px 24px var(--primary-glow);user-select:none;
+    text-align:center;
   }
   .btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(5,150,105,.38)}
-  .btn:active{transform:scale(.95) translateY(0);box-shadow:0 4px 12px var(--primary-glow)}
+  .btn:active{transform:scale(.97) translateY(0)}
   .btn.ghost{
     background:rgba(255,255,255,.9);color:var(--primary-dark);
     border:1.5px solid rgba(15,23,42,.1);box-shadow:0 2px 8px rgba(0,0,0,.04);
   }
   .btn.ghost:hover{border-color:var(--primary);background:var(--primary-light)}
   .btn.whatsapp-btn{background:linear-gradient(135deg,#25d366,#1da851);color:#fff;box-shadow:0 8px 24px rgba(37,211,102,.35)}
-  .btn.whatsapp-btn:hover{box-shadow:0 12px 30px rgba(37,211,102,.5)}
   .btn.block{width:100%;justify-content:center}
 
-  .hero-stats{display:flex;gap:clamp(18px,3vw,40px);flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px}
-  .hero-stats .stat b{display:block;font-family:'Space Grotesk';font-size:1.45rem;font-weight:800;color:var(--slate-900)}
-  .hero-stats .stat span{font-size:.8rem;color:var(--slate-400);font-weight:600}
+  .hero-stats{display:flex;gap:clamp(16px,3vw,36px);flex-wrap:wrap;border-top:1px solid var(--line);padding-top:20px}
+  .hero-stats .stat b{display:block;font-family:'Space Grotesk';font-size:1.35rem;font-weight:800;color:var(--slate-900)}
+  .hero-stats .stat span{font-size:.78rem;color:var(--slate-400);font-weight:600}
 
-  /* Fixed Clean Hero Visual: Zero Overlaps */
-  .hero-card-wrap{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-    width:100%;
-  }
+  .hero-card-wrap{display:flex;flex-direction:column;gap:16px;width:100%}
   .hero-img{
-    width:100%;
-    height:260px;
-    border-radius:var(--radius-lg);
-    overflow:hidden;
-    box-shadow:0 12px 32px -8px rgba(15,23,42,.12);
-    border:1px solid rgba(255,255,255,.9);
-    background:#e2e8f0;
+    width:100%;height:240px;border-radius:var(--radius-lg);overflow:hidden;
+    box-shadow:0 12px 32px -8px rgba(15,23,42,.12);border:1px solid rgba(255,255,255,.9);background:#e2e8f0;
   }
-  .hero-img img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
+  .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
   .hero-card{
-    background:rgba(255,255,255,.9);
-    backdrop-filter:blur(14px);
-    border:1px solid rgba(255,255,255,.9);
-    border-radius:var(--radius);
-    box-shadow:0 12px 30px rgba(15,23,42,.06);
-    padding:22px;
-    position:relative;
-    overflow:hidden;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.9);border-radius:var(--radius);
+    box-shadow:0 12px 30px rgba(15,23,42,.06);padding:20px;position:relative;overflow:hidden;
   }
   .hero-card::before{
     content:"";position:absolute;inset:0 0 auto 0;height:4px;
@@ -255,201 +236,324 @@
   .benefit-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .b-item{display:flex;gap:10px;align-items:flex-start}
   .b-item .icon{font-size:1.25rem}
-  .b-item b{font-size:.88rem;display:block}
-  .b-item span{font-size:.76rem;color:var(--slate-400)}
+  .b-item b{font-size:.86rem;display:block}
+  .b-item span{font-size:.74rem;color:var(--slate-400)}
 
   /* Services Grid */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
   .card{
-    background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
     border:1px solid rgba(15,23,42,.07);border-radius:var(--radius);
-    padding:24px;display:flex;flex-direction:column;gap:12px;
+    padding:22px;display:flex;flex-direction:column;gap:12px;
     transition:transform .25s var(--ease-spring), box-shadow .25s var(--ease-spring), border-color .2s;
     box-shadow:0 4px 16px rgba(15,23,42,.03);position:relative;user-select:none;
   }
-  .card:hover{transform:translateY(-6px);box-shadow:0 16px 36px -8px var(--primary-glow);border-color:rgba(5,150,105,.35)}
-  .card:active{transform:scale(.98)}
+  .card:hover{transform:translateY(-5px);box-shadow:0 16px 36px -8px var(--primary-glow);border-color:rgba(5,150,105,.35)}
   .card.selected{border-color:var(--primary);background:var(--primary-light)}
   .card-top{display:flex;align-items:center;justify-content:space-between}
   .card .icon-box{
-    width:54px;height:54px;border-radius:16px;background:var(--primary-light);
-    display:flex;align-items:center;justify-content:center;font-size:1.65rem;
+    width:50px;height:50px;border-radius:14px;background:var(--primary-light);
+    display:flex;align-items:center;justify-content:center;font-size:1.55rem;
     transition:transform .3s var(--ease-spring);
   }
-  .card:hover .icon-box{transform:scale(1.1) rotate(4deg)}
   .rating{
     display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:700;
     color:var(--slate-900);background:#fff;border:1px solid var(--line);padding:3px 10px;border-radius:999px;
   }
-  .card h3{font-size:1.1rem}
-  .card p{color:var(--slate-600);font-size:.87rem;flex:1}
+  .card h3{font-size:1.08rem}
+  .card p{color:var(--slate-600);font-size:.86rem;flex:1}
   .chips{display:flex;gap:6px;flex-wrap:wrap}
   .chip{
-    font-size:.72rem;font-weight:700;color:var(--slate-600);
-    background:rgba(241,245,249,.8);border:1px solid rgba(15,23,42,.06);padding:3px 10px;border-radius:999px;
+    font-size:.7rem;font-weight:700;color:var(--slate-600);
+    background:rgba(241,245,249,.8);border:1px solid rgba(15,23,42,.06);padding:3px 9px;border-radius:999px;
   }
   .price-row{display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding-top:14px;border-top:1px solid var(--line)}
-  .price-tag{font-size:1.22rem;font-weight:800;color:var(--primary-dark)}
+  .price-tag{font-size:1.18rem;font-weight:800;color:var(--primary-dark)}
   .add-btn{
     background:#fff;color:var(--primary-dark);border:1.5px solid var(--primary);
-    border-radius:999px;padding:8px 20px;font-weight:700;font-size:.84rem;
+    border-radius:999px;padding:8px 18px;font-weight:700;font-size:.82rem;
     transition:all .2s var(--ease-spring);
   }
-  .add-btn:hover{background:var(--primary-light);transform:scale(1.05)}
   .add-btn:active{transform:scale(.92)}
   .add-btn.added{background:var(--primary);color:#fff;border-color:var(--primary)}
 
   /* Reviews */
-  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
+  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
   .review-card{
     background:#fff;border:1px solid var(--line);border-radius:var(--radius);
-    padding:24px;box-shadow:0 4px 16px rgba(15,23,42,.03);display:flex;flex-direction:column;gap:12px;
+    padding:22px;box-shadow:0 4px 16px rgba(15,23,42,.03);display:flex;flex-direction:column;gap:12px;
   }
   .review-top{display:flex;align-items:center;justify-content:space-between}
   .rev-user{display:flex;align-items:center;gap:12px}
   .rev-avatar{
-    width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary-light),#a7f3d0);
-    display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary-dark);font-size:.92rem;
+    width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary-light),#a7f3d0);
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary-dark);font-size:.9rem;
   }
-  .rev-name{font-weight:700;font-size:.94rem}
-  .rev-loc{font-size:.75rem;color:var(--slate-400)}
+  .rev-name{font-weight:700;font-size:.92rem}
+  .rev-loc{font-size:.74rem;color:var(--slate-400)}
   .verified-badge{
-    font-size:.7rem;font-weight:700;color:var(--primary-dark);background:var(--primary-light);
-    padding:3px 9px;border-radius:999px;display:inline-flex;align-items:center;gap:4px;
+    font-size:.68rem;font-weight:700;color:var(--primary-dark);background:var(--primary-light);
+    padding:3px 9px;border-radius:999px;
   }
 
   /* Booking Form */
-  .booking-layout{display:grid;grid-template-columns:1.35fr .95fr;gap:28px;align-items:start}
-  @media(max-width:880px){.booking-layout{grid-template-columns:1fr}}
+  .booking-layout{display:grid;grid-template-columns:1.35fr .95fr;gap:24px;align-items:start}
   .panel{
     background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
-    box-shadow:0 6px 24px rgba(15,23,42,.04);padding:30px;
+    box-shadow:0 6px 24px rgba(15,23,42,.04);padding:26px;
   }
-  .panel h3{font-size:1.18rem;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-  .side{position:sticky;top:94px}
-  @media(max-width:880px){.side{position:static}}
-  .field{margin-bottom:16px}
-  .field label{display:block;font-size:.82rem;font-weight:700;margin-bottom:7px;color:var(--slate-800)}
+  .panel h3{font-size:1.15rem;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .side{position:sticky;top:90px}
+  .field{margin-bottom:15px}
+  .field label{display:block;font-size:.8rem;font-weight:700;margin-bottom:6px;color:var(--slate-800)}
   .field input,.field select,.field textarea{
     width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;
-    font-size:.95rem;font-family:inherit;background:#f8fafc;color:var(--slate-900);transition:all .2s;
+    font-size:.92rem;font-family:inherit;background:#f8fafc;color:var(--slate-900);transition:all .2s;
   }
   .field input:focus,.field select:focus,.field textarea:focus{
     outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px var(--primary-glow);
   }
   .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--danger)}
-  .field .err{color:var(--danger);font-size:.76rem;margin-top:5px;display:none;font-weight:600}
+  .field .err{color:var(--danger);font-size:.75rem;margin-top:5px;display:none;font-weight:600}
   .field.invalid .err{display:block}
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:500px){.row2{grid-template-columns:1fr}}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-  /* Cart */
-  .sum-item{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+  /* Cart & Summary */
+  .sum-item{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:.9rem}
   .sum-item .s-main{flex:1}
-  .sum-item .s-main b{display:block;font-size:.92rem}
-  .sum-item .s-main span{font-size:.76rem;color:var(--slate-400)}
+  .sum-item .s-main b{display:block;font-size:.9rem}
+  .sum-item .s-main span{font-size:.74rem;color:var(--slate-400)}
   .sum-item .s-price{font-weight:700;color:var(--slate-900);white-space:nowrap}
-  .sum-item .s-x{background:none;border:none;color:var(--danger);cursor:pointer;font-size:.8rem;padding:2px 6px}
+  .sum-item .s-x{background:none;border:none;color:var(--danger);cursor:pointer;font-size:1.1rem;padding:4px 8px}
   .empty-cart{
-    color:var(--slate-400);font-size:.9rem;text-align:center;padding:26px 14px;
+    color:var(--slate-400);font-size:.88rem;text-align:center;padding:24px 14px;
     background:#f8fafc;border:1.5px dashed var(--line);border-radius:14px;line-height:1.7;
   }
   .sum-total-row{display:flex;justify-content:space-between;font-weight:800;padding-top:16px;border-top:2px solid var(--slate-900);margin-top:6px}
-  .sum-total-row .amt{font-family:'Space Grotesk';color:var(--primary-dark);font-size:1.35rem}
+  .sum-total-row .amt{font-family:'Space Grotesk';color:var(--primary-dark);font-size:1.3rem}
   .pay-badge{
     background:var(--primary-light);border:1px solid rgba(5,150,105,.25);border-radius:14px;
-    padding:14px 16px;font-size:.82rem;color:var(--primary-dark);margin-top:16px;line-height:1.55;
+    padding:14px;font-size:.8rem;color:var(--primary-dark);margin-top:16px;line-height:1.55;
   }
-
-  .steps{display:flex;gap:8px;margin-bottom:28px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 20px}
-  .steps .step{flex:1;text-align:center;font-size:.78rem;color:var(--slate-400);font-weight:700}
+  .steps{display:flex;gap:8px;margin-bottom:24px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 16px}
+  .steps .step{flex:1;text-align:center;font-size:.76rem;color:var(--slate-400);font-weight:700}
   .steps .dot{
-    width:30px;height:30px;border-radius:50%;background:#f1f5f9;border:1.5px solid var(--line);
+    width:28px;height:28px;border-radius:50%;background:#f1f5f9;border:1.5px solid var(--line);
     color:var(--slate-400);display:flex;align-items:center;justify-content:center;
-    margin:0 auto 6px;font-weight:800;font-size:.82rem;
+    margin:0 auto 5px;font-weight:800;font-size:.78rem;
   }
   .steps .step.active .dot{background:var(--primary);border-color:var(--primary);color:#fff}
   .steps .step.active{color:var(--primary-dark)}
 
   /* Confirmation */
-  .success-box{text-align:center;padding:48px 20px;max-width:620px;margin:0 auto}
+  .success-box{text-align:center;padding:40px 16px;max-width:620px;margin:0 auto}
   .success-check{
-    width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-    color:#fff;font-size:2.6rem;display:flex;align-items:center;justify-content:center;
-    margin:0 auto 20px;box-shadow:0 16px 36px var(--primary-glow);
+    width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;font-size:2.4rem;display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;box-shadow:0 16px 36px var(--primary-glow);
   }
   .ref-pill{
-    display:inline-block;font-family:'Space Grotesk';font-weight:800;font-size:1.3rem;
+    display:inline-block;font-family:'Space Grotesk';font-weight:800;font-size:1.25rem;
     color:var(--primary-dark);background:var(--primary-light);border:1.5px dashed var(--primary);
-    padding:10px 26px;border-radius:14px;margin:16px 0;letter-spacing:.05em;
+    padding:8px 22px;border-radius:12px;margin:16px 0;letter-spacing:.05em;
   }
-  .success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+  .success-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
 
-  /* Bookings list */
+  /* My Bookings */
   .booking-card{
     background:#fff;border:1px solid var(--line);border-radius:var(--radius);
-    padding:24px;margin-bottom:16px;box-shadow:0 4px 16px rgba(15,23,42,.03);
+    padding:20px;margin-bottom:16px;box-shadow:0 4px 16px rgba(15,23,42,.03);
   }
-  .b-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-  .b-ref-tag{font-family:'Space Grotesk';font-weight:800;font-size:.95rem}
-  .b-ref-tag code{background:var(--primary-light);color:var(--primary-dark);padding:4px 10px;border-radius:8px}
-  .status-tag{padding:5px 12px;border-radius:999px;font-size:.72rem;font-weight:800}
+  .b-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+  .b-ref-tag{font-family:'Space Grotesk';font-weight:800;font-size:.9rem}
+  .b-ref-tag code{background:var(--primary-light);color:var(--primary-dark);padding:4px 8px;border-radius:6px}
+  .status-tag{padding:4px 10px;border-radius:999px;font-size:.7rem;font-weight:800}
   .status-tag.confirmed{background:var(--primary-light);color:var(--primary-dark)}
-  .b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 20px}
-  .b-col span{display:block;font-size:.68rem;font-weight:700;color:var(--slate-400);text-transform:uppercase}
-  .b-col b{font-size:.92rem;color:var(--slate-900)}
-  .b-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px}
+  .b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .b-col span{display:block;font-size:.66rem;font-weight:700;color:var(--slate-400);text-transform:uppercase}
+  .b-col b{font-size:.88rem;color:var(--slate-900)}
+  .b-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px}
 
   /* Floating WhatsApp */
   .floating-wa{
-    position:fixed;bottom:26px;right:26px;z-index:90;display:flex;align-items:center;gap:10px;
-    background:linear-gradient(135deg,#25d366,#1da851);color:#fff;padding:13px 22px 13px 15px;border-radius:999px;
-    box-shadow:0 12px 30px rgba(37,211,102,.45);font-weight:700;font-size:.9rem;
+    position:fixed;bottom:24px;right:24px;z-index:90;display:flex;align-items:center;gap:9px;
+    background:linear-gradient(135deg,#25d366,#1da851);color:#fff;padding:12px 20px 12px 14px;border-radius:999px;
+    box-shadow:0 12px 30px rgba(37,211,102,.45);font-weight:700;font-size:.88rem;
     cursor:pointer;transition:all .3s var(--ease-spring);text-decoration:none;
   }
-  .floating-wa svg{width:26px;height:26px;fill:#fff;flex:none}
+  .floating-wa svg{width:24px;height:24px;fill:#fff;flex:none}
 
   /* Toast Notification */
   #toast{
-    position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(90px);
-    background:var(--slate-900);color:#fff;padding:13px 26px;border-radius:999px;
-    font-weight:600;font-size:.88rem;transition:.35s var(--ease-spring);
-    z-index:120;box-shadow:0 12px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+    background:var(--slate-900);color:#fff;padding:12px 22px;border-radius:999px;
+    font-weight:600;font-size:.85rem;transition:.35s var(--ease-spring);
+    z-index:120;box-shadow:0 12px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;white-space:nowrap;
   }
   #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
   /* Modals */
   .modal-overlay{
     display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);
-    backdrop-filter:blur(8px);z-index:200;padding:20px;overflow-y:auto;align-items:center;justify-content:center;
+    backdrop-filter:blur(8px);z-index:200;padding:16px;overflow-y:auto;align-items:center;justify-content:center;
   }
   .modal-overlay.show{display:flex}
   .certificate-card{
-    background:#fff;max-width:680px;width:100%;border-radius:20px;padding:36px;
+    background:#fff;max-width:640px;width:100%;border-radius:20px;padding:30px;
     position:relative;box-shadow:0 25px 60px rgba(0,0,0,.2);border:2px solid #cbe4d6;
   }
-  .cert-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--line);padding-bottom:18px;margin-bottom:20px}
-  .cert-seal{border:2px dashed var(--primary);border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-size:.65rem;font-weight:800;color:var(--primary)}
-  .cert-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88rem}
-  .cert-table td{padding:8px 0;border-bottom:1px solid #f0f4f2}
+  .cert-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--line);padding-bottom:16px;margin-bottom:16px;gap:12px}
+  .cert-seal{border:2px dashed var(--primary);border-radius:50%;width:74px;height:74px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-size:.62rem;font-weight:800;color:var(--primary);flex:none}
+  .cert-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem}
+  .cert-table td{padding:7px 0;border-bottom:1px solid #f0f4f2}
   .cert-table td:last-child{text-align:right;font-weight:700}
-  .cert-warranty-box{background:#f4fbf7;border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:20px 0}
-  .cert-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:20px}
+  .cert-warranty-box{background:#f4fbf7;border:1.5px dashed var(--primary);border-radius:12px;padding:14px;margin:16px 0}
+  .cert-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
 
   /* Admin Dashboard */
   .admin-box{
-    background:#fff;max-width:940px;width:100%;border-radius:20px;padding:30px;
+    background:#fff;max-width:920px;width:100%;border-radius:20px;padding:26px;
     box-shadow:0 25px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;
   }
-  .admin-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:20px}
-  .admin-stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
-  .astat{background:#f8fafc;padding:12px 18px;border-radius:12px;border:1px solid var(--line);flex:1;min-width:140px}
-  .astat b{font-size:1.3rem;display:block;color:var(--primary-dark);font-family:'Space Grotesk'}
-  .astat span{font-size:.76rem;color:var(--slate-400);font-weight:700;text-transform:uppercase}
-  .admin-table{width:100%;border-collapse:collapse;font-size:.85rem}
-  .admin-table th,.admin-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f5f9}
-  .admin-table th{background:#f8fafc;font-size:.74rem;color:var(--slate-600);text-transform:uppercase}
-  .admin-select{padding:4px 8px;border-radius:6px;border:1px solid var(--line);font-size:.8rem}
+  .admin-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+  .admin-stats{display:flex;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+  .astat{background:#f8fafc;padding:12px 16px;border-radius:12px;border:1px solid var(--line);flex:1;min-width:130px}
+  .astat b{font-size:1.25rem;display:block;color:var(--primary-dark);font-family:'Space Grotesk'}
+  .astat span{font-size:.72rem;color:var(--slate-400);font-weight:700;text-transform:uppercase}
+  .admin-table{width:100%;border-collapse:collapse;font-size:.84rem}
+  .admin-table th,.admin-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f5f9;white-space:nowrap}
+  .admin-table th{background:#f8fafc;font-size:.72rem;color:var(--slate-600);text-transform:uppercase}
+  .admin-select{padding:4px 8px;border-radius:6px;border:1px solid var(--line);font-size:.78rem}
+
+  /* Footer */
+  footer{background:#022c22;color:#94a3b8;margin-top:auto}
+  .foot-inner{
+    max-width:1200px;margin:0 auto;padding:46px clamp(16px,4vw,32px) 24px;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;
+  }
+  .foot-brand p{font-size:.86rem;line-height:1.65;margin-top:12px;max-width:340px}
+  footer h4{color:#fff;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .foot-col div{font-size:.86rem;margin-bottom:8px}
+  .foot-bottom{
+    border-top:1px solid #064e3b;padding:16px clamp(16px,4vw,32px);text-align:center;
+    font-size:.76rem;color:#64786e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  }
+
+  /* ========================================================
+     COMPLETE RESPONSIVE / MOBILE ENHANCEMENTS (< 768px)
+     ======================================================== */
+  @media (max-width: 768px) {
+    /* Header & Smooth horizontal swipe navigation */
+    .header-inner{
+      height: auto;
+      padding: 10px 14px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    .logo{justify-content: flex-start}
+    nav{
+      display: flex;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap;
+      gap: 6px;
+      padding-bottom: 3px;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar{display: none}
+    .nav-link{
+      flex-shrink: 0;
+      padding: 7px 13px;
+      font-size: .82rem;
+    }
+
+    /* Hero section */
+    .hero{
+      grid-template-columns: 1fr;
+      padding: 24px 16px 14px;
+      gap: 24px;
+    }
+    .hero-text h1{
+      font-size: clamp(1.85rem, 7vw, 2.3rem);
+      line-height: 1.18;
+    }
+    .hero-cta{
+      flex-direction: column;
+      gap: 10px;
+    }
+    .hero-cta .btn{
+      width: 100%;
+      justify-content: center;
+      padding: 13px 20px;
+    }
+    .hero-stats{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 12px;
+      padding-top: 18px;
+    }
+
+    /* Property size selector (Swipeable horizontal pill group) */
+    .calc-bar{
+      padding: 14px;
+      margin: 18px 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .calc-title{font-size: .86rem}
+    .bhk-pill-group{
+      width: 100%;
+      display: flex;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+      gap: 6px;
+    }
+    .bhk-pill-group::-webkit-scrollbar{display: none}
+    .bhk-btn{
+      flex-shrink: 0;
+      padding: 7px 14px;
+      font-size: .78rem;
+    }
+
+    /* Grid & Cards - single clean column on phones */
+    .grid{
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .card{padding: 18px}
+
+    /* Booking Form Layout */
+    .booking-layout{grid-template-columns: 1fr; gap: 20px}
+    .panel{padding: 18px}
+    .side{position: static}
+    .row2{grid-template-columns: 1fr}
+
+    /* Floating WhatsApp Button - Sleek circle so it doesn't cover checkout */
+    .floating-wa{
+      bottom: 20px;
+      right: 20px;
+      padding: 13px;
+      border-radius: 50%;
+    }
+    .floating-wa span{display: none}
+
+    /* Modals & Tables */
+    .certificate-card, .admin-box{
+      padding: 20px 16px;
+      margin: 10px;
+      max-height: 88vh;
+    }
+    .cert-header{flex-direction: column}
+    .cert-seal{align-self: flex-start}
+
+    /* Footer */
+    .foot-inner{grid-template-columns: 1fr; gap: 28px}
+    .foot-bottom{justify-content: center; text-align: center}
+  }
 
   @media print{
     body *{visibility:hidden}
@@ -458,31 +562,6 @@
     .certificate-card{border:none;box-shadow:none;max-width:100%}
     .cert-actions{display:none !important}
   }
-
-  /* Footer */
-  footer{background:#022c22;color:#94a3b8;margin-top:auto}
-  .foot-inner{
-    max-width:1200px;margin:0 auto;padding:54px clamp(16px,4vw,32px) 28px;
-    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;
-  }
-  @media(max-width:760px){.foot-inner{grid-template-columns:1fr;gap:30px}}
-  .foot-brand p{font-size:.88rem;line-height:1.7;margin-top:14px;max-width:340px}
-  footer h4{color:#fff;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
-  .foot-col div{font-size:.88rem;margin-bottom:10px}
-  .foot-bottom{
-    border-top:1px solid #064e3b;padding:18px clamp(16px,4vw,32px);text-align:center;
-    font-size:.78rem;color:#64786e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-  }
-
-  @media(max-width:640px){
-    .header-inner{height:auto;padding:12px 16px;flex-direction:column;align-items:stretch;gap:10px}
-    .logo{align-self:flex-start}
-    nav{justify-content:space-between;gap:2px;overflow-x:auto}
-    .nav-link{padding:7px 10px;font-size:.8rem}
-    .benefit-row{grid-template-columns:1fr}
-    .floating-wa span{display:none}
-    .floating-wa{padding:14px;bottom:20px;right:20px}
-  }
 </style>
 </head>
 <body>
@@ -490,7 +569,7 @@
 <!-- Header -->
 <header>
   <div class="header-inner">
-    <div class="logo ripple-target" onclick="handleLogoClick()" title="AS Global Management Home (Click 3 times for Admin)">
+    <div class="logo ripple-target" onclick="handleLogoClick()" title="AS Global Management (Click 3 times for Admin)">
       <div class="logo-mark">
         <svg viewBox="0 0 24 24" fill="none">
           <path d="M12 2.5 4.5 5.2v5.6c0 4.6 3.1 8.2 7.5 10.7 4.4-2.5 7.5-6.1 7.5-10.7V5.2L12 2.5Z" fill="#fff" fill-opacity=".95"/>
@@ -536,7 +615,7 @@
         </div>
       </div>
 
-      <!-- Right Side Visual Card (Clean, Uncluttered, No Overlap) -->
+      <!-- Right Visual Card -->
       <div class="hero-card-wrap">
         <div class="hero-img">
           <img src="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1000&q=80&fm=jpg" alt="Certified pest control operator at work">
@@ -565,7 +644,7 @@
     </div>
 
     <div class="wrap page">
-      <!-- Property-Based Dynamic Price Calculator -->
+      <!-- Property Calculator -->
       <div class="calc-bar">
         <div class="calc-title">
           <span>🏠 Select Property Size for Instant Pricing:</span>
@@ -575,18 +654,18 @@
           <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
           <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
           <button class="bhk-btn" onclick="setBHK('villa', this)">Villa / 4+ BHK</button>
-          <button class="bhk-btn" onclick="setBhk('commercial', this)">Commercial / Office</button>
+          <!-- FIXED TYPO: setBHK with capital H -->
+          <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial / Office</button>
         </div>
       </div>
 
-      <!-- Popular Individual Treatments -->
       <div class="sec-head">
         <span class="eyebrow">Individual Treatments</span>
         <h2>Popular Pest Services</h2>
         <p>Targeted solutions with long-lasting residual protection.</p>
       </div>
       <div class="grid" id="home-grid"></div>
-      <div style="margin-top:32px;text-align:center">
+      <div style="margin-top:28px;text-align:center">
         <button class="btn ghost ripple-target" onclick="go('services')">View all services →</button>
       </div>
     </div>
@@ -613,7 +692,7 @@
       </div>
 
       <div class="grid" id="services-grid"></div>
-      <div style="margin-top:38px;text-align:center">
+      <div style="margin-top:34px;text-align:center">
         <button class="btn ripple-target" onclick="go('book')">Continue to schedule visit →</button>
       </div>
     </div>
@@ -671,9 +750,9 @@
   <section class="view" id="view-book">
     <div class="wrap page">
       <div class="steps">
-        <div class="step done"><div class="dot">✓</div><span>1. Pick service</span></div>
-        <div class="step active"><div class="dot">2</div><span>2. Schedule &amp; address</span></div>
-        <div class="step"><div class="dot">3</div><span>3. Warranty &amp; invoice</span></div>
+        <div class="step done"><div class="dot">✓</div><span>1. Services</span></div>
+        <div class="step active"><div class="dot">2</div><span>2. Schedule</span></div>
+        <div class="step"><div class="dot">3</div><span>3. Warranty</span></div>
       </div>
 
       <div class="booking-layout">
@@ -736,7 +815,7 @@
           </div>
 
           <button type="submit" class="btn block ripple-target" id="confirm-btn">Confirm Visit (Pay Post-Service) ✔</button>
-          <p style="text-align:center;font-size:.78rem;color:var(--slate-400);margin-top:12px">🔒 No advance payment needed. Pay after inspection &amp; treatment.</p>
+          <p style="text-align:center;font-size:.76rem;color:var(--slate-400);margin-top:10px">🔒 No advance payment needed. Pay after inspection &amp; treatment.</p>
         </form>
 
         <aside class="panel side">
@@ -761,18 +840,18 @@
       <div class="success-box">
         <div class="success-check">✓</div>
         <h2>Booking Confirmed!</h2>
-        <p style="color:var(--slate-400);font-size:.92rem">Our team is dispatching a certified technician.</p>
+        <p style="color:var(--slate-400);font-size:.9rem">Our team is dispatching a certified technician.</p>
         <div class="ref-pill" id="ref-no">ASM-000000</div>
         
-        <p id="success-detail" style="line-height:1.7;color:var(--slate-600)"></p>
+        <p id="success-detail" style="line-height:1.65;color:var(--slate-600)"></p>
 
         <div class="success-actions">
           <button class="btn whatsapp-btn ripple-target" id="wa-confirm-btn" onclick="sendWhatsAppConfirmation()">
             <svg style="width:19px;height:19px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-            Send to WhatsApp (9550107466)
+            Send Details to WhatsApp
           </button>
-          <button class="btn ghost ripple-target" onclick="openPrintModalCurrent()">🖨️ Print Warranty &amp; Invoice</button>
-          <button class="btn ghost ripple-target" onclick="go('bookings')">View My Bookings</button>
+          <button class="btn ghost ripple-target" onclick="openPrintModalCurrent()">🖨️ Warranty &amp; Invoice</button>
+          <button class="btn ghost ripple-target" onclick="go('bookings')">View Bookings</button>
         </div>
       </div>
     </div>
@@ -796,17 +875,17 @@
   <div class="certificate-card">
     <div class="cert-header">
       <div>
-        <h2 style="font-size:1.4rem;color:var(--primary-dark)">AS GLOBAL MANAGEMENT</h2>
-        <p style="font-size:.8rem;color:var(--slate-400)">Govt. Approved Pest Management &amp; Disinfection Services</p>
-        <p style="font-size:.78rem;color:var(--slate-400)">📞 +91 95501 07466 · ✉️ contact@asglobal.com</p>
+        <h2 style="font-size:1.3rem;color:var(--primary-dark)">AS GLOBAL MANAGEMENT</h2>
+        <p style="font-size:.78rem;color:var(--slate-400)">Govt. Approved Pest Management &amp; Disinfection Services</p>
+        <p style="font-size:.76rem;color:var(--slate-400)">📞 +91 95501 07466 · ✉️ contact@asglobal.com</p>
       </div>
       <div class="cert-seal">
         <span>30-DAY</span><span>SERVICE</span><span>WARRANTY</span>
       </div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:14px">
-      <div><b>Booking Reference:</b> <span id="m-ref"></span></div>
-      <div><b>Issued Date:</b> <span id="m-date"></span></div>
+    <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:12px">
+      <div><b>Booking Ref:</b> <span id="m-ref"></span></div>
+      <div><b>Issued:</b> <span id="m-date"></span></div>
     </div>
     <table class="cert-table">
       <tr><td>Customer Name:</td><td id="m-name"></td></tr>
@@ -814,11 +893,11 @@
       <tr><td>Service Address:</td><td id="m-address"></td></tr>
       <tr><td>Scheduled Slot:</td><td id="m-slot"></td></tr>
       <tr><td>Treatments Booked:</td><td id="m-services"></td></tr>
-      <tr><td>Total Amount Payable:</td><td id="m-total" style="color:var(--primary-dark);font-size:1.15rem"></td></tr>
+      <tr><td>Total Amount:</td><td id="m-total" style="color:var(--primary-dark);font-size:1.1rem"></td></tr>
     </table>
     <div class="cert-warranty-box">
-      <b style="font-size:.85rem;color:var(--primary-dark)">🛡️ 30-Day Re-Service Warranty Policy:</b>
-      <p style="font-size:.78rem;color:var(--slate-600);margin-top:4px">
+      <b style="font-size:.82rem;color:var(--primary-dark)">🛡️ 30-Day Re-Service Warranty Policy:</b>
+      <p style="font-size:.76rem;color:var(--slate-600);margin-top:4px">
         This document entitles the customer to a complimentary re-treatment if the covered pest infestation reoccurs within 30 days of initial service. Please retain this reference code for warranty validation.
       </p>
     </div>
@@ -834,23 +913,23 @@
   <div class="admin-box">
     <div class="admin-header">
       <div>
-        <h2 style="font-size:1.3rem;color:var(--slate-900)">🔒 Business Owner Admin Portal</h2>
-        <p style="font-size:.78rem;color:var(--slate-400)">AS Global Management — Live Bookings Management</p>
+        <h2 style="font-size:1.2rem;color:var(--slate-900)">🔒 Owner Admin Portal</h2>
+        <p style="font-size:.75rem;color:var(--slate-400)">AS Global Management — Live Bookings</p>
       </div>
-      <button class="btn ghost" style="padding:6px 14px;font-size:.8rem" onclick="closeAdminModal()">✕ Close</button>
+      <button class="btn ghost" style="padding:6px 12px;font-size:.78rem" onclick="closeAdminModal()">✕ Close</button>
     </div>
 
     <div class="admin-stats">
       <div class="astat"><b id="adm-count">0</b><span>Total Bookings</span></div>
       <div class="astat"><b id="adm-rev">₹0</b><span>Expected Revenue</span></div>
       <div class="astat">
-        <button class="btn" style="padding:8px 16px;font-size:.82rem;width:100%" onclick="exportToCSV()">
+        <button class="btn" style="padding:8px 14px;font-size:.8rem;width:100%" onclick="exportToCSV()">
           📥 Export to Excel (CSV)
         </button>
       </div>
     </div>
 
-    <div style="overflow-x:auto">
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
       <table class="admin-table">
         <thead>
           <tr>
@@ -911,17 +990,21 @@
 
 <script>
 /* =========================================================================
-   SETTINGS CONFIGURATION (PASTE YOUR TELEGRAM DETAILS HERE)
+   SETTINGS & CONFIGURATION
    ========================================================================= */
 var OWNER_PHONE = "919550107466";
 var OWNER_EMAIL = "contact@asglobal.com";
 var ADMIN_PIN = "5665";
 
-// ⚠️ Paste your Token and Chat ID inside quotes below:
+// Telegram Bot Credentials (Used for live alerts on your phone)
 var TELEGRAM_BOT_TOKEN = "9037706489:AAEjP-3zV8qt3m5fmWK0gwMx_GiMLWV80HM"; 
 var TELEGRAM_CHAT_ID = "5795622394";   
 
-// Auto-cleaner (Prevents errors from spaces or formatting)
+// OPTIONAL: If you create a free Google Sheets Webhook, paste its URL here
+// to save all customer bookings automatically to your Google Spreadsheet:
+var GOOGLE_SHEET_WEBHOOK_URL = ""; 
+
+// Auto-cleaner
 OWNER_PHONE = String(OWNER_PHONE).replace(/\D/g, "");
 ADMIN_PIN = String(ADMIN_PIN).trim();
 TELEGRAM_BOT_TOKEN = String(TELEGRAM_BOT_TOKEN).trim();
@@ -953,7 +1036,7 @@ function getPrice(base){
   return Math.round((base * BHK_MULTIPLIERS[currentBHK]) / 10) * 10;
 }
 
-var CART_KEY = "asgm_cart_v5", BOOKINGS_KEY = "asgm_bookings_v5";
+var CART_KEY = "asgm_cart_v6", BOOKINGS_KEY = "asgm_bookings_v6";
 var cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
 var latestBooking = null;
 
@@ -964,7 +1047,7 @@ var fmt = function(n) { return "₹" + n.toLocaleString("en-IN"); };
 function setBHK(bhk, btn){
   currentBHK = bhk;
   document.querySelectorAll(".bhk-btn").forEach(function(b) {
-    b.classList.toggle("active", b.textContent.toLowerCase().includes(bhk.replace("bhk","").trim()));
+    b.classList.toggle("active", b.getAttribute("onclick") && b.getAttribute("onclick").indexOf("'" + bhk + "'") !== -1);
   });
   if(btn) btn.classList.add("active");
   var dropdown = $("in-type");
@@ -977,7 +1060,7 @@ function setBHK(bhk, btn){
 function syncBHKFromDropdown(val){
   currentBHK = val;
   document.querySelectorAll(".bhk-btn").forEach(function(b) {
-    b.classList.toggle("active", b.getAttribute("onclick") && b.getAttribute("onclick").indexOf(val) !== -1);
+    b.classList.toggle("active", b.getAttribute("onclick") && b.getAttribute("onclick").indexOf("'" + val + "'") !== -1);
   });
   renderCards();
   renderCart();
@@ -1032,7 +1115,7 @@ function cardHTML(s){
     '<p>' + s.desc + '</p>' +
     '<div class="chips">' + chips + '</div>' +
     '<div class="price-row">' +
-      '<span class="price-tag">' + fmt(dynamicPrice) + ' <small>/ ' + currentBHK.toUpperCase() + '</small></span>' +
+      '<span class="price-tag">' + fmt(dynamicPrice) + ' <small style="font-size:.7rem;font-weight:600;color:var(--slate-400)">/ ' + currentBHK.toUpperCase() + '</small></span>' +
       '<button class="add-btn ripple-target ' + (inCart ? "added" : "") + '" onclick="toggleCart(\'' + s.id + '\')">' +
         (inCart ? "✓ Added" : "+ Add") +
       '</button>' +
@@ -1114,48 +1197,40 @@ function validate(){
   return valid;
 }
 
-/* Background Auto-Lead Dispatch (Crash-Proof) */
+/* Background Auto-Lead Dispatch */
 async function dispatchLeadNotification(booking) {
+  // 1. Send to Telegram
   var token = TELEGRAM_BOT_TOKEN;
   var chatId = TELEGRAM_CHAT_ID;
 
-  if (!token || !chatId) {
-    console.warn("Telegram Token or Chat ID is empty.");
-    return;
-  }
+  if (token && chatId) {
+    var text = "🚨 NEW PEST CONTROL BOOKING!\n" +
+               "========================\n" +
+               "Ref No: " + booking.ref + "\n" +
+               "Customer: " + booking.name + "\n" +
+               "Phone: " + booking.phone + "\n" +
+               "Property: " + booking.type + "\n" +
+               "Services: " + booking.services + "\n" +
+               "Total: ₹" + booking.total + " (Pay After Service)\n" +
+               "Address: " + booking.address + "\n" +
+               "Slot: " + booking.date + " (" + booking.slot + ")\n" +
+               "Notes: " + (booking.notes || "None");
 
-  var text = "🚨 NEW PEST CONTROL BOOKING!\n" +
-             "========================\n" +
-             "Ref No: " + booking.ref + "\n" +
-             "Customer: " + booking.name + "\n" +
-             "Phone: " + booking.phone + "\n" +
-             "Property: " + booking.type + "\n" +
-             "Services: " + booking.services + "\n" +
-             "Total: ₹" + booking.total + " (Pay After Service)\n" +
-             "Address: " + booking.address + "\n" +
-             "Slot: " + booking.date + " (" + booking.slot + ")\n" +
-             "Notes: " + (booking.notes || "None");
-
-  try {
     fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text
-      })
-    })
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-      if (!data.ok) {
-        console.error("Telegram API Error:", data.description);
-      } else {
-        console.log("Telegram lead dispatched successfully!");
-      }
-    })
-    .catch(function(e) { console.warn("Telegram dispatch failed:", e); });
-  } catch (e) {
-    console.warn("Telegram notification error:", e);
+      body: JSON.stringify({ chat_id: chatId, text: text })
+    }).catch(function(e) { console.warn("Telegram dispatch failed:", e); });
+  }
+
+  // 2. Send to Google Sheets (if configured)
+  if (GOOGLE_SHEET_WEBHOOK_URL) {
+    fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(booking)
+    }).catch(function(e) { console.warn("Google Sheet sync failed:", e); });
   }
 }
 
@@ -1191,7 +1266,7 @@ function confirmBooking(e){
   bookings.unshift(booking);
   saveBookings(bookings);
 
-  // Send lead to Telegram in background
+  // Send lead in background
   dispatchLeadNotification(booking);
 
   $("ref-no").textContent = ref;
@@ -1259,7 +1334,7 @@ function renderBookings(){
   var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   var list = $("bookings-list");
   if(bookings.length === 0){
-    list.innerHTML = '<div class="empty-cart" style="padding:40px">📭 No active bookings found on this device.<br><a href="#" onclick="go(\'services\');return false">Book your first service →</a></div>';
+    list.innerHTML = '<div class="empty-cart" style="padding:36px">📭 No active bookings found on this device.<br><a href="#" onclick="go(\'services\');return false">Book your first service →</a></div>';
     return;
   }
   list.innerHTML = bookings.map(function(b) {
@@ -1313,7 +1388,7 @@ function openAdminModal(){
 
   var tbody = $("admin-tbody");
   if(bookings.length === 0){
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--slate-400)">No bookings registered yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--slate-400)">No bookings registered on this browser yet.<br><small style="color:var(--primary-dark)">Note: Leads are also dispatched directly to your Telegram chat!</small></td></tr>';
   } else {
     tbody.innerHTML = bookings.map(function(b) {
       return '<tr>' +
