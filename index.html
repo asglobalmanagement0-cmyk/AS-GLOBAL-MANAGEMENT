@@ -1,6 +1,3 @@
- Database Name: Local Database
-User Name: guest
-Project Name: New Project 8
  <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,16 +6,12 @@ Project Name: New Project 8
 <title>AS Global Management — Certified Pest Control & Disinfection</title>
 <meta name="description" content="Book government-certified pest control in 60 seconds. Odorless chemicals, 30-day warranty, and pay after service. Call/WhatsApp +91 95501 07466.">
 
-<!-- ============ Rich WhatsApp & Social Media Open Graph Tags ============ -->
+<!-- ============ Rich Social & WhatsApp Open Graph Tags ============ -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://asglobal.com/">
 <meta property="og:title" content="AS Global Management — Certified Pest Control from ₹799">
 <meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Re-Service Warranty. Pay cash or UPI after treatment. Call +91 95501 07466.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AS Global Management — Certified Pest Control">
-<meta name="twitter:description" content="Safe & odorless pest treatments with written 30-day warranty. Book in 60s.">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
 
 <!-- ============ Google Local Business Structured Data (SEO) ============ -->
 <script type="application/ld+json">
@@ -103,22 +96,10 @@ Project Name: New Project 8
   .btn.is-cta .ripple-wave, .btn.whatsapp-btn .ripple-wave{background:rgba(255,255,255,.45)}
   @keyframes rippleEffect{to{transform:scale(4);opacity:0}}
 
-  /* Emergency Bar */
-  .emergency-bar{
-    background:linear-gradient(90deg, #022c22, #065f46, #022c22);
-    color:#a7f3d0;padding:9px 16px;font-size:.83rem;font-weight:600;
-    display:flex;align-items:center;justify-content:center;gap:12px;text-align:center;
-  }
-  .pulse-dot{
-    width:10px;height:10px;border-radius:50%;background:#34d399;
-    box-shadow:0 0 0 0 rgba(52,211,153,.8);animation:beacon 1.8s infinite;flex:none;
-  }
-  @keyframes beacon{0%{box-shadow:0 0 0 0 rgba(52,211,153,.9)}70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
-
   /* Header */
   header{
     position:sticky;top:0;z-index:70;
-    background:rgba(255,255,255,.88);backdrop-filter:blur(16px);
+    background:rgba(255,255,255,.92);backdrop-filter:blur(16px);
     border-bottom:1px solid rgba(15,23,42,.07);box-shadow:0 4px 20px rgba(15,23,42,.03);
   }
   .header-inner{
@@ -158,7 +139,7 @@ Project Name: New Project 8
   .cart-badge.bump{animation:badgePop .4s var(--ease-spring)}
   @keyframes badgePop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
 
-  /* Main & Views */
+  /* Views */
   main{flex:1}
   .view{display:none}
   .view.show{display:block;animation:viewIn .4s var(--ease-out)}
@@ -166,7 +147,7 @@ Project Name: New Project 8
   .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,32px)}
   .page{padding-top:44px;padding-bottom:80px}
 
-  .sec-head{margin-bottom:34px;max-width:680px}
+  .sec-head{margin-bottom:30px;max-width:680px}
   .eyebrow{
     display:inline-flex;align-items:center;gap:7px;
     font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
@@ -181,7 +162,7 @@ Project Name: New Project 8
   .calc-bar{
     background:#fff;border:1.5px solid rgba(5,150,105,.25);border-radius:20px;
     padding:16px 22px;display:flex;align-items:center;justify-content:space-between;
-    gap:16px;flex-wrap:wrap;margin-bottom:34px;box-shadow:0 8px 30px var(--primary-glow);
+    gap:16px;flex-wrap:wrap;margin:32px 0;box-shadow:0 8px 30px var(--primary-glow);
   }
   .calc-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;color:var(--slate-800)}
   .bhk-pill-group{display:flex;gap:6px;flex-wrap:wrap}
@@ -198,7 +179,7 @@ Project Name: New Project 8
 
   /* Hero */
   .hero{
-    max-width:1200px;margin:0 auto;padding:48px clamp(16px,4vw,32px) 0;
+    max-width:1200px;margin:0 auto;padding:48px clamp(16px,4vw,32px) 20px;
     display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,60px);align-items:center;
   }
   @media(max-width:920px){.hero{grid-template-columns:1fr;padding-top:28px}}
@@ -235,21 +216,24 @@ Project Name: New Project 8
   .hero-stats .stat b{display:block;font-family:'Space Grotesk';font-size:1.45rem;font-weight:800;color:var(--slate-900)}
   .hero-stats .stat span{font-size:.8rem;color:var(--slate-400);font-weight:600}
 
-  .hero-card-wrap{position:relative}
+  /* Fixed Hero Card & Photo Layout */
+  .hero-card-wrap{display:flex;flex-direction:column;gap:18px}
   .hero-img{
     position:relative;border-radius:var(--radius-lg);overflow:hidden;
-    box-shadow:0 20px 45px -12px rgba(15,23,42,.2);border:1px solid rgba(255,255,255,.8);margin-bottom:18px;aspect-ratio:16/10;
+    box-shadow:0 20px 45px -12px rgba(15,23,42,.18);border:1px solid rgba(255,255,255,.9);
+    height:270px;background:#e2e8f0;
   }
   .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
   .img-badge{
-    position:absolute;bottom:14px;left:14px;right:14px;background:rgba(15,23,42,.8);
-    backdrop-filter:blur(10px);color:#fff;padding:10px 14px;border-radius:14px;
-    font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:8px;
+    position:absolute;bottom:12px;left:12px;right:12px;
+    background:rgba(15,23,42,.88);backdrop-filter:blur(8px);color:#fff;
+    padding:8px 14px;border-radius:12px;font-size:.82rem;font-weight:600;
+    display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(0,0,0,.25);
   }
   .hero-card{
-    background:rgba(255,255,255,.85);backdrop-filter:blur(14px);
+    background:rgba(255,255,255,.9);backdrop-filter:blur(14px);
     border:1px solid rgba(255,255,255,.9);border-radius:var(--radius);
-    box-shadow:0 12px 30px rgba(15,23,42,.06);padding:24px;position:relative;overflow:hidden;
+    box-shadow:0 12px 30px rgba(15,23,42,.06);padding:22px;position:relative;overflow:hidden;
   }
   .hero-card::before{
     content:"";position:absolute;inset:0 0 auto 0;height:4px;
@@ -261,49 +245,7 @@ Project Name: New Project 8
   .b-item b{font-size:.88rem;display:block}
   .b-item span{font-size:.76rem;color:var(--slate-400)}
 
-  /* Combos */
-  .combos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;margin-bottom:56px}
-  .combo-card{
-    background:#fff;border:2px solid rgba(5,150,105,.3);border-radius:var(--radius);
-    padding:26px;position:relative;box-shadow:0 10px 30px var(--primary-glow);
-    display:flex;flex-direction:column;gap:14px;transition:transform .25s var(--ease-spring);
-  }
-  .combo-card:hover{transform:translateY(-6px);border-color:var(--primary)}
-  .combo-ribbon{
-    position:absolute;top:-12px;right:20px;background:linear-gradient(135deg,#f59e0b,#d97706);
-    color:#fff;font-size:.74rem;font-weight:800;padding:4px 12px;border-radius:999px;letter-spacing:.05em;
-  }
-  .combo-services{font-size:.86rem;color:var(--slate-600);line-height:1.6}
-  .combo-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px dashed var(--line)}
-  .strike-price{font-size:.9rem;color:var(--slate-400);text-decoration:line-through;margin-right:6px}
-
-  /* Before & After */
-  .ba-box{
-    position:relative;max-width:880px;margin:0 auto 60px;aspect-ratio:16/9;
-    border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 20px 45px rgba(0,0,0,.15);
-    user-select:none;touch-action:none;border:3px solid #fff;
-  }
-  .ba-box img{width:100%;height:100%;object-fit:cover;display:block}
-  .ba-after{position:absolute;inset:0;overflow:hidden;width:50%}
-  .ba-after img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;max-width:none}
-  .ba-handle{
-    position:absolute;top:0;bottom:0;left:50%;width:4px;background:#fff;
-    transform:translateX(-50%);cursor:ew-resize;box-shadow:0 0 14px rgba(0,0,0,.4);
-  }
-  .ba-badge-btn{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:42px;height:42px;border-radius:50%;background:#fff;color:var(--primary-dark);
-    display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);
-    font-size:1.1rem;font-weight:800;border:2px solid var(--primary);
-  }
-  .ba-tag{
-    position:absolute;bottom:14px;padding:6px 14px;border-radius:8px;
-    font-size:.75rem;font-weight:800;color:#fff;backdrop-filter:blur(8px);
-  }
-  .ba-tag-before{left:14px;background:rgba(239,68,68,.8)}
-  .ba-tag-after{right:14px;background:rgba(5,150,105,.85)}
-
-  /* Services Grid */
+  /* Service Cards */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
   .card{
     background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
@@ -467,11 +409,8 @@ Project Name: New Project 8
     background:linear-gradient(135deg,#25d366,#1da851);color:#fff;padding:13px 22px 13px 15px;border-radius:999px;
     box-shadow:0 12px 30px rgba(37,211,102,.45);font-weight:700;font-size:.9rem;
     cursor:pointer;transition:all .3s var(--ease-spring);text-decoration:none;
-    animation:floatBob 3.5s ease-in-out infinite;
   }
-  @keyframes floatBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
   .floating-wa svg{width:26px;height:26px;fill:#fff;flex:none}
-  .floating-wa-badge{position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:#ef4444;border-radius:50%;border:2px solid #fff}
 
   /* Toast Notification */
   #toast{
@@ -551,12 +490,6 @@ Project Name: New Project 8
 </head>
 <body>
 
-<!-- Emergency Dispatch Banner -->
-<div class="emergency-bar">
-  <span class="pulse-dot"></span>
-  <span>⚡ <b>Emergency Dispatch Active:</b> Certified team on duty in your area (Arrival within 60–90 mins)</span>
-</div>
-
 <!-- Header -->
 <header>
   <div class="header-inner">
@@ -606,6 +539,7 @@ Project Name: New Project 8
         </div>
       </div>
 
+      <!-- Right Side Visual Card -->
       <div class="hero-card-wrap">
         <div class="hero-img">
           <img src="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1000&q=80&fm=jpg" alt="Certified pest control operator at work">
@@ -636,26 +570,7 @@ Project Name: New Project 8
       </div>
     </div>
 
-    <!-- Before / After Slider -->
-    <div class="wrap page" style="padding-top:60px">
-      <div class="sec-head">
-        <span class="eyebrow">Real Visual Results</span>
-        <h2>Before &amp; After Treatment Proof</h2>
-        <p>Drag the slider left and right to see the immediate transformation after our odorless deep treatment.</p>
-      </div>
-
-      <div class="ba-box" id="ba-slider">
-        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1200&q=80&fm=jpg" alt="Pest Infestation Before Treatment">
-        <div class="ba-after" id="ba-after">
-          <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1200&q=80&fm=jpg" alt="Clean Sanitized Kitchen After Treatment">
-        </div>
-        <div class="ba-handle" id="ba-handle">
-          <div class="ba-badge-btn">↔</div>
-        </div>
-        <div class="ba-tag ba-tag-before">⚠️ BEFORE (Severe Infestation)</div>
-        <div class="ba-tag ba-tag-after">✨ AFTER (100% Pest-Free &amp; Sanitized)</div>
-      </div>
-
+    <div class="wrap page">
       <!-- Property-Based Dynamic Price Calculator -->
       <div class="calc-bar">
         <div class="calc-title">
@@ -670,16 +585,8 @@ Project Name: New Project 8
         </div>
       </div>
 
-      <!-- Package Combo Discounts -->
-      <div class="sec-head">
-        <span class="eyebrow">Best Value Combos</span>
-        <h2>Save Big with All-in-One Packages</h2>
-        <p>Multi-pest protection combos bundled with maximum discounts.</p>
-      </div>
-      <div class="combos-grid" id="combos-grid"></div>
-
       <!-- Popular Individual Treatments -->
-      <div class="sec-head" style="margin-top:20px">
+      <div class="sec-head">
         <span class="eyebrow">Individual Treatments</span>
         <h2>Popular Pest Services</h2>
         <p>Targeted solutions with long-lasting residual protection.</p>
@@ -890,7 +797,7 @@ Project Name: New Project 8
   </section>
 </main>
 
-<!-- Live Recent Booking Popup -->
+<!-- Live Social Proof Popup -->
 <div id="recent-booking-toast">
   <div class="rb-avatar" id="rb-avatar">RK</div>
   <div class="rb-info">
@@ -980,7 +887,6 @@ Project Name: New Project 8
 
 <!-- Floating WhatsApp Button -->
 <a href="https://wa.me/919550107466?text=Hello%20AS%20Global%20Management,%20I%20want%20to%20inquire%20about%20pest%20control%20services." target="_blank" class="floating-wa ripple-target" aria-label="Chat on WhatsApp">
-  <span class="floating-wa-badge"></span>
   <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
   <span>Book on WhatsApp</span>
 </a>
@@ -1023,13 +929,9 @@ const OWNER_PHONE = "919550107466";
 const OWNER_EMAIL = "contact@asglobal.com";
 const ADMIN_PIN = "1234";
 
-/* =========================================================================
-   LEAD DISPATCH WEBHOOK CONFIGURATION (NO LOST LEADS)
-   Fill these in to receive instant alerts on every booking!
-   ========================================================================= */
-const TELEGRAM_BOT_TOKEN = ""; // e.g. 9037706489:AAEjP-3zV8qt3m5fmWK0gwMx_GiMLWV80HM
-const TELEGRAM_CHAT_ID = "";   // e.g. "973861139"
-const WEBHOOK_URL = "";        // e.g. "https://formspree.io/f/xyz..." or Google Apps Script URL
+/* Telegram Bot Configuration */
+const TELEGRAM_BOT_TOKEN = ""; 
+const TELEGRAM_CHAT_ID = "";   
 
 /* Multipliers for Dynamic BHK Pricing */
 let currentBHK = "1bhk";
@@ -1041,7 +943,7 @@ const BHK_MULTIPLIERS = {
   "commercial": 2.4
 };
 
-/* Base Services (1 BHK base price) */
+/* Base Services */
 const BASE_SERVICES = [
   {id:"cockroach", icon:"🪳", name:"Cockroach Control", desc:"Odorless, herbal gel treatment for modular kitchens and cabinets. 100% kitchen-safe.", basePrice:799, rating:4.9, chips:["Gel treatment","No smell","Kid-safe"]},
   {id:"termite", icon:"🐜", name:"Termite Treatment", desc:"Drill-and-inject barrier protection for walls, frames, and wooden furniture.", basePrice:2499, rating:4.9, chips:["Wall barrier","Warranty card","Deep drilling"]},
@@ -1051,37 +953,6 @@ const BASE_SERVICES = [
   {id:"ants", icon:"🕸️", name:"Ants & Spider Control", desc:"Residual perimeter barrier spray targeting ants, spiders, and crawling insects.", basePrice:899, rating:4.7, chips:["Odorless spray","Residual effect","Pet safe"]},
   {id:"woodborer", icon:"🪵", name:"Wood Borer Control", desc:"Targeted injection treatment preserving precious furniture from powder-falling pests.", basePrice:1399, rating:4.8, chips:["Wood injection","Non-staining","Long lasting"]},
   {id:"disinfection", icon:"🧴", name:"Hospital Disinfection", desc:"Full premises sanitization wiping out 99.9% viruses and bacteria.", basePrice:1299, rating:4.9, chips:["Hospital grade","Certificate","Safe mist"]},
-];
-
-/* Package Combos */
-const BASE_COMBOS = [
-  {
-    id:"combo-kitchen",
-    name:"Kitchen Shield Combo",
-    discountTag:"SAVE ₹300",
-    desc:"Cockroach Gel Treatment + Ants Barrier Spray",
-    basePrice:1399,
-    originalBase:1698,
-    includedIds:["cockroach", "ants"]
-  },
-  {
-    id:"combo-home",
-    name:"Full Home Protection",
-    discountTag:"SAVE ₹700",
-    desc:"Cockroach Control + Termite Wall Inject + Deep Disinfection",
-    basePrice:3899,
-    originalBase:4597,
-    includedIds:["cockroach", "termite", "disinfection"]
-  },
-  {
-    id:"combo-all",
-    name:"Total Pest Defense (All-in-One)",
-    discountTag:"SAVE ₹1,000",
-    desc:"Cockroach + Rodents + Mosquito Fogging + Ants & Spiders",
-    basePrice:2899,
-    originalBase:3896,
-    includedIds:["cockroach", "rodent", "mosquito", "ants"]
-  }
 ];
 
 function getPrice(base){
@@ -1105,7 +976,6 @@ function setBHK(bhk, btn){
   const dropdown = $("in-type");
   if(dropdown) dropdown.value = bhk;
   renderCards();
-  renderCombos();
   renderCart();
   toast(`Updated pricing for ${bhk.toUpperCase()}`);
 }
@@ -1116,7 +986,6 @@ function syncBHKFromDropdown(val){
     b.classList.toggle("active", b.getAttribute("onclick")?.includes(val));
   });
   renderCards();
-  renderCombos();
   renderCart();
 }
 
@@ -1182,41 +1051,6 @@ function renderCards(){
   $("services-grid").innerHTML = BASE_SERVICES.map(cardHTML).join("");
 }
 
-function renderCombos(){
-  const box = $("combos-grid");
-  if(!box) return;
-  box.innerHTML = BASE_COMBOS.map(c => {
-    const curP = getPrice(c.basePrice);
-    const origP = getPrice(c.originalBase);
-    const isAdded = c.includedIds.every(id => cart.includes(id));
-    return `
-      <div class="combo-card">
-        <span class="combo-ribbon">${c.discountTag}</span>
-        <h3 style="font-size:1.15rem">${c.name}</h3>
-        <p class="combo-services">${c.desc}</p>
-        <div class="combo-price-row">
-          <div>
-            <span class="strike-price">${fmt(origP)}</span>
-            <span class="price-tag">${fmt(curP)}</span>
-          </div>
-          <button class="btn ripple-target" style="padding:8px 18px;font-size:.82rem" onclick="addCombo('${c.id}')">
-            ${isAdded ? "✓ Package Added" : "Add Package"}
-          </button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function addCombo(comboId){
-  const combo = BASE_COMBOS.find(c => c.id === comboId);
-  combo.includedIds.forEach(id => {
-    if(!cart.includes(id)) cart.push(id);
-  });
-  saveCart();
-  toast(`✓ Added ${combo.name}!`);
-}
-
 function toggleCart(id){
   if(cart.includes(id)){
     cart = cart.filter(x => x !== id);
@@ -1273,11 +1107,8 @@ function validate(){
   return valid;
 }
 
-/* =========================================================================
-   BACKGROUND AUTO-LEAD DISPATCH (TELEGRAM / WEBHOOK)
-   ========================================================================= */
+/* Background Auto-Lead Dispatch */
 async function dispatchLeadNotification(booking) {
-  // 1. Send via Telegram Bot API (if credentials configured)
   if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
     const tgMessage = `🚨 *NEW PEST CONTROL BOOKING!*\n` +
       `--------------------------------\n` +
@@ -1304,19 +1135,6 @@ async function dispatchLeadNotification(booking) {
       }).catch(e => console.warn("Telegram dispatch failed:", e));
     } catch (e) {
       console.warn("Telegram notification error:", e);
-    }
-  }
-
-  // 2. Send via Custom Webhook / Google Sheets / Formspree (if configured)
-  if (WEBHOOK_URL) {
-    try {
-      fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(booking)
-      }).catch(e => console.warn("Webhook dispatch failed:", e));
-    } catch (e) {
-      console.warn("Webhook error:", e);
     }
   }
 }
@@ -1347,12 +1165,11 @@ function confirmBooking(e){
 
   latestBooking = booking;
 
-  // Persist locally
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   bookings.unshift(booking);
   saveBookings(bookings);
 
-  // AUTO-SEND LEAD IN BACKGROUND (Never lose the lead!)
+  // Send lead in background
   dispatchLeadNotification(booking);
 
   $("ref-no").textContent = ref;
@@ -1391,9 +1208,7 @@ function openGeneralWhatsApp(){
   window.open(`https://wa.me/${OWNER_PHONE}?text=${msg}`, "_blank");
 }
 
-/* =========================================================================
-   SAFE LOOKUP FOR INVOICE & WARRANTY PRINTING
-   ========================================================================= */
+/* Print Modal with Safe Reference Lookup */
 function openPrintModalByRef(ref) {
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   const found = bookings.find(b => b.ref === ref);
@@ -1418,7 +1233,7 @@ function openPrintModal(b){
 function openPrintModalCurrent(){ if(latestBooking) openPrintModal(latestBooking); }
 function closePrintModal(){ $("print-modal").classList.remove("show"); }
 
-/* Customer Bookings View with Safe Reference Calls */
+/* Customer Bookings View */
 function renderBookings(){
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   const list = $("bookings-list");
@@ -1450,35 +1265,13 @@ function renderBookings(){
   `).join("");
 }
 
-/* Interactive Before/After Drag */
-const baSlider = $("ba-slider");
-const baAfter = $("ba-after");
-const baHandle = $("ba-handle");
-let isDragging = false;
-
-function setSliderPos(x){
-  const rect = baSlider.getBoundingClientRect();
-  let pos = ((x - rect.left) / rect.width) * 100;
-  if(pos < 0) pos = 0;
-  if(pos > 100) pos = 100;
-  baAfter.style.width = pos + "%";
-  baHandle.style.left = pos + "%";
-}
-baSlider.addEventListener("mousedown", e => { isDragging = true; setSliderPos(e.clientX); });
-window.addEventListener("mouseup", () => isDragging = false);
-window.addEventListener("mousemove", e => { if(isDragging) setSliderPos(e.clientX); });
-
-baSlider.addEventListener("touchstart", e => { isDragging = true; setSliderPos(e.touches[0].clientX); });
-window.addEventListener("touchend", () => isDragging = false);
-window.addEventListener("touchmove", e => { if(isDragging) setSliderPos(e.touches[0].clientX); });
-
-/* Social Proof Live Ticker */
+/* Social Proof Popup */
 const RECENT_CUSTOMERS = [
   { name: "Rahul S. from Madhapur", service: "Cockroach Gel Treatment", time: "2 mins ago" },
   { name: "Sneha K. from Banjara Hills", service: "Termite Wall Injection", time: "5 mins ago" },
-  { name: "Vijay M. from Gachibowli", service: "Full Home Protection Combo", time: "8 mins ago" },
+  { name: "Vijay M. from Gachibowli", service: "Bed Bugs Treatment", time: "8 mins ago" },
   { name: "Pooja D. from Kondapur", service: "Bed Bugs Steam Treatment", time: "12 mins ago" },
-  { name: "Arun R. from Hitec City", service: "Kitchen Shield Package", time: "16 mins ago" }
+  { name: "Arun R. from Hitec City", service: "Cockroach Gel Treatment", time: "16 mins ago" }
 ];
 let rbIdx = 0;
 function showNextRecentBooking(){
@@ -1600,7 +1393,6 @@ function toast(m){
 }
 
 renderCards();
-renderCombos();
 renderCart();
 go("home");
 </script>
