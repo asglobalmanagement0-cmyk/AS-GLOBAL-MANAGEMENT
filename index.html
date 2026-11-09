@@ -6,7 +6,7 @@
 <title>AS Global Management — Certified Pest Control & Disinfection</title>
 <meta name="description" content="Say Goodbye to Pests... Forever. Book government-certified, odorless pest control in 60 seconds. 30-day warranty, pay after service.">
 
-<!-- ============ Large Banner Link Preview (WhatsApp, Facebook, Twitter, Telegram) ============ -->
+<!-- Large Banner Link Preview (WhatsApp, Facebook, Twitter, Telegram) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://asglobal.com/">
 <meta property="og:title" content="AS Global Management — Say Goodbye to Pests... Forever">
@@ -701,7 +701,8 @@
         <div class="bhk-pill-group">
           <button class="bhk-btn active" onclick="setBHK('1bhk', this)">1 BHK</button>
           <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
-          <button class="bhk-btn" onclick="setBhk('3bhk', this)">3 BHK</button>
+          <!-- FIXED TYPO: setBHK capital H -->
+          <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
           <button class="bhk-btn" onclick="setBHK('villa', this)">Villa / 4+ BHK</button>
           <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial</button>
         </div>
@@ -808,7 +809,6 @@
           <div class="row2">
             <div class="field" id="f-date">
               <label>Preferred appointment date</label>
-              <!-- Smart Date Selector Pills -->
               <div class="quick-dates" id="quick-date-container">
                 <button type="button" class="qdate-pill active" id="pill-today" onclick="setQuickDate(0, this)">Today</button>
                 <button type="button" class="qdate-pill" id="pill-tmrw" onclick="setQuickDate(1, this)">Tomorrow</button>
@@ -819,7 +819,6 @@
             </div>
             <div class="field" id="f-slot">
               <label>Arrival slot</label>
-              <!-- Dynamically populated to eliminate expired past hours -->
               <select id="in-slot" onchange="checkFieldLive('f-slot', this.value !== '')">
                 <option value="">Select time slot…</option>
               </select>
@@ -1048,7 +1047,7 @@ function getPrice(base){
   return Math.round((base * BHK_MULTIPLIERS[currentBHK]) / 10) * 10;
 }
 
-var CART_KEY = "asgm_cart_v11", BOOKINGS_KEY = "asgm_bookings_v11";
+var CART_KEY = "asgm_cart_v12", BOOKINGS_KEY = "asgm_bookings_v12";
 var cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
 var latestBooking = null;
 var activeView = "home";
@@ -1064,6 +1063,14 @@ var AVAILABLE_SLOTS = [
   { label: "02:00 PM – 05:00 PM", cutoffHour: 17 },
   { label: "05:00 PM – 08:00 PM", cutoffHour: 20 }
 ];
+
+/* Safe local calendar date formatting (Avoids UTC midnight bugs) */
+function formatLocalDate(d) {
+  var year = d.getFullYear();
+  var month = String(d.getMonth() + 1).padStart(2, '0');
+  var day = String(d.getDate()).padStart(2, '0');
+  return year + '-' + month + '-' + day;
+}
 
 /* Property Switcher */
 function setBHK(bhk, btn){
@@ -1218,7 +1225,7 @@ function isPhoneValid(val) {
   if (clean.length === 12 && clean.startsWith("91")) clean = clean.slice(2);
 
   if (!/^[6-9]\d{9}$/.test(clean)) return false;
-  if (/^(\d)\1{9}$/.test(clean)) return false; // Blocks 9999999999, etc.
+  if (/^(\d)\1{9}$/.test(clean)) return false; // Blocks 9999999999, 8888888888, etc.
 
   var fakeDummies = [
     "1234567890", "9876543210", "9898989898", 
@@ -1265,7 +1272,7 @@ function refreshSlots() {
 
   var dateVal = dateInput.value;
   var now = new Date();
-  var todayStr = now.toISOString().split("T")[0];
+  var todayStr = formatLocalDate(now);
   var isToday = (dateVal === todayStr);
   var currentHour = now.getHours();
 
@@ -1311,7 +1318,7 @@ function setQuickDate(offsetDays, btn){
   
   var d = new Date();
   d.setDate(d.getDate() + offsetDays);
-  $("in-date").value = d.toISOString().split("T")[0];
+  $("in-date").value = formatLocalDate(d);
 
   checkFieldLive("f-date", true);
   refreshSlots();
@@ -1440,6 +1447,9 @@ function confirmBooking(e){
     cart = []; saveCart();
     $("book-form").reset();
     document.querySelectorAll(".field").forEach(function(f){ f.classList.remove("valid","invalid"); });
+
+    // Restore date & slots after form reset
+    resetBookingFormDates();
 
     confirmBtn.classList.remove("is-loading");
     confirmText.textContent = "Confirm Visit (Pay Post-Service) ✔";
@@ -1594,7 +1604,7 @@ function exportToCSV(){
   var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   var link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.setAttribute("download", "AS_Global_Bookings_" + new Date().toISOString().split("T")[0] + ".csv");
+  link.setAttribute("download", "AS_Global_Bookings_" + formatLocalDate(new Date()) + ".csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -1610,10 +1620,9 @@ function toast(m){
   toastT = setTimeout(function() { t.classList.remove("show"); }, 2400);
 }
 
-/* Initialization */
-function initApp(){
+function resetBookingFormDates(){
   var now = new Date();
-  var minDateStr = now.toISOString().split("T")[0];
+  var minDateStr = formatLocalDate(now);
   var dateInput = $("in-date");
   if (dateInput) dateInput.min = minDateStr;
 
@@ -1624,7 +1633,11 @@ function initApp(){
   } else {
     setQuickDate(0, $("pill-today"));
   }
+}
 
+/* App Initialization */
+function initApp(){
+  resetBookingFormDates();
   renderCards();
   renderCart();
   go("home");
