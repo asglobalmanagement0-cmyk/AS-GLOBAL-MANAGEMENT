@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AS Global Management — Certified Pest Control & Disinfection</title>
-<meta name="description" content="Book government-certified pest control in 60 seconds. Odorless chemicals, 30-day warranty, and pay after service. Call/WhatsApp +91 95501 07466.">
+<meta name="description" content="Book government-certified pest control in 60 seconds. Odorless chemicals, 30-day warranty, and pay after service. Safe treatment for homes and offices.">
 
 <!-- Open Graph Tags -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://asglobal.com/">
 <meta property="og:title" content="AS Global Management — Certified Pest Control from ₹799">
-<meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Re-Service Warranty. Pay cash or UPI after treatment. Call +91 95501 07466.">
+<meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Re-Service Warranty. Pay cash or UPI after treatment.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
 
 <!-- Google Local Business Structured Data -->
@@ -20,8 +20,7 @@
   "@type": "HomeAndConstructionBusiness",
   "name": "AS Global Management",
   "image": "https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85",
-  "telephone": "+919550107466",
-  "email": "contact@asglobal.com",
+  "email": "asglobalmanagement@gmail.com",
   "priceRange": "₹799 - ₹4999",
   "address": {
     "@type": "PostalAddress",
@@ -200,7 +199,7 @@
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;
     background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-    color:#fff;border:none;padding:13px 24px;border-radius:14px;font-size:.95rem;font-weight:700;
+    color:#fff;border:none;padding:13px 26px;border-radius:14px;font-size:.95rem;font-weight:700;
     transition:all .2s var(--ease-spring);box-shadow:0 8px 24px var(--primary-glow);user-select:none;
     text-align:center;
   }
@@ -374,15 +373,6 @@
   .b-col b{font-size:.88rem;color:var(--slate-900)}
   .b-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px}
 
-  /* Floating WhatsApp */
-  .floating-wa{
-    position:fixed;bottom:24px;right:24px;z-index:90;display:flex;align-items:center;gap:9px;
-    background:linear-gradient(135deg,#25d366,#1da851);color:#fff;padding:12px 20px 12px 14px;border-radius:999px;
-    box-shadow:0 12px 30px rgba(37,211,102,.45);font-weight:700;font-size:.88rem;
-    cursor:pointer;transition:all .3s var(--ease-spring);text-decoration:none;
-  }
-  .floating-wa svg{width:24px;height:24px;fill:#fff;flex:none}
-
   /* Toast Notification */
   #toast{
     position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
@@ -440,10 +430,9 @@
   }
 
   /* ========================================================
-     COMPLETE RESPONSIVE / MOBILE ENHANCEMENTS (< 768px)
+     MOBILE RESPONSIVENESS (< 768px)
      ======================================================== */
   @media (max-width: 768px) {
-    /* Header & Smooth horizontal swipe navigation */
     .header-inner{
       height: auto;
       padding: 10px 14px;
@@ -468,7 +457,6 @@
       font-size: .82rem;
     }
 
-    /* Hero section */
     .hero{
       grid-template-columns: 1fr;
       padding: 24px 16px 14px;
@@ -485,7 +473,7 @@
     .hero-cta .btn{
       width: 100%;
       justify-content: center;
-      padding: 13px 20px;
+      padding: 14px 20px;
     }
     .hero-stats{
       display: grid;
@@ -494,7 +482,6 @@
       padding-top: 18px;
     }
 
-    /* Property size selector (Swipeable horizontal pill group) */
     .calc-bar{
       padding: 14px;
       margin: 18px 0;
@@ -519,29 +506,17 @@
       font-size: .78rem;
     }
 
-    /* Grid & Cards - single clean column on phones */
     .grid{
       grid-template-columns: 1fr;
       gap: 14px;
     }
     .card{padding: 18px}
 
-    /* Booking Form Layout */
     .booking-layout{grid-template-columns: 1fr; gap: 20px}
     .panel{padding: 18px}
     .side{position: static}
     .row2{grid-template-columns: 1fr}
 
-    /* Floating WhatsApp Button - Sleek circle so it doesn't cover checkout */
-    .floating-wa{
-      bottom: 20px;
-      right: 20px;
-      padding: 13px;
-      border-radius: 50%;
-    }
-    .floating-wa span{display: none}
-
-    /* Modals & Tables */
     .certificate-card, .admin-box{
       padding: 20px 16px;
       margin: 10px;
@@ -550,7 +525,6 @@
     .cert-header{flex-direction: column}
     .cert-seal{align-self: flex-start}
 
-    /* Footer */
     .foot-inner{grid-template-columns: 1fr; gap: 28px}
     .foot-bottom{justify-content: center; text-align: center}
   }
@@ -599,12 +573,9 @@
         <h1>Safe, odorless pest control <span>booked in 60 seconds.</span></h1>
         <p>Professional pest elimination by AS Global Management. Odorless, kid-safe, pet-safe chemicals with written warranties. <b>Pay only after service is completed.</b></p>
         
+        <!-- Only Book a Service button remains -->
         <div class="hero-cta">
           <button class="btn ripple-target" onclick="go('services')">Book a Service →</button>
-          <button class="btn whatsapp-btn ripple-target" onclick="openGeneralWhatsApp()">
-            <svg style="width:19px;height:19px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-            WhatsApp (9550107466)
-          </button>
         </div>
 
         <div class="hero-stats">
@@ -654,7 +625,6 @@
           <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
           <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
           <button class="bhk-btn" onclick="setBHK('villa', this)">Villa / 4+ BHK</button>
-          <!-- FIXED TYPO: setBHK with capital H -->
           <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial / Office</button>
         </div>
       </div>
@@ -740,7 +710,7 @@
             <span class="verified-badge">✓ Verified</span>
           </div>
           <div style="color:var(--accent)">★★★★★</div>
-          <p class="review-text">"Booked on WhatsApp at 11 AM and the team arrived by 1:30 PM for emergency rodent control. Extremely systematic entry sealing and bait placements. Highly recommended."</p>
+          <p class="review-text">"Booked online and the team arrived within hours for emergency rodent control. Extremely systematic entry sealing and bait placements. Highly recommended."</p>
         </div>
       </div>
     </div>
@@ -846,12 +816,8 @@
         <p id="success-detail" style="line-height:1.65;color:var(--slate-600)"></p>
 
         <div class="success-actions">
-          <button class="btn whatsapp-btn ripple-target" id="wa-confirm-btn" onclick="sendWhatsAppConfirmation()">
-            <svg style="width:19px;height:19px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-            Send Details to WhatsApp
-          </button>
           <button class="btn ghost ripple-target" onclick="openPrintModalCurrent()">🖨️ Warranty &amp; Invoice</button>
-          <button class="btn ghost ripple-target" onclick="go('bookings')">View Bookings</button>
+          <button class="btn ghost ripple-target" onclick="go('bookings')">View My Bookings</button>
         </div>
       </div>
     </div>
@@ -877,7 +843,7 @@
       <div>
         <h2 style="font-size:1.3rem;color:var(--primary-dark)">AS GLOBAL MANAGEMENT</h2>
         <p style="font-size:.78rem;color:var(--slate-400)">Govt. Approved Pest Management &amp; Disinfection Services</p>
-        <p style="font-size:.76rem;color:var(--slate-400)">📞 +91 95501 07466 · ✉️ contact@asglobal.com</p>
+        <p style="font-size:.76rem;color:var(--slate-400)">✉️ asglobalmanagement@gmail.com</p>
       </div>
       <div class="cert-seal">
         <span>30-DAY</span><span>SERVICE</span><span>WARRANTY</span>
@@ -949,12 +915,6 @@
   </div>
 </div>
 
-<!-- Floating WhatsApp Button -->
-<a href="https://wa.me/919550107466?text=Hello%20AS%20Global%20Management,%20I%20want%20to%20inquire%20about%20pest%20control%20services." target="_blank" class="floating-wa ripple-target" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.92-9.91-9.92z"/></svg>
-  <span>Book on WhatsApp</span>
-</a>
-
 <div id="toast"></div>
 
 <!-- Footer -->
@@ -973,10 +933,8 @@
       <div>Commercial Disinfection</div>
     </div>
     <div class="foot-col">
-      <h4>Direct Contact</h4>
-      <div>📞 +91 95501 07466</div>
-      <div>💬 WhatsApp: +91 95501 07466</div>
-      <div>✉️ contact@asglobal.com</div>
+      <h4>Customer Support</h4>
+      <div>✉️ asglobalmanagement@gmail.com</div>
       <div>⏱️ 7 Days a week: 8 AM – 9 PM</div>
     </div>
   </div>
@@ -992,20 +950,15 @@
 /* =========================================================================
    SETTINGS & CONFIGURATION
    ========================================================================= */
-var OWNER_PHONE = "919550107466";
-var OWNER_EMAIL = "contact@asglobal.com";
+var OWNER_EMAIL = "asglobalmanagement@gmail.com";
 var ADMIN_PIN = "5665";
 
 // Telegram Bot Credentials (Used for live alerts on your phone)
 var TELEGRAM_BOT_TOKEN = "9037706489:AAEjP-3zV8qt3m5fmWK0gwMx_GiMLWV80HM"; 
 var TELEGRAM_CHAT_ID = "5795622394";   
 
-// OPTIONAL: If you create a free Google Sheets Webhook, paste its URL here
-// to save all customer bookings automatically to your Google Spreadsheet:
 var GOOGLE_SHEET_WEBHOOK_URL = ""; 
 
-// Auto-cleaner
-OWNER_PHONE = String(OWNER_PHONE).replace(/\D/g, "");
 ADMIN_PIN = String(ADMIN_PIN).trim();
 TELEGRAM_BOT_TOKEN = String(TELEGRAM_BOT_TOKEN).trim();
 TELEGRAM_CHAT_ID = String(TELEGRAM_CHAT_ID).trim();
@@ -1036,7 +989,7 @@ function getPrice(base){
   return Math.round((base * BHK_MULTIPLIERS[currentBHK]) / 10) * 10;
 }
 
-var CART_KEY = "asgm_cart_v6", BOOKINGS_KEY = "asgm_bookings_v6";
+var CART_KEY = "asgm_cart_v7", BOOKINGS_KEY = "asgm_bookings_v7";
 var cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
 var latestBooking = null;
 
@@ -1199,7 +1152,6 @@ function validate(){
 
 /* Background Auto-Lead Dispatch */
 async function dispatchLeadNotification(booking) {
-  // 1. Send to Telegram
   var token = TELEGRAM_BOT_TOKEN;
   var chatId = TELEGRAM_CHAT_ID;
 
@@ -1223,7 +1175,6 @@ async function dispatchLeadNotification(booking) {
     }).catch(function(e) { console.warn("Telegram dispatch failed:", e); });
   }
 
-  // 2. Send to Google Sheets (if configured)
   if (GOOGLE_SHEET_WEBHOOK_URL) {
     fetch(GOOGLE_SHEET_WEBHOOK_URL, {
       method: "POST",
@@ -1266,7 +1217,6 @@ function confirmBooking(e){
   bookings.unshift(booking);
   saveBookings(bookings);
 
-  // Send lead in background
   dispatchLeadNotification(booking);
 
   $("ref-no").textContent = ref;
@@ -1277,31 +1227,6 @@ function confirmBooking(e){
   cart = []; saveCart();
   $("book-form").reset();
   go("success");
-}
-
-function sendWhatsAppConfirmation(){
-  if(!latestBooking) return;
-  var b = latestBooking;
-  var msg = "*NEW BOOKING CONFIRMATION* %0A" +
-            "--------------------------------%0A" +
-            "*Ref No:* " + b.ref + "%0A" +
-            "*Name:* " + b.name + "%0A" +
-            "*Phone:* " + b.phone + "%0A" +
-            "*Plan:* " + b.type + "%0A" +
-            "*Address:* " + b.address + "%0A" +
-            "*Date:* " + b.date + "%0A" +
-            "*Slot:* " + b.slot + "%0A" +
-            "*Services:* " + b.services + "%0A" +
-            "*Total:* " + fmt(b.total) + " (Pay After Service)%0A" +
-            "*Notes:* " + (b.notes || "None") + "%0A" +
-            "--------------------------------%0A" +
-            "Please dispatch our technician. Thank you!";
-  window.open("https://wa.me/" + OWNER_PHONE + "?text=" + msg, "_blank");
-}
-
-function openGeneralWhatsApp(){
-  var msg = encodeURIComponent("Hello AS Global Management, I would like to inquire/book a pest control treatment.");
-  window.open("https://wa.me/" + OWNER_PHONE + "?text=" + msg, "_blank");
 }
 
 /* Print Modal with Safe Reference Lookup */
