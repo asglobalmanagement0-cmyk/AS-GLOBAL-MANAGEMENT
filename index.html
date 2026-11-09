@@ -17,7 +17,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1200">
 
-<!-- Forces "Large Banner Card" style preview on mobile apps -->
+<!-- Large Banner Card Style on Social Media -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AS Global Management — Pest Control Services">
 <meta name="twitter:description" content="Safe, odorless pest control. 30-Day Free Re-Service Guarantee. Pay after service.">
@@ -123,15 +123,12 @@
   .logo:hover{transform:scale(1.02)}
   .logo:active{transform:scale(.97)}
 
-  /* Custom Circular Logo Display */
   .logo-mark{
     width:48px;height:48px;border-radius:50%;flex:none;
     overflow:hidden;background:#fff;border:2px solid var(--primary);
     display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px var(--primary-glow);
   }
-  .brand-logo-img{
-    width:100%;height:100%;object-fit:cover;display:block;
-  }
+  .brand-logo-img{width:100%;height:100%;object-fit:cover;display:block}
 
   .brand-title{font-size:1.02rem;font-weight:800;color:var(--slate-900);line-height:1.15}
   .brand-title small{display:block;font-family:'Plus Jakarta Sans';font-size:.65rem;font-weight:700;color:var(--slate-400);letter-spacing:.12em;text-transform:uppercase}
@@ -562,9 +559,13 @@
 <header>
   <div class="header-inner">
     <div class="logo ripple-target" onclick="handleLogoClick()" title="AS Global Management (Click 3 times for Admin)">
-      <!-- Custom Image Logo -->
+      <!-- Custom Image Logo with SVG Fallback -->
       <div class="logo-mark">
-        <img src="logo.jpg" alt="AS Global Logo" class="brand-logo-img">
+        <img src="logo.jpg" alt="AS Global Logo" class="brand-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <svg style="display:none;width:24px;height:24px" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2.5 4.5 5.2v5.6c0 4.6 3.1 8.2 7.5 10.7 4.4-2.5 7.5-6.1 7.5-10.7V5.2L12 2.5Z" fill="#059669"/>
+          <path d="m8.4 12 2.5 2.7 4.7-5.2" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
       <div class="brand-title">AS GLOBAL MANAGEMENT<small>Pest Control &amp; Disinfection</small></div>
     </div>
@@ -700,7 +701,7 @@
         <div class="bhk-pill-group">
           <button class="bhk-btn active" onclick="setBHK('1bhk', this)">1 BHK</button>
           <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
-          <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
+          <button class="bhk-btn" onclick="setBhk('3bhk', this)">3 BHK</button>
           <button class="bhk-btn" onclick="setBHK('villa', this)">Villa / 4+ BHK</button>
           <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial</button>
         </div>
@@ -904,7 +905,7 @@
         <p style="font-size:.78rem;color:var(--slate-400)">Govt. Approved Pest Management &amp; Disinfection Services</p>
         <p style="font-size:.76rem;color:var(--slate-400)">✉️ asglobalmanagement@gmail.com</p>
       </div>
-      <img src="logo.jpg" alt="AS Global Seal" class="cert-logo">
+      <img src="logo.jpg" alt="AS Global Seal" class="cert-logo" onerror="this.style.display='none'">
     </div>
     <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:12px">
       <div><b>Booking Ref:</b> <span id="m-ref"></span></div>
@@ -979,7 +980,7 @@
   <div class="foot-inner">
     <div class="foot-brand">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-        <img src="logo.jpg" alt="Logo" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #34d399">
+        <img src="logo.jpg" alt="Logo" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #34d399" onerror="this.style.display='none'">
         <div class="brand-title" style="color:#fff">AS GLOBAL MANAGEMENT<small style="color:#6ee7b7">Pest Control Services</small></div>
       </div>
       <p>Government certified, eco-safe pest management solutions for residential and commercial spaces. Odorless treatments with written 30-day warranty coverage.</p>
@@ -1047,7 +1048,7 @@ function getPrice(base){
   return Math.round((base * BHK_MULTIPLIERS[currentBHK]) / 10) * 10;
 }
 
-var CART_KEY = "asgm_cart_v10", BOOKINGS_KEY = "asgm_bookings_v10";
+var CART_KEY = "asgm_cart_v11", BOOKINGS_KEY = "asgm_bookings_v11";
 var cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
 var latestBooking = null;
 var activeView = "home";
@@ -1055,7 +1056,7 @@ var activeView = "home";
 var $ = function(id) { return document.getElementById(id); };
 var fmt = function(n) { return "₹" + n.toLocaleString("en-IN"); };
 
-/* Time Slot Definitions with Hour Cutoffs */
+/* Time Slot Definitions with Cutoff Hours */
 var AVAILABLE_SLOTS = [
   { label: "⚡ Immediate / Emergency (Within 90 mins)", cutoffHour: 19 },
   { label: "08:00 AM – 11:00 AM", cutoffHour: 11 },
@@ -1209,16 +1210,15 @@ function renderCart(){
   $("cart-total").textContent = fmt(total);
 }
 
-/* =========================================================================
-   STRICT PHONE VALIDATOR (Rejects 9999999999, etc.)
-   ========================================================================= */
+/* ================= STRICT PHONE VALIDATION ================= */
 function isPhoneValid(val) {
+  if (!val) return false;
   var clean = String(val).replace(/\D/g, "");
   if (clean.length === 11 && clean.startsWith("0")) clean = clean.slice(1);
   if (clean.length === 12 && clean.startsWith("91")) clean = clean.slice(2);
 
   if (!/^[6-9]\d{9}$/.test(clean)) return false;
-  if (/^(\d)\1{9}$/.test(clean)) return false;
+  if (/^(\d)\1{9}$/.test(clean)) return false; // Blocks 9999999999, etc.
 
   var fakeDummies = [
     "1234567890", "9876543210", "9898989898", 
@@ -1257,14 +1257,13 @@ function checkFieldLive(fieldId, isValid){
   }
 }
 
-/* =========================================================================
-   DYNAMIC REAL-TIME SLOT FILTER
-   ========================================================================= */
+/* ================= DYNAMIC REAL-TIME SLOTS ================= */
 function refreshSlots() {
-  var dateVal = $("in-date").value;
+  var dateInput = $("in-date");
   var slotSelect = $("in-slot");
-  if(!slotSelect) return;
+  if (!dateInput || !slotSelect) return;
 
+  var dateVal = dateInput.value;
   var now = new Date();
   var todayStr = now.toISOString().split("T")[0];
   var isToday = (dateVal === todayStr);
@@ -1296,11 +1295,13 @@ function refreshSlots() {
 
   if (isToday && availableSlotsCount === 0) {
     toast("⏰ Today's visiting hours have ended. Switched to Tomorrow!");
-    setQuickDate(1, $("pill-tmrw"));
+    var tmrwBtn = $("pill-tmrw");
+    if (tmrwBtn) setQuickDate(1, tmrwBtn);
     return;
   }
 
-  var isCurrentlyValid = slotSelect.value !== "" && !slotSelect.selectedOptions[0].disabled;
+  var selOpt = slotSelect.options[slotSelect.selectedIndex];
+  var isCurrentlyValid = selOpt && !selOpt.disabled && selOpt.value !== "";
   checkFieldLive("f-slot", isCurrentlyValid);
 }
 
@@ -1322,22 +1323,11 @@ function onDateChanged() {
   refreshSlots();
 }
 
-// Initialize Minimum Date & Initial Slots
-var nowInit = new Date();
-var minDateStr = nowInit.toISOString().split("T")[0];
-$("in-date").min = minDateStr;
-
-if (nowInit.getHours() >= 20) {
-  $("pill-today").style.display = "none";
-  setQuickDate(1, $("pill-tmrw"));
-} else {
-  setQuickDate(0, $("pill-today"));
-}
-
 function validate(){
   var isPhoneOk = isPhoneValid($("in-phone").value);
-  var selectedSlot = $("in-slot").value;
-  var isSlotOk = selectedSlot !== "" && !$("in-slot").selectedOptions[0].disabled;
+  var slotSelect = $("in-slot");
+  var selOpt = slotSelect.options[slotSelect.selectedIndex];
+  var isSlotOk = selOpt && !selOpt.disabled && selOpt.value !== "";
 
   var checks = [
     ["f-name", $("in-name").value.trim().length >= 2],
@@ -1444,7 +1434,7 @@ function confirmBooking(e){
 
     $("ref-no").textContent = ref;
     $("success-detail").innerHTML = 
-      "Treatment"Treatment <b>" + names + "</b> scheduled for <b>" + new Date(booking.date).toDateString() + "</b> (" + booking.slot + ").<br>" +
+      "Treatment <b>" + names + "</b> scheduled for <b>" + new Date(booking.date).toDateString() + "</b> (" + booking.slot + ").<br>" +
       "Payable amount: <b>" + fmt(total) + "</b> after completion. Our technician will contact <b>" + booking.phone + "</b> before arrival.";
 
     cart = []; saveCart();
@@ -1620,9 +1610,27 @@ function toast(m){
   toastT = setTimeout(function() { t.classList.remove("show"); }, 2400);
 }
 
-renderCards();
-renderCart();
-go("home");
+/* Initialization */
+function initApp(){
+  var now = new Date();
+  var minDateStr = now.toISOString().split("T")[0];
+  var dateInput = $("in-date");
+  if (dateInput) dateInput.min = minDateStr;
+
+  if (now.getHours() >= 20) {
+    var todayPill = $("pill-today");
+    if (todayPill) todayPill.style.display = "none";
+    setQuickDate(1, $("pill-tmrw"));
+  } else {
+    setQuickDate(0, $("pill-today"));
+  }
+
+  renderCards();
+  renderCart();
+  go("home");
+}
+
+window.addEventListener("DOMContentLoaded", initApp);
 </script>
 </body>
 </html>
