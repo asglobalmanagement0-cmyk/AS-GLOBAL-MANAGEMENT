@@ -4,14 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AS Global Management — Certified Pest Control & Disinfection</title>
-<meta name="description" content="Book government-certified pest control in 60 seconds. Odorless chemicals, 30-day warranty, and pay after service. Safe treatment for homes and offices.">
+<meta name="description" content="Say Goodbye to Pests... Forever. Book government-certified, odorless pest control in 60 seconds. 30-day warranty, pay after service.">
 
-<!-- Open Graph Tags -->
+<!-- ============ Large Banner Link Preview (WhatsApp, Facebook, Twitter, Telegram) ============ -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://asglobal.com/">
-<meta property="og:title" content="AS Global Management — Certified Pest Control from ₹799">
-<meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Re-Service Warranty. Pay cash or UPI after treatment.">
-<meta property="og:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
+<meta property="og:title" content="AS Global Management — Say Goodbye to Pests... Forever">
+<meta property="og:description" content="Safe, odorless cockroach, termite & bed bug elimination. 30-Day Free Warranty. Pay cash or UPI after treatment.">
+<meta property="og:image" content="logo.jpg">
+<meta property="og:image:secure_url" content="logo.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+
+<!-- Forces "Large Banner Card" style preview on mobile apps -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AS Global Management — Pest Control Services">
+<meta name="twitter:description" content="Safe, odorless pest control. 30-Day Free Re-Service Guarantee. Pay after service.">
+<meta name="twitter:image" content="logo.jpg">
+
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="logo.jpg">
 
 <!-- Google Local Business Structured Data -->
 <script type="application/ld+json">
@@ -19,7 +32,8 @@
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
   "name": "AS Global Management",
-  "image": "https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85",
+  "image": "logo.jpg",
+  "logo": "logo.jpg",
   "email": "asglobalmanagement@gmail.com",
   "priceRange": "₹799 - ₹4999",
   "address": {
@@ -108,12 +122,17 @@
   .logo{display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;transition:transform .2s var(--ease-spring)}
   .logo:hover{transform:scale(1.02)}
   .logo:active{transform:scale(.97)}
+
+  /* Custom Circular Logo Display */
   .logo-mark{
-    width:44px;height:44px;border-radius:14px;flex:none;
-    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    width:48px;height:48px;border-radius:50%;flex:none;
+    overflow:hidden;background:#fff;border:2px solid var(--primary);
     display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px var(--primary-glow);
   }
-  .logo-mark svg{width:24px;height:24px}
+  .brand-logo-img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+
   .brand-title{font-size:1.02rem;font-weight:800;color:var(--slate-900);line-height:1.15}
   .brand-title small{display:block;font-family:'Plus Jakarta Sans';font-size:.65rem;font-weight:700;color:var(--slate-400);letter-spacing:.12em;text-transform:uppercase}
   nav{display:flex;align-items:center;gap:6px}
@@ -330,7 +349,7 @@
   .field .err{color:var(--danger);font-size:.75rem;margin-top:5px;display:none;font-weight:600}
   .field.invalid .err{display:block}
 
-  /* Smart Live Validation Checkmark */
+  /* Live Validation Checkmark */
   .field.valid input, .field.valid textarea{border-color:var(--primary);background:#f0fdf4}
   .field.valid::after{
     content:"✓";position:absolute;right:14px;top:38px;color:var(--primary);
@@ -453,8 +472,8 @@
     background:#fff;max-width:640px;width:100%;border-radius:20px;padding:30px;
     position:relative;box-shadow:0 25px 60px rgba(0,0,0,.2);border:2px solid #cbe4d6;
   }
-  .cert-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--line);padding-bottom:16px;margin-bottom:16px;gap:12px}
-  .cert-seal{border:2px dashed var(--primary);border-radius:50%;width:74px;height:74px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-size:.62rem;font-weight:800;color:var(--primary);flex:none}
+  .cert-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--line);padding-bottom:16px;margin-bottom:16px;gap:12px}
+  .cert-logo{width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--primary)}
   .cert-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.86rem}
   .cert-table td{padding:7px 0;border-bottom:1px solid #f0f4f2}
   .cert-table td:last-child{text-align:right;font-weight:700}
@@ -522,8 +541,7 @@
     .row2{grid-template-columns: 1fr}
 
     .certificate-card, .admin-box{padding: 20px 16px;margin: 10px;max-height: 88vh}
-    .cert-header{flex-direction: column}
-    .cert-seal{align-self: flex-start}
+    .cert-header{flex-direction: column;align-items: flex-start}
 
     .foot-inner{grid-template-columns: 1fr; gap: 28px}
     .foot-bottom{justify-content: center; text-align: center}
@@ -544,11 +562,9 @@
 <header>
   <div class="header-inner">
     <div class="logo ripple-target" onclick="handleLogoClick()" title="AS Global Management (Click 3 times for Admin)">
+      <!-- Custom Image Logo -->
       <div class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 2.5 4.5 5.2v5.6c0 4.6 3.1 8.2 7.5 10.7 4.4-2.5 7.5-6.1 7.5-10.7V5.2L12 2.5Z" fill="#fff" fill-opacity=".95"/>
-          <path d="m8.4 12 2.5 2.7 4.7-5.2" stroke="#059669" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <img src="logo.jpg" alt="AS Global Logo" class="brand-logo-img">
       </div>
       <div class="brand-title">AS GLOBAL MANAGEMENT<small>Pest Control &amp; Disinfection</small></div>
     </div>
@@ -888,9 +904,7 @@
         <p style="font-size:.78rem;color:var(--slate-400)">Govt. Approved Pest Management &amp; Disinfection Services</p>
         <p style="font-size:.76rem;color:var(--slate-400)">✉️ asglobalmanagement@gmail.com</p>
       </div>
-      <div class="cert-seal">
-        <span>30-DAY</span><span>SERVICE</span><span>WARRANTY</span>
-      </div>
+      <img src="logo.jpg" alt="AS Global Seal" class="cert-logo">
     </div>
     <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:12px">
       <div><b>Booking Ref:</b> <span id="m-ref"></span></div>
@@ -964,7 +978,10 @@
 <footer>
   <div class="foot-inner">
     <div class="foot-brand">
-      <div class="brand-title" style="color:#fff">AS GLOBAL MANAGEMENT<small style="color:#6ee7b7">Pest Control Services</small></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <img src="logo.jpg" alt="Logo" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:1.5px solid #34d399">
+        <div class="brand-title" style="color:#fff">AS GLOBAL MANAGEMENT<small style="color:#6ee7b7">Pest Control Services</small></div>
+      </div>
       <p>Government certified, eco-safe pest management solutions for residential and commercial spaces. Odorless treatments with written 30-day warranty coverage.</p>
     </div>
     <div class="foot-col">
@@ -1030,7 +1047,7 @@ function getPrice(base){
   return Math.round((base * BHK_MULTIPLIERS[currentBHK]) / 10) * 10;
 }
 
-var CART_KEY = "asgm_cart_v9", BOOKINGS_KEY = "asgm_bookings_v9";
+var CART_KEY = "asgm_cart_v10", BOOKINGS_KEY = "asgm_bookings_v10";
 var cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
 var latestBooking = null;
 var activeView = "home";
@@ -1193,20 +1210,16 @@ function renderCart(){
 }
 
 /* =========================================================================
-   STRICT PHONE VALIDATOR (Blocks repeated dummy numbers like 9999999999)
+   STRICT PHONE VALIDATOR (Rejects 9999999999, etc.)
    ========================================================================= */
 function isPhoneValid(val) {
   var clean = String(val).replace(/\D/g, "");
   if (clean.length === 11 && clean.startsWith("0")) clean = clean.slice(1);
   if (clean.length === 12 && clean.startsWith("91")) clean = clean.slice(2);
 
-  // Must be strictly 10 digits starting with 6, 7, 8, or 9
   if (!/^[6-9]\d{9}$/.test(clean)) return false;
-
-  // BLOCK ALL REPEATING NUMBERS: e.g. 9999999999, 8888888888, 7777777777
   if (/^(\d)\1{9}$/.test(clean)) return false;
 
-  // BLOCK SEQUENTIAL DUMMIES
   var fakeDummies = [
     "1234567890", "9876543210", "9898989898", 
     "9090909090", "9123456789", "9999988888", "9876501234"
@@ -1225,7 +1238,6 @@ function checkPhoneLive(input) {
     field.classList.add("valid");
   } else {
     field.classList.remove("valid");
-    // If user has typed 10 digits and it's a fake/repeated number, show error immediately
     if (clean.length >= 10) {
       field.classList.add("invalid");
     } else {
@@ -1246,7 +1258,7 @@ function checkFieldLive(fieldId, isValid){
 }
 
 /* =========================================================================
-   DYNAMIC REAL-TIME SLOT FILTER (Disables Expired Today Slots)
+   DYNAMIC REAL-TIME SLOT FILTER
    ========================================================================= */
 function refreshSlots() {
   var dateVal = $("in-date").value;
@@ -1258,7 +1270,6 @@ function refreshSlots() {
   var isToday = (dateVal === todayStr);
   var currentHour = now.getHours();
 
-  // Save current selection if still valid
   var previousSelection = slotSelect.value;
   slotSelect.innerHTML = '<option value="">Select time slot…</option>';
   var availableSlotsCount = 0;
@@ -1283,14 +1294,12 @@ function refreshSlots() {
     slotSelect.appendChild(opt);
   });
 
-  // If customer is on Today, but all visiting slots for today have expired:
   if (isToday && availableSlotsCount === 0) {
     toast("⏰ Today's visiting hours have ended. Switched to Tomorrow!");
     setQuickDate(1, $("pill-tmrw"));
     return;
   }
 
-  // Live validate slot selection
   var isCurrentlyValid = slotSelect.value !== "" && !slotSelect.selectedOptions[0].disabled;
   checkFieldLive("f-slot", isCurrentlyValid);
 }
@@ -1318,7 +1327,6 @@ var nowInit = new Date();
 var minDateStr = nowInit.toISOString().split("T")[0];
 $("in-date").min = minDateStr;
 
-// If already past 8 PM tonight, disable the "Today" pill and pick Tomorrow
 if (nowInit.getHours() >= 20) {
   $("pill-today").style.display = "none";
   setQuickDate(1, $("pill-tmrw"));
@@ -1436,7 +1444,7 @@ function confirmBooking(e){
 
     $("ref-no").textContent = ref;
     $("success-detail").innerHTML = 
-      "Treatment <b>" + names + "</b> scheduled for <b>" + new Date(booking.date).toDateString() + "</b> (" + booking.slot + ").<br>" +
+      "Treatment"Treatment <b>" + names + "</b> scheduled for <b>" + new Date(booking.date).toDateString() + "</b> (" + booking.slot + ").<br>" +
       "Payable amount: <b>" + fmt(total) + "</b> after completion. Our technician will contact <b>" + booking.phone + "</b> before arrival.";
 
     cart = []; saveCart();
