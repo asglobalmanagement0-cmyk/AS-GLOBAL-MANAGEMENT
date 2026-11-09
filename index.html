@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -16,6 +16,38 @@
 <meta name="twitter:title" content="AS Global Management — Certified Pest Control">
 <meta name="twitter:description" content="Safe & odorless pest treatments with written 30-day warranty. Book in 60s.">
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85">
+
+<!-- ============ Google Local Business Structured Data (SEO) ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "AS Global Management",
+  "image": "https://images.unsplash.com/photo-1581578731567-c884e2816aaa?w=1200&h=630&fit=crop&q=85",
+  "telephone": "+919550107466",
+  "email": "contact@asglobal.com",
+  "priceRange": "₹799 - ₹4999",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Hyderabad",
+    "addressRegion": "Telangana",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 17.4483,
+    "longitude": 78.3915
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    ],
+    "opens": "08:00",
+    "closes": "21:00"
+  }
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -226,7 +258,7 @@
   .b-item b{font-size:.88rem;display:block}
   .b-item span{font-size:.76rem;color:var(--slate-400)}
 
-  /* ============ Combo Packages ============ */
+  /* Combos */
   .combos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:22px;margin-bottom:56px}
   .combo-card{
     background:#fff;border:2px solid rgba(5,150,105,.3);border-radius:var(--radius);
@@ -242,7 +274,7 @@
   .combo-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:14px;border-top:1px dashed var(--line)}
   .strike-price{font-size:.9rem;color:var(--slate-400);text-decoration:line-through;margin-right:6px}
 
-  /* ============ Before & After Slider ============ */
+  /* Before & After */
   .ba-box{
     position:relative;max-width:880px;margin:0 auto 60px;aspect-ratio:16/9;
     border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 20px 45px rgba(0,0,0,.15);
@@ -268,7 +300,7 @@
   .ba-tag-before{left:14px;background:rgba(239,68,68,.8)}
   .ba-tag-after{right:14px;background:rgba(5,150,105,.85)}
 
-  /* ============ Service Cards ============ */
+  /* Services Grid */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
   .card{
     background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
@@ -309,7 +341,7 @@
   .add-btn:active{transform:scale(.92)}
   .add-btn.added{background:var(--primary);color:#fff;border-color:var(--primary)}
 
-  /* ============ Live Booking Toast ============ */
+  /* Social Proof Toast */
   #recent-booking-toast{
     position:fixed;bottom:26px;left:26px;z-index:90;
     background:#fff;border:1px solid rgba(5,150,105,.3);border-radius:16px;
@@ -344,7 +376,7 @@
     padding:3px 9px;border-radius:999px;display:inline-flex;align-items:center;gap:4px;
   }
 
-  /* Booking Layout */
+  /* Booking Form */
   .booking-layout{display:grid;grid-template-columns:1.35fr .95fr;gap:28px;align-items:start}
   @media(max-width:880px){.booking-layout{grid-template-columns:1fr}}
   .panel{
@@ -465,7 +497,7 @@
   .cert-warranty-box{background:#f4fbf7;border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:20px 0}
   .cert-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:20px}
 
-  /* ============ Admin Dashboard Modal ============ */
+  /* Admin Dashboard */
   .admin-box{
     background:#fff;max-width:940px;width:100%;border-radius:20px;padding:30px;
     box-shadow:0 25px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto;
@@ -601,7 +633,7 @@
       </div>
     </div>
 
-    <!-- ============ Interactive Before / After Visual Proof Slider ============ -->
+    <!-- Before / After Slider -->
     <div class="wrap page" style="padding-top:60px">
       <div class="sec-head">
         <span class="eyebrow">Real Visual Results</span>
@@ -621,7 +653,7 @@
         <div class="ba-tag ba-tag-after">✨ AFTER (100% Pest-Free &amp; Sanitized)</div>
       </div>
 
-      <!-- ============ Property-Based Dynamic Price Calculator ============ -->
+      <!-- Property-Based Dynamic Price Calculator -->
       <div class="calc-bar">
         <div class="calc-title">
           <span>🏠 Select Property Size for Instant Pricing:</span>
@@ -635,7 +667,7 @@
         </div>
       </div>
 
-      <!-- ============ Package Combo Discounts ============ -->
+      <!-- Package Combo Discounts -->
       <div class="sec-head">
         <span class="eyebrow">Best Value Combos</span>
         <h2>Save Big with All-in-One Packages</h2>
@@ -665,7 +697,6 @@
         <p>Select your required services and proceed to schedule your preferred date &amp; time.</p>
       </div>
 
-      <!-- Property Size Switcher on Services Page too -->
       <div class="calc-bar">
         <div class="calc-title"><span>🏠 Property Size:</span></div>
         <div class="bhk-pill-group">
@@ -903,7 +934,7 @@
   </div>
 </div>
 
-<!-- ============ Admin Dashboard Modal (PIN Protected) ============ -->
+<!-- Admin Dashboard Modal -->
 <div id="admin-modal" class="modal-overlay" onclick="if(event.target===this)closeAdminModal()">
   <div class="admin-box">
     <div class="admin-header">
@@ -989,7 +1020,15 @@ const OWNER_PHONE = "919550107466";
 const OWNER_EMAIL = "contact@asglobal.com";
 const ADMIN_PIN = "1234";
 
-/* ============ Multiplier for Dynamic BHK Pricing ============ */
+/* =========================================================================
+   LEAD DISPATCH WEBHOOK CONFIGURATION (NO LOST LEADS)
+   Fill these in to receive instant alerts on every booking!
+   ========================================================================= */
+const TELEGRAM_BOT_TOKEN = ""; // e.g. "728491829:AAHfk3jQ82-ABCDE..."
+const TELEGRAM_CHAT_ID = "";   // e.g. "987654321" (Your personal or group chat ID)
+const WEBHOOK_URL = "";        // e.g. "https://formspree.io/f/xyz..." or Google Apps Script URL
+
+/* Multipliers for Dynamic BHK Pricing */
 let currentBHK = "1bhk";
 const BHK_MULTIPLIERS = {
   "1bhk": 1.0,
@@ -1011,7 +1050,7 @@ const BASE_SERVICES = [
   {id:"disinfection", icon:"🧴", name:"Hospital Disinfection", desc:"Full premises sanitization wiping out 99.9% viruses and bacteria.", basePrice:1299, rating:4.9, chips:["Hospital grade","Certificate","Safe mist"]},
 ];
 
-/* Package Combos with Save ₹300 to ₹1000 */
+/* Package Combos */
 const BASE_COMBOS = [
   {
     id:"combo-kitchen",
@@ -1053,7 +1092,7 @@ let latestBooking = null;
 const $ = id => document.getElementById(id);
 const fmt = n => "₹" + n.toLocaleString("en-IN");
 
-/* ============ Property Switcher ============ */
+/* Property Switcher */
 function setBHK(bhk, btn){
   currentBHK = bhk;
   document.querySelectorAll(".bhk-btn").forEach(b => {
@@ -1078,7 +1117,7 @@ function syncBHKFromDropdown(val){
   renderCart();
 }
 
-/* ============ Interactive Click Ripple Wave ============ */
+/* Click Ripple Wave */
 document.addEventListener("click", function(e){
   const target = e.target.closest(".ripple-target, .btn, .card, .nav-link, .add-btn, .bhk-btn");
   if(!target) return;
@@ -1231,6 +1270,54 @@ function validate(){
   return valid;
 }
 
+/* =========================================================================
+   BACKGROUND AUTO-LEAD DISPATCH (TELEGRAM / WEBHOOK)
+   ========================================================================= */
+async function dispatchLeadNotification(booking) {
+  // 1. Send via Telegram Bot API (if credentials configured)
+  if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+    const tgMessage = `🚨 *NEW PEST CONTROL BOOKING!*\n` +
+      `--------------------------------\n` +
+      `*Ref No:* \`${booking.ref}\`\n` +
+      `*Customer:* ${booking.name}\n` +
+      `*Phone:* ${booking.phone}\n` +
+      `*Plan:* ${booking.type}\n` +
+      `*Services:* ${booking.services}\n` +
+      `*Payable:* ₹${booking.total} (Post-Service)\n` +
+      `*Address:* ${booking.address}\n` +
+      `*Visit Slot:* ${booking.date} (${booking.slot})\n` +
+      `*Notes:* ${booking.notes || "None"}\n` +
+      `--------------------------------`;
+
+    try {
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: tgMessage,
+          parse_mode: "Markdown"
+        })
+      }).catch(e => console.warn("Telegram dispatch failed:", e));
+    } catch (e) {
+      console.warn("Telegram notification error:", e);
+    }
+  }
+
+  // 2. Send via Custom Webhook / Google Sheets / Formspree (if configured)
+  if (WEBHOOK_URL) {
+    try {
+      fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(booking)
+      }).catch(e => console.warn("Webhook dispatch failed:", e));
+    } catch (e) {
+      console.warn("Webhook error:", e);
+    }
+  }
+}
+
 function confirmBooking(e){
   e.preventDefault();
   if(cart.length === 0){ toast("⚠ Please select at least one service"); go("services"); return; }
@@ -1257,9 +1344,13 @@ function confirmBooking(e){
 
   latestBooking = booking;
 
+  // Persist locally
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   bookings.unshift(booking);
   saveBookings(bookings);
+
+  // AUTO-SEND LEAD IN BACKGROUND (Never lose the lead!)
+  dispatchLeadNotification(booking);
 
   $("ref-no").textContent = ref;
   $("success-detail").innerHTML = `
@@ -1297,7 +1388,19 @@ function openGeneralWhatsApp(){
   window.open(`https://wa.me/${OWNER_PHONE}?text=${msg}`, "_blank");
 }
 
-/* ============ Printable Certificate & Invoice ============ */
+/* =========================================================================
+   SAFE LOOKUP FOR INVOICE & WARRANTY PRINTING
+   ========================================================================= */
+function openPrintModalByRef(ref) {
+  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+  const found = bookings.find(b => b.ref === ref);
+  if (found) {
+    openPrintModal(found);
+  } else {
+    toast("Booking reference not found");
+  }
+}
+
 function openPrintModal(b){
   $("m-ref").textContent = b.ref;
   $("m-date").textContent = b.placed || new Date().toLocaleDateString();
@@ -1312,7 +1415,7 @@ function openPrintModal(b){
 function openPrintModalCurrent(){ if(latestBooking) openPrintModal(latestBooking); }
 function closePrintModal(){ $("print-modal").classList.remove("show"); }
 
-/* ============ Customer Bookings View ============ */
+/* Customer Bookings View with Safe Reference Calls */
 function renderBookings(){
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   const list = $("bookings-list");
@@ -1335,7 +1438,7 @@ function renderBookings(){
       <div class="b-foot">
         <span style="font-weight:800;color:var(--primary-dark)">Total: ${fmt(b.total)}</span>
         <div style="display:flex;gap:10px">
-          <button class="btn ghost ripple-target" style="padding:6px 14px;font-size:.82rem" onclick='openPrintModal(${JSON.stringify(b)})'>
+          <button class="btn ghost ripple-target" style="padding:6px 14px;font-size:.82rem" onclick="openPrintModalByRef('${b.ref}')">
             🖨️ Warranty &amp; Bill
           </button>
         </div>
@@ -1344,7 +1447,7 @@ function renderBookings(){
   `).join("");
 }
 
-/* ============ Interactive Before/After Drag Logic ============ */
+/* Interactive Before/After Drag */
 const baSlider = $("ba-slider");
 const baAfter = $("ba-after");
 const baHandle = $("ba-handle");
@@ -1366,7 +1469,7 @@ baSlider.addEventListener("touchstart", e => { isDragging = true; setSliderPos(e
 window.addEventListener("touchend", () => isDragging = false);
 window.addEventListener("touchmove", e => { if(isDragging) setSliderPos(e.touches[0].clientX); });
 
-/* ============ Live "Recent Booking" Social Proof Popups ============ */
+/* Social Proof Live Ticker */
 const RECENT_CUSTOMERS = [
   { name: "Rahul S. from Madhapur", service: "Cockroach Gel Treatment", time: "2 mins ago" },
   { name: "Sneha K. from Banjara Hills", service: "Termite Wall Injection", time: "5 mins ago" },
@@ -1388,7 +1491,7 @@ function showNextRecentBooking(){
 setInterval(showNextRecentBooking, 11000);
 setTimeout(showNextRecentBooking, 3000);
 
-/* ============ Hidden Admin Dashboard (PIN: 1234) ============ */
+/* Admin Dashboard */
 let logoClickCount = 0;
 function handleLogoClick(){
   logoClickCount++;
@@ -1417,7 +1520,7 @@ function openAdminModal(){
   if(bookings.length === 0){
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--slate-400)">No bookings registered yet.</td></tr>`;
   } else {
-    tbody.innerHTML = bookings.map((b, i) => `
+    tbody.innerHTML = bookings.map(b => `
       <tr>
         <td><b>${b.ref}</b></td>
         <td>${b.name}</td>
