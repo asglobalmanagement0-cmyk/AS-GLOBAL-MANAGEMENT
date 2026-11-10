@@ -20,14 +20,34 @@
       --text: #1e293b;
       --muted: #64748b;
       --border: #e2e8f0;
-      --radius: 12px;
+      --radius: 14px;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: var(--bg); color: var(--text); line-height: 1.5; padding-bottom: 70px; }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--bg); color: var(--text); line-height: 1.5; padding-bottom: 75px; -webkit-font-smoothing: antialiased; }
 
+    /* Keyframes */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseRadar {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+      50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    }
+
+    @keyframes pricePop {
+      0% { transform: scale(0.85); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Header */
     header {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
@@ -36,6 +56,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: box-shadow 0.3s ease;
     }
     .brand { font-size: 1.25rem; font-weight: 800; color: var(--secondary); text-decoration: none; }
     .brand span { color: var(--primary); }
@@ -43,98 +64,250 @@
       background: #ecfdf5;
       color: var(--primary-dark);
       font-weight: 700;
-      padding: 0.45rem 0.9rem;
+      padding: 0.45rem 1rem;
       border-radius: 9999px;
       text-decoration: none;
       font-size: 0.85rem;
       border: 1px solid #a7f3d0;
+      transition: all 0.25s var(--ease-spring);
+    }
+    .header-call:hover {
+      background: var(--primary);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
     }
 
+    /* Hero */
     .hero {
       background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
       color: #ffffff;
       text-align: center;
-      padding: 3rem 1.25rem;
+      padding: 3.5rem 1.25rem;
+      animation: fadeInUp 0.7s var(--ease-spring);
     }
     .hero-badge {
       display: inline-block;
       background: rgba(16, 185, 129, 0.2);
       border: 1px solid var(--primary);
       color: #6ee7b7;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 9999px;
       font-size: 0.75rem;
       font-weight: 700;
       margin-bottom: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      animation: pulseRadar 2.5s infinite;
     }
-    .hero h1 { font-size: 2.1rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.2; }
+    .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.2; }
     .hero p { color: #cbd5e1; max-width: 600px; margin: 0 auto; font-size: 0.95rem; }
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
-    .section-title { font-size: 1.4rem; font-weight: 700; text-align: center; margin-bottom: 0.35rem; color: var(--secondary); }
-    .section-sub { text-align: center; color: var(--muted); margin-bottom: 1.75rem; font-size: 0.9rem; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 2.25rem 1rem; }
+    .section-title { font-size: 1.45rem; font-weight: 700; text-align: center; margin-bottom: 0.35rem; color: var(--secondary); }
+    .section-sub { text-align: center; color: var(--muted); margin-bottom: 2rem; font-size: 0.9rem; }
 
-    /* Property Size Filter */
-    .bhk-selector { display: flex; justify-content: center; gap: 8px; margin-bottom: 2rem; flex-wrap: wrap; }
+    /* BHK Selector with Smooth Tabs */
+    .bhk-selector { display: flex; justify-content: center; gap: 8px; margin-bottom: 2.25rem; flex-wrap: wrap; }
     .bhk-btn {
       background: #ffffff;
       border: 1px solid var(--border);
-      padding: 0.5rem 1.15rem;
+      padding: 0.55rem 1.25rem;
       border-radius: 9999px;
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.2s;
+      color: var(--text);
+      transition: all 0.25s var(--ease-spring);
     }
-    .bhk-btn.active { background: var(--secondary); color: #ffffff; border-color: var(--secondary); }
+    .bhk-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
+    .bhk-btn.active {
+      background: var(--secondary);
+      color: #ffffff;
+      border-color: var(--secondary);
+      transform: scale(1.04);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
 
-    /* Services Grid */
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+    /* Animated Services Grid */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.35rem; }
     .service-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1.25rem;
+      padding: 1.35rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring), border-color 0.3s ease;
+      opacity: 0;
+      animation: fadeInUp 0.5s var(--ease-spring) forwards;
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e1;
     }
     .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-    .card-icon { font-size: 2rem; background: #f1f5f9; padding: 8px; border-radius: 10px; }
+    .card-icon {
+      font-size: 2rem;
+      background: #f1f5f9;
+      padding: 10px;
+      border-radius: 12px;
+      transition: transform 0.25s var(--ease-spring);
+    }
+    .service-card:hover .card-icon { transform: scale(1.1) rotate(4deg); }
     .card-rating { background: #fffbeb; color: #b45309; padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; }
     .service-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; }
     .service-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; flex-grow: 1; }
     
     .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.25rem; }
-    .tag { font-size: 0.7rem; background: #f1f5f9; color: #475569; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+    .tag { font-size: 0.7rem; background: #f1f5f9; color: #475569; padding: 3px 8px; border-radius: 5px; font-weight: 600; }
 
-    .price-action { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 0.9rem; }
-    .price { font-size: 1.35rem; font-weight: 800; color: var(--secondary); }
-    .book-btn { background: var(--primary); color: #ffffff; border: none; padding: 0.55rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; }
-    .book-btn:hover { background: var(--primary-dark); }
+    .price-action { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 1rem; }
+    .price { font-size: 1.4rem; font-weight: 800; color: var(--secondary); display: inline-block; }
+    .price.pop { animation: pricePop 0.3s var(--ease-spring); }
 
-    /* Modal */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 100; backdrop-filter: blur(2px); }
-    .modal-overlay.active { display: flex; }
-    .modal { background: #ffffff; width: 100%; max-width: 460px; border-radius: 16px; padding: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
-    .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted); }
-    .form-group { margin-bottom: 0.9rem; }
-    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--secondary); }
-    .form-group input, .form-group textarea { width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; }
-    .form-group input:focus, .form-group textarea:focus { outline: 2px solid var(--primary); }
+    .book-btn {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.6rem 1.3rem;
+      border-radius: 9px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+    }
+    .book-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+    .book-btn:active { transform: scale(0.96); }
+
+    /* Smooth Spring Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s var(--ease-spring), visibility 0.3s;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal {
+      background: #ffffff;
+      width: 100%;
+      max-width: 460px;
+      border-radius: 18px;
+      padding: 1.65rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.92) translateY(16px);
+      transition: transform 0.35s var(--ease-spring);
+      box-shadow: 0 20px 40px -8px rgba(0,0,0,0.2);
+    }
+    .modal-overlay.active .modal {
+      transform: scale(1) translateY(0);
+    }
+    .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted); transition: transform 0.2s; }
+    .close-btn:hover { transform: scale(1.15) rotate(90deg); color: var(--secondary); }
+
+    .form-group { margin-bottom: 0.95rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--secondary); }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
     
-    .slot-item { border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.82rem; margin-bottom: 6px; }
-    .slot-item:has(input:checked) { border-color: var(--primary); background: #ecfdf5; font-weight: 600; }
-    .submit-btn { width: 100%; background: var(--primary); color: #ffffff; border: none; padding: 0.8rem; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; }
+    .slot-item {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.84rem;
+      margin-bottom: 7px;
+      transition: all 0.2s var(--ease-spring);
+    }
+    .slot-item:hover { border-color: var(--primary); background: #f0fdf4; }
+    .slot-item:has(input:checked) {
+      border-color: var(--primary);
+      background: #ecfdf5;
+      font-weight: 600;
+      transform: translateX(4px);
+    }
+    .submit-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 9px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: all 0.25s var(--ease-spring);
+    }
+    .submit-btn:hover { background: var(--primary-dark); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35); }
+    .submit-btn:active { transform: scale(0.98); }
 
-    /* Floating Bar (Mobile) */
-    .floating-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid var(--border); display: flex; gap: 8px; padding: 10px 14px; z-index: 40; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
-    .floating-btn { flex: 1; text-align: center; padding: 10px 0; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 0.88rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    /* Mobile Floating Bar */
+    .floating-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      padding: 10px 14px;
+      z-index: 40;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.06);
+      animation: fadeInUp 0.5s var(--ease-spring);
+    }
+    .floating-btn {
+      flex: 1;
+      text-align: center;
+      padding: 11px 0;
+      border-radius: 9px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.2s var(--ease-spring);
+    }
+    .floating-btn:active { transform: scale(0.97); }
     .call-cta { background: #f1f5f9; color: var(--secondary); }
-    .whatsapp-cta { background: #25D366; color: #ffffff; }
+    .whatsapp-cta { background: #25D366; color: #ffffff; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
 
     @media (min-width: 768px) {
       .floating-bar { display: none; }
@@ -150,7 +323,7 @@
   </header>
 
   <section class="hero">
-    <div class="hero-badge">Serving All Hyderabad & Secunderabad</div>
+    <div class="hero-badge">Serving Hyderabad & Secunderabad</div>
     <h1>Odorless & Herbal Pest Control</h1>
     <p>Infant-safe, pet-friendly pest solutions delivered at your doorstep with same-day appointments and warranty coverage.</p>
   </section>
@@ -172,12 +345,12 @@
     <div class="services-grid" id="servicesGrid"></div>
   </main>
 
-  <!-- Booking Modal -->
+  <!-- Animated Booking Modal -->
   <div class="modal-overlay" id="bookingModal">
     <div class="modal">
       <button class="close-btn" onclick="closeModal()">&times;</button>
-      <h3 id="modalTitle" style="font-size: 1.2rem; font-weight: 800;">Book Service</h3>
-      <p id="modalSub" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem;"></p>
+      <h3 id="modalTitle" style="font-size: 1.25rem; font-weight: 800;">Book Service</h3>
+      <p id="modalSub" style="color: var(--muted); font-size: 0.85rem; margin-bottom: 1.15rem;"></p>
 
       <form id="bookingForm" onsubmit="handleFormSubmit(event)">
         <div class="form-group">
@@ -202,7 +375,7 @@
         </div>
 
         <div class="form-group">
-          <label>Arrival Time Slot</label>
+          <label>Preferred Arrival Slot</label>
           <div id="slotContainer"></div>
         </div>
 
@@ -211,7 +384,7 @@
     </div>
   </div>
 
-  <!-- Mobile Floating Quick Contacts -->
+  <!-- Mobile Floating Contacts -->
   <div class="floating-bar">
     <a href="tel:+919037706489" class="floating-btn call-cta">📞 Call Direct</a>
     <a href="https://wa.me/919037706489?text=Hi,%20I%20want%20to%20book%20a%20pest%20control%20service" class="floating-btn whatsapp-cta">💬 WhatsApp</a>
@@ -219,7 +392,7 @@
 
   <script>
     /* -------------------------------------------------------------------------
-       1. PRICES & SERVICES (Change prices or add services here)
+       1. SERVICES & CONFIG
     ------------------------------------------------------------------------- */
     const BASE_SERVICES = [
       { id: "cockroach", icon: "🪳", name: "Cockroach Control", desc: "Odorless herbal gel for modular kitchens & cabinets. 100% kitchen-safe.", basePrice: 799, rating: 4.9, tags: ["Gel Treatment", "No Odor", "Child-Safe"] },
@@ -238,21 +411,23 @@
       "commercial": 2.4
     };
 
-    /* OPTIONAL: Paste your Google Apps Script Web App URL below to log bookings */
     const GOOGLE_SCRIPT_URL = "";
 
     let selectedBhk = "1bhk";
     let activeService = null;
 
-    /* Render Services */
+    /* Render Services with Staggered Entrance Animations */
     function renderServices() {
       const grid = document.getElementById("servicesGrid");
       grid.innerHTML = "";
 
-      BASE_SERVICES.forEach(service => {
+      BASE_SERVICES.forEach((service, index) => {
         const price = Math.round(service.basePrice * BHK_MULTIPLIERS[selectedBhk]);
         const card = document.createElement("div");
         card.className = "service-card";
+        // Staggered delay for cascading entrance effect
+        card.style.animationDelay = `${index * 60}ms`;
+
         card.innerHTML = `
           <div>
             <div class="card-top">
@@ -266,7 +441,7 @@
             </div>
           </div>
           <div class="price-action">
-            <span class="price">₹${price}</span>
+            <span class="price pop">₹${price}</span>
             <button class="book-btn" onclick="openBookingModal('${service.id}', ${price})">Book Now</button>
           </div>
         `;
@@ -281,7 +456,7 @@
       renderServices();
     }
 
-    /* Hyderabad Pincode Checker (500001 - 500100) */
+    /* Pincode Checker (Hyderabad 500001 - 500100) */
     function isServiceablePincode(pin) {
       const code = parseInt(pin, 10);
       return code >= 500001 && code <= 500100;
@@ -340,65 +515,14 @@
       document.getElementById("bookingModal").classList.remove("active");
     }
 
+    // Close modal if user clicks outside of modal container
+    window.addEventListener("click", (e) => {
+      const modal = document.getElementById("bookingModal");
+      if (e.target === modal) closeModal();
+    });
+
     /* Form Submission & Customer WhatsApp Notification */
     async function handleFormSubmit(event) {
       event.preventDefault();
 
-      const pin = document.getElementById("custPincode").value.trim();
-      if (!isServiceablePincode(pin)) {
-        alert("Currently, we only service Hyderabad & Secunderabad (Pincodes 500001 - 500100).");
-        return;
-      }
-
-      const bookingPayload = {
-        name: document.getElementById("custName").value.trim(),
-        phone: document.getElementById("custPhone").value.trim(),
-        pincode: pin,
-        address: document.getElementById("custAddress").value.trim(),
-        slot: document.querySelector('input[name="serviceSlot"]:checked').value,
-        service: activeService.name,
-        bhk: selectedBhk.toUpperCase(),
-        price: activeService.finalPrice
-      };
-
-      const btn = document.getElementById("submitBtn");
-      btn.disabled = true;
-      btn.innerText = "Processing Booking...";
-
-      // If backend URL is provided, send to Google Sheet
-      if (GOOGLE_SCRIPT_URL) {
-        try {
-          await fetch(GOOGLE_SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(bookingPayload)
-          });
-        } catch (e) {
-          console.warn("Background sync error:", e);
-        }
-      }
-
-      // Generate instant customer WhatsApp confirmation
-      const waMsg = `Hi! I just placed a booking on your website.%0A%0A` +
-        `👤 *Name:* ${bookingPayload.name}%0A` +
-        `🛠️ *Service:* ${bookingPayload.service} (${bookingPayload.bhk})%0A` +
-        `⏰ *Slot:* ${bookingPayload.slot}%0A` +
-        `📍 *Pincode:* ${bookingPayload.pincode}%0A` +
-        `🏠 *Address:* ${bookingPayload.address}%0A` +
-        `💰 *Estimated Total:* ₹${bookingPayload.price}`;
-
-      window.open(`https://wa.me/919037706489?text=${waMsg}`, "_blank");
-
-      alert("Thank you! Your booking details have been prepared. We are opening WhatsApp to verify your technician appointment.");
-      closeModal();
-      document.getElementById("bookingForm").reset();
-      btn.disabled = false;
-      btn.innerText = "Confirm Booking";
-    }
-
-    // Initialize on page load
-    renderServices();
-  </script>
-</body>
-</html>
+      const pin = doc
