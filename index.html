@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -410,16 +410,6 @@
     font-weight:800;box-shadow:0 4px 16px var(--primary-glow);
   }
 
-  /* Floating WhatsApp */
-  .floating-wa-btn{
-    position:fixed;bottom:84px;right:20px;z-index:95;
-    background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;
-    width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    box-shadow:0 8px 24px rgba(37,211,102,.45);text-decoration:none;transition:transform .25s var(--ease-spring);
-  }
-  .floating-wa-btn:hover{transform:scale(1.1) rotate(5deg)}
-  .floating-wa-btn svg{width:32px;height:32px;fill:#fff}
-
   /* Confirmation */
   .success-box{text-align:center;padding:40px 16px;max-width:640px;margin:0 auto}
   .success-check{
@@ -498,7 +488,7 @@
   .foot-col div{font-size:.86rem;margin-bottom:8px}
   .foot-bottom{
     border-top:1px solid #064e3b;padding:16px clamp(16px,4vw,32px);text-align:center;
-    font-size:.76rem;color:#64786e;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap:12px;
+    font-size:.76rem;color:#64786e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
   }
 
   @media (max-width: 768px) {
@@ -521,7 +511,6 @@
     .panel{padding: 18px}
     .side{position: static}
     .row2{grid-template-columns: 1fr}
-    .floating-wa-btn{bottom: 80px; right: 16px; width: 50px; height: 50px}
     .sticky-cart-bar{bottom: 12px}
   }
 
@@ -530,7 +519,7 @@
     #print-modal, #print-modal *{visibility:visible}
     #print-modal{position:absolute;left:0;top:0;background:none;padding:0;width:100%}
     .certificate-card{border:none;box-shadow:none;max-width:100%}
-    .cert-actions,.floating-wa-btn,#sticky-cart-bar{display:none !important}
+    .cert-actions,#sticky-cart-bar{display:none !important}
   }
 </style>
 </head>
@@ -858,16 +847,6 @@
   </div>
   <button class="sc-btn ripple-target" onclick="go('book')">Review &amp; Schedule →</button>
 </div>
-
-<!-- Floating WhatsApp Chat -->
-<a href="https://wa.me/917989912345?text=Hi%20AS%20Global%20Management,%20I%20would%20like%20to%20inquire%20about%20pest%20control%20services." 
-   id="wa-cta"
-   target="_blank" 
-   rel="noopener noreferrer" 
-   class="floating-wa-btn" 
-   title="Chat with Us on WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.17 8.17 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.42 1.44.54.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.59.21-1.09.15-1.18-.06-.09-.23-.15-.48-.27z"/></svg>
-</a>
 
 <!-- Modal: Printable Invoice / Warranty -->
 <div id="print-modal" class="modal-overlay" onclick="if(event.target===this)closePrintModal()">
