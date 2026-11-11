@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AS Global Management — Enterprise Admin Console</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-hover: #047857;
+      --primary-dark: #064e3b;
+      --primary-light: #ecfdf5;
+      --accent: #f59e0b;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --white: #ffffff;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --blue: #2563eb;
+      --blue-light: #dbeafe;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.16);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: #f1f5f9;
+      color: var(--slate-900);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    h1, h2, h3, h4, .brand-title, .kpi-num {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.02em;
+    }
+    button, input, select, textarea { font-family: inherit; }
+    button { cursor: pointer; border: none; outline: none; }
+    a { color: var(--primary); text-decoration: none; }
+
+    /* Login Screen Overlay */
+    #auth-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(120% 100% at 50% 10%, #064e3b 0%, #0f172a 100%);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .auth-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      margin: 0 auto 16px;
+      object-fit: cover;
+    }
+    .pin-input {
+      width: 100%;
+      font-size: 1.5rem;
+      letter-spacing: 0.3em;
+      text-align: center;
+      padding: 12px;
+      border: 2px solid var(--slate-200);
+      border-radius: 12px;
+      margin: 18px 0;
+      font-weight: 800;
+    }
+    .pin-input:focus { border-color: var(--primary); outline: none; }
+
+    /* Layout Structure */
+    .sidebar {
+      width: 260px;
+      background: var(--slate-900);
+      color: #94a3b8;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: all 0.3s var(--ease);
+    }
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sidebar-header img { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--primary); }
+    .sidebar-menu { padding: 18px 12px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #94a3b8;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .menu-item:hover, .menu-item.active { background: rgba(5, 150, 105, 0.15); color: #34d399; }
+    .sidebar-footer { padding: 18px 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      height: 100vh;
+    }
+    .top-header {
+      background: var(--white);
+      height: 70px;
+      border-bottom: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    .content-body { padding: 28px 32px 60px; max-width: 1400px; width: 100%; margin: 0 auto; }
+
+    /* Sections / Tabs */
+    .tab-section { display: none; }
+    .tab-section.show { display: block; animation: fadeIn 0.25s var(--ease); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* KPI Cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 28px; }
+    .kpi-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--slate-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .kpi-title { font-size: 0.78rem; font-weight: 700; color: var(--slate-600); text-transform: uppercase; margin-bottom: 4px; }
+    .kpi-num { font-size: 1.8rem; font-weight: 800; color: var(--slate-900); }
+    .kpi-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: var(--slate-100); }
+
+    /* Panel and Tables */
+    .panel {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+    
+    .filter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .input-control {
+      padding: 9px 14px;
+      border: 1px solid var(--slate-200);
+      border-radius: 9px;
+      font-size: 0.86rem;
+      background: var(--slate-50);
+      color: var(--slate-900);
+    }
+    .input-control:focus { outline: none; border-color: var(--primary); background: var(--white); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      color: var(--white);
+      padding: 9px 18px;
+      border-radius: 9px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn.secondary { background: var(--white); color: var(--slate-700); border: 1px solid var(--slate-200); }
+    .btn.secondary:hover { background: var(--slate-100); border-color: var(--slate-400); }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+    .btn.sm { padding: 6px 12px; font-size: 0.78rem; border-radius: 6px; }
+
+    /* Data Table */
+    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table.data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    table.data-table th, table.data-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--slate-200); white-space: nowrap; }
+    table.data-table th { background: var(--slate-100); font-weight: 700; color: var(--slate-700); font-size: 0.76rem; text-transform: uppercase; }
+    table.data-table tr:hover { background: #fbfcfe; }
+
+    /* Status Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge-pending { background: #fef3c7; color: #92400e; }
+    .badge-accepted { background: var(--blue-light); color: var(--blue); }
+    .badge-progress { background: #e0e7ff; color: #3730a3; }
+    .badge-completed { background: var(--primary-light); color: var(--primary-dark); }
+    .badge-rejected { background: var(--danger-light); color: var(--danger); }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      padding: 16px;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--slate-200); padding-bottom: 14px; }
+    .field-row { margin-bottom: 14px; }
+    .field-row label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--slate-700); margin-bottom: 5px; }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(90px);
+      background: var(--slate-900);
+      color: var(--white);
+      padding: 11px 24px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: all 0.3s;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 120;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    @media (max-width: 900px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; }
+      .top-header { padding: 0 16px; }
+      .content-body { padding: 18px 16px; }
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #invoice-modal-content, #invoice-modal-content * { visibility: visible; }
+      #invoice-modal-content { position: absolute; left: 0; top: 0; width: 100%; padding: 0; }
+      .print-hide { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ADMIN AUTHENTICATION SCREEN -->
+  <div id="auth-overlay">
+    <div class="auth-card">
+      <img src="logo.jpg" alt="Logo" class="auth-logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23059669\'><path d=\'M12 2L4 5v6.1c0 5 3.4 9.7 8 10.9 4.6-1.2 8-5.9 8-10.9V5l-8-3z\'/></svg>'">
+      <h2 style="font-size: 1.3rem; margin-bottom: 6px;">AS Global Management</h2>
+      <p style="font-size: 0.84rem; color: var(--slate-600); margin-bottom: 12px;">Authorized Owner &amp; Dispatch Console</p>
+      <form onsubmit="handleAdminLogin(event)">
+        <input type="password" id="admin-pin-input" class="pin-input" maxlength="6" placeholder="••••" required autofocus>
+        <button type="submit" class="btn" style="width: 100%; padding: 13px;">Unlock Dashboard 🔒</button>
+      </form>
+      <p style="font-size: 0.74rem; color: var(--slate-400); margin-top: 14px;">Default PIN: <b>5665</b> (Change in Settings)</p>
+    </div>
+  </div>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
+      <div>
+        <div style="font-weight: 800; color: var(--white); font-size: 0.95rem;">AS GLOBAL</div>
+        <small style="color: #34d399; font-weight: 700; font-size: 0.7rem; text-transform: uppercase;">Owner Console</small>
+      </div>
+    </div>
+    <nav class="sidebar-menu">
+      <button class="menu-item active" onclick="switchTab('tab-dashboard', this)">
+        <span>📊</span> Dashboard Overview
+      </button>
+      <button class="menu-item" onclick="switchTab('tab-bookings', this)">
+        <span>📋</span> Manage Bookings
+      </button>
+      <button class="menu-item" onclick="switchTab('tab-staff', this)">
+        <span>👷</span> Service Staff &amp; Crew
+      </button>
+      <button class="menu-item" onclick="switchTab('tab-pricing', this)">
+        <span>🏷️</span> Services &amp; Pricing
+      </button>
+      <button class="menu-item" onclick="switchTab('tab-reports', this)">
+        <span>📈</span> Revenue &amp; Reports
+      </button>
+      <button class="menu-item" onclick="switchTab('tab-settings', this)">
+        <span>⚙️</span> Security &amp; Settings
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn secondary sm" style="width: 100%; color: var(--danger); justify-content: center;" onclick="lockDashboard()">
+        🔒 Lock / Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="main-content">
+    <header class="top-header">
+      <div>
+        <h2 id="top-title" style="font-size: 1.25rem;">Dashboard Overview</h2>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a href="index.html" target="_blank" class="btn secondary sm">🌐 View Customer Site</a>
+        <button class="btn sm" onclick="exportCSV()">📥 Export All CSV</button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      
+      <!-- TAB 1: DASHBOARD OVERVIEW -->
+      <section id="tab-dashboard" class="tab-section show">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-title">Total Bookings</div>
+              <div class="kpi-num" id="kpi-total">0</div>
+            </div>
+            <div class="kpi-icon" style="color: var(--blue);">📑</div>
+          </div>
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-title">Pending Action</div>
+              <div class="kpi-num" id="kpi-pending" style="color: var(--accent);">0</div>
+            </div>
+            <div class="kpi-icon" style="color: var(--accent);">⏳</div>
+          </div>
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-title">Completed Jobs</div>
+              <div class="kpi-num" id="kpi-completed" style="color: var(--primary);">0</div>
+            </div>
+            <div class="kpi-icon" style="color: var(--primary);">✅</div>
+          </div>
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-title">Gross Revenue Pipeline</div>
+              <div class="kpi-num" id="kpi-revenue" style="color: var(--primary-dark);">₹0</div>
+            </div>
+            <div class="kpi-icon" style="color: var(--primary-dark);">💰</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3>⚡ Recent Incoming Bookings</h3>
+            <button class="btn secondary sm" onclick="switchTab('tab-bookings')">View All →</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ref</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Treatments</th>
+                  <th>Date &amp; Slot</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recent-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: BOOKINGS MANAGEMENT -->
+      <section id="tab-bookings" class="tab-section">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="filter-bar">
+              <input type="text" id="booking-search" class="input-control" placeholder="Search customer, phone, ref..." oninput="renderBookingsTable()">
+              <select id="booking-status-filter" class="input-control" onchange="renderBookingsTable()">
+                <option value="ALL">All Statuses</option>
+                <option value="Confirmed">Pending / Confirmed</option>
+                <option value="Accepted">Accepted</option>
+                <option value="In-Progress">In-Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+            <div>
+              <button class="btn sm secondary" onclick="seedSampleData()">+ Load Sample Test Booking</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Booking Ref</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Property</th>
+                  <th>Appointment</th>
+                  <th>Services</th>
+                  <th>Amount</th>
+                  <th>Assigned Staff</th>
+                  <th>Status</th>
+                  <th>Operations</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: SERVICE STAFF ROSTER -->
+      <section id="tab-staff" class="tab-section">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>👷 Field Service Technicians</h3>
+              <p style="font-size: 0.8rem; color: var(--slate-600);">Assign trained operators in PPE to active customer visits.</p>
+            </div>
+            <button class="btn sm" onclick="openStaffModal()">+ Add New Technician</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Staff Name</th>
+                  <th>Phone Number</th>
+                  <th>Specialization</th>
+                  <th>Assigned Jobs</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="staff-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: SERVICES & PRICING MATRIX -->
+      <section id="tab-pricing" class="tab-section">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>🏷️ Base Price Management (1 BHK Standard)</h3>
+              <p style="font-size: 0.8rem; color: var(--slate-600);">
+                Prices updated here immediately sync with your customer booking calculator.
+              </p>
+            </div>
+            <button class="btn secondary sm" onclick="resetPricingToDefault()">🔄 Reset to Defaults</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Icon &amp; Service</th>
+                  <th>Description</th>
+                  <th>1 BHK Base (₹)</th>
+                  <th>2 BHK (1.25x)</th>
+                  <th>3 BHK (1.55x)</th>
+                  <th>Villa (2.1x)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="pricing-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: REPORTS & REVENUE -->
+      <section id="tab-reports" class="tab-section">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>📈 Financial &amp; Conversion Analytics</h3>
+            <button class="btn sm" onclick="exportCSV()">📥 Download Excel / CSV Report</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 14px;">
+            <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 12px; padding: 20px;">
+              <h4 style="margin-bottom: 12px; color: var(--slate-700);">Summary Statement</h4>
+              <p style="font-size: 0.88rem; margin-bottom: 8px;">Completed Service Revenue: <b id="rep-completed-rev" style="color: var(--primary-dark);">₹0</b></p>
+              <p style="font-size: 0.88rem; margin-bottom: 8px;">Pending Visit Pipeline: <b id="rep-pending-rev" style="color: var(--accent);">₹0</b></p>
+              <p style="font-size: 0.88rem; margin-bottom: 8px;">Rejection / Lost Rate: <b id="rep-reject-rate" style="color: var(--danger);">0%</b></p>
+            </div>
+            <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 12px; padding: 20px;">
+              <h4 style="margin-bottom: 12px; color: var(--slate-700);">Integrations</h4>
+              <p style="font-size: 0.85rem; color: var(--slate-600); line-height: 1.6; margin-bottom: 12px;">
+                Customer bookings are stored locally in the browser and automatically forwarded to Google Sheets via your Google Apps Script webhook.
+              </p>
+              <button class="btn secondary sm" onclick="testWebhookPing()">Test Google Sheet Webhook ⚡</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: SETTINGS & SECURITY -->
+      <section id="tab-settings" class="tab-section">
+        <div class="panel" style="max-width: 520px;">
+          <h3>🔒 Owner Passcode Settings</h3>
+          <p style="font-size: 0.82rem; color: var(--slate-600); margin-bottom: 18px;">
+            Update the PIN required to open this dashboard. Stored securely with SHA-256 encryption.
+          </p>
+          <form onsubmit="handlePinChange(event)">
+            <div class="field-row">
+              <label>New 4-to-6 Digit PIN</label>
+              <input type="password" id="new-pin-1" class="input-control" style="width: 100%;" required maxlength="6">
+            </div>
+            <div class="field-row">
+              <label>Confirm New PIN</label>
+              <input type="password" id="new-pin-2" class="input-control" style="width: 100%;" required maxlength="6">
+            </div>
+            <button type="submit" class="btn" style="margin-top: 10px;">Update Admin PIN</button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL: BOOKING DETAIL & DISPATCH ACTION -->
+  <div class="modal-overlay" id="dispatch-modal" onclick="if(event.target===this)closeModal('dispatch-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="dispatch-title">Booking Details</h3>
+        <button style="background: none; font-size: 1.4rem; color: var(--slate-400);" onclick="closeModal('dispatch-modal')">✕</button>
+      </div>
+      <div id="dispatch-body"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT STAFF -->
+  <div class="modal-overlay" id="staff-modal" onclick="if(event.target===this)closeModal('staff-modal')">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>Technician Profile</h3>
+        <button style="background: none; font-size: 1.4rem;" onclick="closeModal('staff-modal')">✕</button>
+      </div>
+      <form onsubmit="saveStaffMember(event)">
+        <div class="field-row">
+          <label>Technician Full Name</label>
+          <input type="text" id="staff-name" class="input-control" style="width: 100%;" placeholder="e.g. Ramesh V." required>
+        </div>
+        <div class="field-row">
+          <label>Mobile Number (for dispatch SMS/WhatsApp)</label>
+          <input type="tel" id="staff-phone" class="input-control" style="width: 100%;" placeholder="10-digit number" maxlength="10" required>
+        </div>
+        <div class="field-row">
+          <label>Specialization</label>
+          <select id="staff-spec" class="input-control" style="width: 100%;">
+            <option value="Cockroach & General IPM">Cockroach &amp; General IPM</option>
+            <option value="Termite Drill Specialist">Termite Drill Specialist</option>
+            <option value="Bed Bug Steam Operator">Bed Bug Steam Operator</option>
+            <option value="Rodent & Commercial">Rodent &amp; Commercial</option>
+            <option value="Disinfection & Fogging">Disinfection &amp; Fogging</option>
+          </select>
+        </div>
+        <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Save Technician</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PRINTABLE TAX INVOICE & WARRANTY -->
+  <div class="modal-overlay" id="invoice-modal" onclick="if(event.target===this)closeModal('invoice-modal')">
+    <div class="modal-box" style="max-width: 720px;" id="invoice-modal-content">
+      <div class="print-hide" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <span style="font-weight: 800; color: var(--primary);">Official Tax Invoice Preview</span>
+        <button class="btn sm" onclick="window.print()">🖨️ Print / Save as PDF</button>
+      </div>
+      <div id="invoice-render-area"></div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    /* =========================================================================
+       CONSTANTS & SHARED DATA KEYS
+       ========================================================================= */
+    const BOOKINGS_KEY = "asgm_bookings_v15";
+    const PRICING_KEY = "asgm_pricing_v15";
+    const STAFF_KEY = "asgm_staff_v15";
+    const ADMIN_PIN_HASH_KEY = "asgm_admin_hash_v15";
+    const AUTH_SESSION_KEY = "asgm_auth_session_active";
+
+    // Default PIN: "5665"
+    const DEFAULT_ADMIN_HASH = "8a25c1ba3f07a514d24a0d922a7f516d0046554b73b40fd059882aa2ae8e97f4";
+    const GOOGLE_SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbyJ_NavOu_a-TVV05DUL0BU0CfaorWEJ1JuFqVjewi9m2PYSXhAQJffoHf_7qdBFAJW/exec";
+
+    const DEFAULT_STAFF = [
+      { id: "st-1", name: "Ramesh Verma", phone: "9848011223", spec: "Termite Drill Specialist", active: true },
+      { id: "st-2", name: "Suresh Babu", phone: "9848033445", spec: "Cockroach & General IPM", active: true },
+      { id: "st-3", name: "Vikram G.", phone: "9848055667", spec: "Bed Bug Steam Operator", active: true }
+    ];
+
+    const DEFAULT_SERVICES = [
+      { id: "cockroach", icon: "🪳", name: "Cockroach Control", desc: "Odorless herbal Bayer gel treatment", basePrice: 799 },
+      { id: "termite", icon: "🐜", name: "Termite Treatment", desc: "Drill-and-inject barrier protection", basePrice: 2499 },
+      { id: "bedbugs", icon: "🛏️", name: "Bed Bug Treatment", desc: "2-visit dry steam + residual contact kill", basePrice: 1599 },
+      { id: "rodent", icon: "🐀", name: "Rodent Control", desc: "Smart bait stations & structural exclusion", basePrice: 1199 },
+      { id: "mosquito", icon: "🦟", name: "Mosquito Fogging", desc: "Thermal fogging + anti-larval treatment", basePrice: 999 },
+      { id: "ants", icon: "🕸️", name: "General Pest Control", desc: "Residual perimeter odorless barrier spray", basePrice: 899 },
+      { id: "woodborer", icon: "🪵", name: "Wood Borer Control", desc: "Direct pinhole syringe micro-injection", basePrice: 1399 },
+      { id: "disinfection", icon: "🧴", name: "Disinfection & Sanitization", desc: "Hospital-grade ULV 99.99% cold misting", basePrice: 1299 }
+    ];
+
+    /* =========================================================================
+       AUTHENTICATION & SECURITY
+       ========================================================================= */
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+
+    async function sha256(str) {
+      const buf = new TextEncoder().encode(str);
+      const hashBuf = await crypto.subtle.digest("SHA-256", buf);
+      return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function checkAuth() {
+      const isAuth = sessionStorage.getItem(AUTH_SESSION_KEY) === "true";
+      if (isAuth) {
+        $("auth-overlay").style.display = "none";
+        initDashboard();
+      } else {
+        $("auth-overlay").style.display = "flex";
+      }
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const enteredPin = $("admin-pin-input").value.trim();
+      const enteredHash = await sha256(enteredPin);
+      const savedHash = localStorage.getItem(ADMIN_PIN_HASH_KEY) || DEFAULT_ADMIN_HASH;
+
+      if (enteredHash === savedHash) {
+        sessionStorage.setItem(AUTH_SESSION_KEY, "true");
+        $("auth-overlay").style.display = "none";
+        toast("✅ Welcome to AS Global Management Console");
+        initDashboard();
+      } else {
+        toast("❌ Incorrect PIN. Please try again.");
+        $("admin-pin-input").value = "";
+      }
+    }
+
+    function lockDashboard() {
+      sessionStorage.removeItem(AUTH_SESSION_KEY);
+      location.reload();
+    }
+
+    async function handlePinChange(e) {
+      e.preventDefault();
+      const p1 = $("new-pin-1").value.trim();
+      const p2 = $("new-pin-2").value.trim();
+      if (p1 !== p2) {
+        toast("❌ PIN entries do not match.");
+        return;
+      }
+      const hash = await sha256(p1);
+      localStorage.setItem(ADMIN_PIN_HASH_KEY, hash);
+      toast("✅ Owner PIN updated successfully!");
+      $("new-pin-1").value = "";
+      $("new-pin-2").value = "";
+    }
+
+    function toast(msg) {
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    /* =========================================================================
+       TAB NAVIGATION
+       ========================================================================= */
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("show"));
+      $(tabId).classList.add("show");
+
+      if (btnEl) {
+        document.querySelectorAll(".menu-item").forEach(b => b.classList.remove("active"));
+        btnEl.classList.add("active");
+        $("top-title").textContent = btnEl.textContent.trim().replace(/^[\p{Emoji}\s]+/u, '');
+      }
+
+      if (tabId === "tab-bookings") renderBookingsTable();
+      if (tabId === "tab-staff") renderStaffTable();
+      if (tabId === "tab-pricing") renderPricingTable();
+      if (tabId === "tab-reports") calculateReportMetrics();
+    }
+
+    /* =========================================================================
+       BOOKINGS CONTROLLER (ACCEPT / REJECT / ASSIGN)
+       ========================================================================= */
+    function getBookings() {
+      return JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
+    }
+
+    function saveBookings(b) {
+      localStorage.setItem(BOOKINGS_KEY, JSON.stringify(b));
+      renderDashboardOverview();
+      renderBookingsTable();
+    }
+
+    function renderDashboardOverview() {
+      const bookings = getBookings();
+      $("kpi-total").textContent = bookings.length;
+      $("kpi-pending").textContent = bookings.filter(b => b.status === "Confirmed" || !b.status).length;
+      $("kpi-completed").textContent = bookings.filter(b => b.status === "Completed").length;
+      const rev = bookings.reduce((sum, b) => sum + (Number(b.total) || 0), 0);
+      $("kpi-revenue").textContent = fmt(rev);
+
+      const recent = bookings.slice(0, 5);
+      const tbody = $("recent-tbody");
+      if (recent.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:var(--slate-400);">No incoming bookings yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = recent.map(b => `
+        <tr>
+          <td><b>${b.ref}</b></td>
+          <td>${b.name}</td>
+          <td><a href="tel:${b.phone}">${b.phone}</a></td>
+          <td>${b.services}</td>
+          <td>${b.date} (${b.slot})</td>
+          <td><b>${fmt(b.total)}</b></td>
+          <td><span class="badge badge-${(b.status || 'pending').toLowerCase()}">${b.status || 'Pending'}</span></td>
+          <td><button class="btn sm secondary" onclick="openDispatchModal('${b.ref}')">Dispatch / Edit</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function renderBookingsTable() {
+      const bookings = getBookings();
+      const search = ($("booking-search").value || "").toLowerCase();
+      const statusFilter = $("booking-status-filter").value;
+
+      const filtered = bookings.filter(b => {
+        const matchesSearch = b.name.toLowerCase().includes(search) || 
+                              b.phone.includes(search) || 
+                              b.ref.toLowerCase().includes(search);
+        const matchesStatus = (statusFilter === "ALL") ? true : (b.status === statusFilter);
+        return matchesSearch && matchesStatus;
+      });
+
+      const tbody = $("bookings-tbody");
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:30px; color:var(--slate-400);">No records match filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(b => `
+        <tr>
+          <td><b>${b.ref}</b></td>
+          <td>${b.name}</td>
+          <td><a href="tel:${b.phone}">${b.phone}</a></td>
+          <td>${b.type}</td>
+          <td>${b.date}<br><small style="color:var(--slate-400)">${b.slot}</small></td>
+          <td>${b.services}</td>
+          <td><b>${fmt(b.total)}</b></td>
+          <td>${b.staff ? `<b>${b.staff}</b>` : '<span style="color:var(--slate-400)">Unassigned</span>'}</td>
+          <td><span class="badge badge-${(b.status || 'pending').toLowerCase()}">${b.status || 'Pending'}</span></td>
+          <td style="display:flex; gap:6px;">
+            <button class="btn sm secondary" onclick="openDispatchModal('${b.ref}')">Manage</button>
+            <button class="btn sm" onclick="generateInvoice('${b.ref}')">Invoice</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    /* Modal: Dispatch, Accept, Reject, Staff Assignment */
+    function openDispatchModal(ref) {
+      const bookings = getBookings();
+      const b = bookings.find(item => item.ref === ref);
+      if (!b) return;
+
+      const staffList = JSON.parse(localStorage.getItem(STAFF_KEY)) || DEFAULT_STAFF;
+      const staffOptions = staffList.map(s => 
+        `<option value="${s.name}" ${b.staff === s.name ? 'selected' : ''}>${s.name} (${s.spec})</option>`
+      ).join("");
+
+      $("dispatch-title").innerHTML = `Manage Booking: <span style="color:var(--primary);">${b.ref}</span>`;
+      $("dispatch-body").innerHTML = `
+        <div style="background:var(--slate-50); padding:16px; border-radius:12px; margin-bottom:18px; font-size:0.88rem; line-height:1.7;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div><b>Customer:</b> ${b.name} (<a href="tel:${b.phone}">${b.phone}</a>)</div>
+            <div><b>Property:</b> ${b.type}</div>
+            <div><b>Address:</b> ${b.address}</div>
+            <div><b>Scheduled Slot:</b> ${b.date} (${b.slot})</div>
+            <div><b>Services:</b> ${b.services}</div>
+            <div><b>Total Value:</b> ${fmt(b.total)} (Pay Post-Service)</div>
+          </div>
+          ${b.notes ? `<div style="margin-top:8px; color:var(--slate-600)"><b>Client Note:</b> ${b.notes}</div>` : ''}
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
+          <div>
+            <label style="font-weight:700; font-size:0.8rem; display:block; margin-bottom:5px;">Assign Service Technician:</label>
+            <select id="dispatch-staff-select" class="input-control" style="width:100%;">
+              <option value="">-- Select Crew Member --</option>
+              ${staffOptions}
+            </select>
+          </div>
+          <div>
+            <label style="font-weight:700; font-size:0.8rem; display:block; margin-bottom:5px;">Appointment Status:</label>
+            <select id="dispatch-status-select" class="input-control" style="width:100%;">
+              <option value="Confirmed" ${b.status==='Confirmed'?'selected':''}>Confirmed / Pending</option>
+              <option value="Accepted" ${b.status==='Accepted'?'selected':''}>Accepted & Scheduled</option>
+              <option value="In-Progress" ${b.status==='In-Progress'?'selected':''}>In-Progress</option>
+              <option value="Completed" ${b.status==='Completed'?'selected':''}>Completed</option>
+              <option value="Rejected" ${b.status==='Rejected'?'selected':''}>Rejected / Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; gap:8px;">
+            <button class="btn sm" style="background:#25D366;" onclick="dispatchWhatsAppTechnician('${b.ref}')">💬 WhatsApp Tech</button>
+            <button class="btn sm secondary" style="color:var(--danger)" onclick="deleteBookingRecord('${b.ref}')">Delete Record</button>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn sm secondary" onclick="closeModal('dispatch-modal')">Cancel</button>
+            <button class="btn sm" onclick="saveDispatchChanges('${b.ref}')">Save &amp; Update</button>
+          </div>
+        </div>
+      `;
+      openModal("dispatch-modal");
+    }
+
+    function saveDispatchChanges(ref) {
+      const bookings = getBookings();
+      const b = bookings.find(item => item.ref === ref);
+      if (!b) return;
+
+      b.staff = $("dispatch-staff-select").value;
+      b.status = $("dispatch-status-select").value;
+
+      saveBookings(bookings);
+      closeModal("dispatch-modal");
+      toast(`✅ Booking ${ref} updated to ${b.status}`);
+    }
+
+    function dispatchWhatsAppTechnician(ref) {
+      const bookings = getBookings();
+      const b = bookings.find(item => item.ref === ref);
+      if (!b) return;
+
+      const techName = $("dispatch-staff-select").value || "Technician";
+      const msg = `*AS Global Management - Service Job Dispatch*\n` +
+                  `Assignee: ${techName}\n` +
+                  `Ref: ${b.ref}\n` +
+                  `Customer: ${b.name} (${b.phone})\n` +
+                  `Date & Slot: ${b.date} (${b.slot})\n` +
+                  `Address: ${b.address}\n` +
+                  `Services: ${b.services}\n` +
+                  `Amount to Collect: ₹${b.total}`;
+
+      window.open(`https://wa.me/91${b.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function deleteBookingRecord(ref) {
+      if (!confirm(`Permanently remove booking ${ref}?`)) return;
+      let bookings = getBookings().filter(b => b.ref !== ref);
+      saveBookings(bookings);
+      closeModal("dispatch-modal");
+      toast(`Booking ${ref} deleted`);
+    }
+
+    /* =========================================================================
+       STAFF ROSTER MANAGEMENT
+       ========================================================================= */
+    function getStaff() {
+      return JSON.parse(localStorage.getItem(STAFF_KEY)) || DEFAULT_STAFF;
+    }
+
+    function renderStaffTable() {
+      const staff = getStaff();
+      const bookings = getBookings();
+      const tbody = $("staff-tbody");
+
+      tbody.innerHTML = staff.map(s => {
+        const assignedCount = bookings.filter(b => b.staff === s.name).length;
+        return `
+          <tr>
+            <td><b>${s.name}</b></td>
+            <td><a href="tel:${s.phone}">${s.phone}</a></td>
+            <td>${s.spec}</td>
+            <td><b>${assignedCount} Jobs</b></td>
+            <td><span class="badge badge-${s.active ? 'completed' : 'rejected'}">${s.active ? 'Available' : 'On Leave'}</span></td>
+            <td>
+              <button class="btn sm secondary" onclick="toggleStaffStatus('${s.id}')">Toggle Status</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function openStaffModal() {
+      $("staff-name").value = "";
+      $("staff-phone").value = "";
+      openModal("staff-modal");
+    }
+
+    function saveStaffMember(e) {
+      e.preventDefault();
+      const staff = getStaff();
+      const newStaff = {
+        id: "st-" + Date.now(),
+        name: $("staff-name").value.trim(),
+        phone: $("staff-phone").value.trim(),
+        spec: $("staff-spec").value,
+        active: true
+      };
+      staff.push(newStaff);
+      localStorage.setItem(STAFF_KEY, JSON.stringify(staff));
+      closeModal("staff-modal");
+      renderStaffTable();
+      toast("✅ Technician profile added.");
+    }
+
+    function toggleStaffStatus(id) {
+      const staff = getStaff();
+      const s = staff.find(item => item.id === id);
+      if (s) {
+        s.active = !s.active;
+        localStorage.setItem(STAFF_KEY, JSON.stringify(staff));
+        renderStaffTable();
+      }
+    }
+
+    /* =========================================================================
+       SERVICES & PRICING MATRIX
+       ========================================================================= */
+    function getServicesCatalog() {
+      return JSON.parse(localStorage.getItem(PRICING_KEY)) || DEFAULT_SERVICES;
+    }
+
+    function renderPricingTable() {
+      const catalog = getServicesCatalog();
+      const tbody = $("pricing-tbody");
+
+      tbody.innerHTML = catalog.map(s => `
+        <tr>
+          <td><span style="font-size:1.3rem; margin-right:8px;">${s.icon}</span><b>${s.name}</b></td>
+          <td style="font-size:0.8rem; color:var(--slate-600); max-width:260px; white-space:normal;">${s.desc}</td>
+          <td><b>${fmt(s.basePrice)}</b></td>
+          <td>${fmt(Math.round(s.basePrice * 1.25 / 10) * 10)}</td>
+          <td>${fmt(Math.round(s.basePrice * 1.55 / 10) * 10)}</td>
+          <td>${fmt(Math.round(s.basePrice * 2.1 / 10) * 10)}</td>
+          <td>
+            <button class="btn sm secondary" onclick="editServicePrice('${s.id}')">Edit Base Price</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function editServicePrice(id) {
+      const catalog = getServicesCatalog();
+      const item = catalog.find(s => s.id === id);
+      if (!item) return;
+
+      const newBase = prompt(`Set new 1 BHK Base Price (₹) for ${item.name}:`, item.basePrice);
+      if (newBase && !isNaN(newBase)) {
+        item.basePrice = Number(newBase);
+        localStorage.setItem(PRICING_KEY, JSON.stringify(catalog));
+        renderPricingTable();
+        toast(`✅ Updated ${item.name} base price to ₹${item.basePrice}`);
+      }
+    }
+
+    function resetPricingToDefault() {
+      if (confirm("Reset all services to default pricing?")) {
+        localStorage.setItem(PRICING_KEY, JSON.stringify(DEFAULT_SERVICES));
+        renderPricingTable();
+        toast("Prices restored to factory defaults.");
+      }
+    }
+
+    /* =========================================================================
+       INVOICE & 30-DAY WARRANTY GENERATION
+       ========================================================================= */
+    function generateInvoice(ref) {
+      const bookings = getBookings();
+      const b = bookings.find(item => item.ref === ref);
+      if (!b) return;
+
+      $("invoice-render-area").innerHTML = `
+        <div style="border:2px solid var(--slate-900); padding:28px; border-radius:14px; background:#fff;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--slate-900); padding-bottom:16px; margin-bottom:16px;">
+            <div>
+              <h2 style="font-size:1.4rem; color:var(--primary-dark);">AS GLOBAL MANAGEMENT</h2>
+              <p style="font-size:0.8rem; color:var(--slate-600);">Govt. Approved Pest Eradication & Disinfection</p>
+              <p style="font-size:0.76rem; color:var(--slate-500);">GSTIN: 36ABCDE1234F1Z5 · Hyderabad, Telangana</p>
+              <p style="font-size:0.76rem; color:var(--slate-500);">Helpline: +91 79899 12345 · asglobalmanagement@gmail.com</p>
+            </div>
+            <div style="text-align:right;">
+              <span class="badge badge-accepted" style="font-size:0.85rem;">TAX INVOICE</span>
+              <p style="font-size:0.84rem; margin-top:6px;"><b>Invoice Ref:</b> ${b.ref}</p>
+              <p style="font-size:0.8rem; color:var(--slate-500);"><b>Date:</b> ${b.placed || new Date().toLocaleDateString('en-IN')}</p>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; font-size:0.86rem; margin-bottom:20px;">
+            <div>
+              <b style="color:var(--slate-400); font-size:0.72rem; text-transform:uppercase;">BILLED TO:</b>
+              <div style="font-weight:700; font-size:1rem;">${b.name}</div>
+              <div>Phone: ${b.phone}</div>
+              <div>Premises: ${b.type} — ${b.address}</div>
+            </div>
+            <div style="text-align:right;">
+              <b style="color:var(--slate-400); font-size:0.72rem; text-transform:uppercase;">DISPATCH DETAILS:</b>
+              <div>Scheduled Slot: <b>${b.date} (${b.slot})</b></div>
+              <div>Assigned Specialist: <b>${b.staff || 'Senior Technician'}</b></div>
+              <div>Status: <b>${b.status || 'Confirmed'}</b></div>
+            </div>
+          </div>
+
+          <table style="width:100%; border-collapse:collapse; font-size:0.88rem; margin-bottom:20px;">
+            <thead>
+              <tr style="background:var(--slate-100); border-bottom:1px solid var(--slate-300);">
+                <th style="padding:8px; text-align:left;">Treatment Description</th>
+                <th style="padding:8px; text-align:center;">Property Tier</th>
+                <th style="padding:8px; text-align:right;">Amount (INR)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:10px 8px; border-bottom:1px solid var(--slate-200);">
+                  <b>${b.services}</b><br>
+                  <small style="color:var(--slate-500)">Odorless, CIB-Approved Synthetic Pyrethroids &amp; Micro-Gel Protocol</small>
+                </td>
+                <td style="padding:10px 8px; text-align:center; border-bottom:1px solid var(--slate-200);">${b.type}</td>
+                <td style="padding:10px 8px; text-align:right; border-bottom:1px solid var(--slate-200); font-weight:700;">${fmt(b.total)}</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding:10px 8px; text-align:right; font-weight:700;">Total Payable:</td>
+                <td style="padding:10px 8px; text-align:right; font-weight:800; font-size:1.15rem; color:var(--primary-dark);">${fmt(b.total)}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="background:var(--primary-light); border:1.5px dashed var(--primary); border-radius:10px; padding:12px; margin-bottom:16px;">
+            <b style="font-size:0.82rem; color:var(--primary-dark);">🛡️ 30-Day Zero-Pest Written Warranty Guarantee:</b>
+            <p style="font-size:0.76rem; color:var(--slate-700); margin-top:4px;">
+              This certificate entitles ${b.name} to a 100% complimentary re-service if covered infestations persist within 30 days of the treatment date. Keep this invoice code for instant validation.
+            </p>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--slate-400); border-top:1px solid var(--slate-200); padding-top:10px;">
+            <span>Payment Mode: Cash on Inspection / Instant UPI</span>
+            <span>Authorized Signatory · AS Global Management</span>
+          </div>
+        </div>
+      `;
+      openModal("invoice-modal");
+    }
+
+    /* =========================================================================
+       REPORTS & CSV EXPORT
+       ========================================================================= */
+    function calculateReportMetrics() {
+      const bookings = getBookings();
+      const compRev = bookings.filter(b => b.status === "Completed").reduce((s, b) => s + (Number(b.total) || 0), 0);
+      const pendRev = bookings.filter(b => b.status === "Confirmed" || b.status === "Accepted").reduce((s, b) => s + (Number(b.total) || 0), 0);
+      const rejCount = bookings.filter(b => b.status === "Rejected").length;
+      const rate = bookings.length ? Math.round((rejCount / bookings.length) * 100) : 0;
+
+      $("rep-completed-rev").textContent = fmt(compRev);
+      $("rep-pending-rev").textContent = fmt(pendRev);
+      $("rep-reject-rate").textContent = `${rate}%`;
+    }
+
+    function exportCSV() {
+      const bookings = getBookings();
+      if (bookings.length === 0) {
+        toast("No bookings registered to export.");
+        return;
+      }
+      let csv = "Booking Ref,Date Placed,Customer Name,Phone,Property Type,Address,Visit Date,Slot,Services,Total,Status,Technician,Notes\n";
+      bookings.forEach(b => {
+        csv += `"${b.ref}","${b.placed||''}","${b.name}","${b.phone}","${b.type}","${b.address.replace(/"/g, '""')}","${b.date}","${b.slot}","${b.services.replace(/"/g, '""')}","${b.total}","${b.status||'Confirmed'}","${b.staff||'Unassigned'}","${(b.notes||'').replace(/"/g, '""')}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", `AS_Global_Bookings_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast("📥 Comprehensive CSV exported successfully!");
+    }
+
+    function testWebhookPing() {
+      fetch(GOOGLE_SHEET_WEBHOOK, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ testPing: true, timestamp: new Date().toISOString() })
+      })
+      .then(() => toast("✅ Google Sheet Webhook ping dispatched!"))
+      .catch(() => toast("Webhook ping sent."));
+    }
+
+    /* Seed Test Data */
+    function seedSampleData() {
+      const bookings = getBookings();
+      const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
+      bookings.unshift({
+        ref: ref,
+        name: "Priya Sharma",
+        phone: "9876543210",
+        type: "2BHK",
+        address: "Flat 402, Lotus Towers, Gachibowli, Hyderabad",
+        date: new Date().toISOString().slice(0, 10),
+        slot: "11:00 AM – 02:00 PM",
+        services: "Cockroach Control, Ant Treatment",
+        total: 1999,
+        status: "Confirmed",
+        staff: "Ramesh Verma",
+        placed: new Date().toLocaleDateString("en-IN"),
+        notes: "Infants at home, focus on kitchen cabinets"
+      });
+      saveBookings(bookings);
+      toast(`✅ Sample booking ${ref} added.`);
+    }
+
+    function openModal(id) { $(id).classList.add("show"); }
+    function closeModal(id) { $(id).classList.remove("show"); }
+
+    function initDashboard() {
+      renderDashboardOverview();
+      renderBookingsTable();
+      renderStaffTable();
+      renderPricingTable();
+    }
+
+    window.addEventListener("DOMContentLoaded", checkAuth);
+  </script>
+</body>
+</html>
