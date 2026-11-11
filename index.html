@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -213,10 +213,6 @@
     border:1.5px solid rgba(15,23,42,.1);box-shadow:0 2px 8px rgba(0,0,0,.04);
   }
   .btn.ghost:hover{border-color:var(--primary);background:var(--primary-light)}
-  .btn.wa-btn{
-    background:#25D366;color:#fff;box-shadow:0 8px 20px rgba(37,211,102,.3);
-  }
-  .btn.wa-btn:hover{box-shadow:0 10px 24px rgba(37,211,102,.45)}
   .btn.block{width:100%;justify-content:center}
 
   .hero-stats{display:flex;gap:clamp(16px,3vw,36px);flex-wrap:wrap;border-top:1px solid var(--line);padding-top:20px}
@@ -731,22 +727,15 @@
             </div>
           </div>
 
-          <div class="row2">
-            <div class="field" id="f-email">
-              <label>Email address <span style="font-weight:400;color:var(--slate-400)">(for PDF invoice &amp; warranty)</span></label>
-              <input type="email" id="in-email" placeholder="e.g. priya@gmail.com" oninput="checkEmailLive(this)">
-              <div class="err">Please enter a valid email address.</div>
-            </div>
-            <div class="field" id="f-type">
-              <label>Property type</label>
-              <select id="in-type" onchange="syncBHKFromDropdown(this.value)">
-                <option value="1bhk">1 BHK / Studio</option>
-                <option value="2bhk">2 BHK</option>
-                <option value="3bhk">3 BHK</option>
-                <option value="villa">Villa / Row House</option>
-                <option value="commercial">Office / Commercial Space</option>
-              </select>
-            </div>
+          <div class="field" id="f-type">
+            <label>Property type</label>
+            <select id="in-type" onchange="syncBHKFromDropdown(this.value)">
+              <option value="1bhk">1 BHK / Studio</option>
+              <option value="2bhk">2 BHK</option>
+              <option value="3bhk">3 BHK</option>
+              <option value="villa">Villa / Row House</option>
+              <option value="commercial">Office / Commercial Space</option>
+            </select>
           </div>
 
           <div class="field" id="f-address">
@@ -784,7 +773,7 @@
             <span class="btn-spinner" id="confirm-spinner"></span>
             <span id="confirm-text">Confirm Visit (Pay Post-Service) ✔</span>
           </button>
-          <p style="text-align:center;font-size:.76rem;color:var(--slate-400);margin-top:10px">🔒 Instant Email &amp; WhatsApp Confirmation. Pay after service completion.</p>
+          <p style="text-align:center;font-size:.76rem;color:var(--slate-400);margin-top:10px">🔒 Instant Confirmation. Pay after service completion.</p>
         </form>
 
         <aside class="panel side">
@@ -809,16 +798,12 @@
       <div class="success-box">
         <div class="success-check">✓</div>
         <h2>Booking Confirmed!</h2>
-        <p style="color:var(--slate-600);font-size:.9rem">Notifications dispatched to your Email &amp; WhatsApp.</p>
+        <p style="color:var(--slate-600);font-size:.9rem">Your appointment has been registered successfully.</p>
         <div class="ref-pill" id="ref-no">ASM-000000</div>
         
         <p id="success-detail" style="line-height:1.65;color:var(--slate-600)"></p>
 
-        <!-- Direct WhatsApp trigger buttons -->
         <div class="success-actions" style="margin-top:20px">
-          <a id="btn-cust-wa" target="_blank" class="btn wa-btn ripple-target" href="#">
-            💬 Open Confirmation in WhatsApp
-          </a>
           <button class="btn ghost ripple-target" onclick="openPrintModalCurrent()">🖨️ Warranty &amp; Invoice</button>
           <button class="btn ghost ripple-target" onclick="go('bookings')">View My Bookings</button>
         </div>
@@ -962,7 +947,7 @@
    SETTINGS & SECURE CONFIGURATION
    ========================================================================= */
 var OWNER_EMAIL = "asglobalmanagement@gmail.com";
-var OWNER_WHATSAPP = "917989912345"; // Update with your official WhatsApp number
+var OWNER_WHATSAPP = "917989912345"; 
 
 /* LIVE GOOGLE APPS SCRIPT WEBHOOK URL */
 var GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJ_NavOu_a-TVV05DUL0BU0CfaorWEJ1JuFqVjewi9m2PYSXhAQJffoHf_7qdBFAJW/exec"; 
@@ -1197,19 +1182,6 @@ function checkPhoneLive(input) {
   }
 }
 
-function checkEmailLive(input) {
-  var field = $("f-email");
-  var val = input.value.trim();
-  var isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-  if (val.length === 0 || isValid) {
-    field.classList.remove("invalid");
-    if (isValid) field.classList.add("valid");
-  } else {
-    field.classList.remove("valid");
-    field.classList.add("invalid");
-  }
-}
-
 function checkFieldLive(fieldId, isValid){
   var el = $(fieldId);
   if(!el) return;
@@ -1282,13 +1254,10 @@ function validate(){
   var slotSelect = $("in-slot");
   var selOpt = slotSelect.options[slotSelect.selectedIndex];
   var isSlotOk = selOpt && !selOpt.disabled && selOpt.value !== "";
-  var emailVal = $("in-email").value.trim();
-  var isEmailOk = emailVal.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
 
   var checks = [
     ["f-name", $("in-name").value.trim().length >= 2],
     ["f-phone", isPhoneOk],
-    ["f-email", isEmailOk],
     ["f-address", $("in-address").value.trim().length >= 8],
     ["f-date", $("in-date").value !== "" && $("in-date").value >= $("in-date").min],
     ["f-slot", isSlotOk]
@@ -1328,25 +1297,6 @@ async function dispatchLeadNotification(booking) {
   }
 }
 
-/* WhatsApp Message Generators */
-function generateWhatsAppConfirmationURL(b) {
-  var cleanPhone = b.phone.replace(/\D/g, "");
-  if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone;
-
-  var msg = "Hello " + b.name + "! 🛡️\n" +
-            "Your pest control service with *AS Global Management* is CONFIRMED.\n\n" +
-            "📋 *Booking Ref:* " + b.ref + "\n" +
-            "🏠 *Property:* " + b.type + "\n" +
-            "🐜 *Services:* " + b.services + "\n" +
-            "📅 *Scheduled:* " + b.date + " (" + b.slot + ")\n" +
-            "📍 *Address:* " + b.address + "\n" +
-            "💰 *Total Payable:* ₹" + b.total + " (Pay post-service)\n" +
-            "📜 *Warranty:* 30-Day Free Re-treatment\n\n" +
-            "Technician will call you prior to arrival.";
-
-  return "https://wa.me/" + cleanPhone + "?text=" + encodeURIComponent(msg);
-}
-
 /* Confirm Booking Handler */
 function confirmBooking(e){
   e.preventDefault();
@@ -1370,7 +1320,6 @@ function confirmBooking(e){
       ref: ref,
       name: $("in-name").value.trim(),
       phone: $("in-phone").value.trim(),
-      email: $("in-email").value.trim(),
       type: currentBHK.toUpperCase(),
       address: $("in-address").value.trim(),
       date: $("in-date").value,
@@ -1391,15 +1340,11 @@ function confirmBooking(e){
     // Call your Google Apps Script Webhook
     dispatchLeadNotification(booking);
 
-    // Generate WhatsApp customer confirmation link
-    var custWaURL = generateWhatsAppConfirmationURL(booking);
-    $("btn-cust-wa").setAttribute("href", custWaURL);
-
     $("ref-no").textContent = ref;
     $("success-detail").innerHTML = 
       "Treatment <b>" + names + "</b> scheduled for <b>" + new Date(booking.date).toDateString() + "</b> (" + booking.slot + ").<br>" +
       "Amount to pay: <b>" + fmt(total) + "</b> after completion.<br>" +
-      "Confirmation sent to <b>" + booking.phone + "</b>" + (booking.email ? " and <b>" + booking.email + "</b>" : "") + ".";
+      "Our representative will contact you on <b>" + booking.phone + "</b> before arrival.";
 
     cart = []; saveCart();
     $("book-form").reset();
@@ -1548,9 +1493,9 @@ function exportToCSV(){
   var bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || "[]");
   if(bookings.length === 0){ toast("No bookings to export"); return; }
   
-  var csv = "Booking Ref,Date Placed,Customer Name,Phone,Email,Property Type,Address,Service Date,Time Slot,Services Booked,Total Amount,Status,Special Notes\n";
+  var csv = "Booking Ref,Date Placed,Customer Name,Phone,Property Type,Address,Service Date,Time Slot,Services Booked,Total Amount,Status,Special Notes\n";
   bookings.forEach(function(b) {
-    csv += '"' + b.ref + '","' + (b.placed || '') + '","' + b.name + '","' + b.phone + '","' + (b.email||'') + '","' + b.type + '","' + b.address.replace(/"/g, '""') + '","' + b.date + '","' + b.slot + '","' + b.services.replace(/"/g, '""') + '","' + b.total + '","' + b.status + '","' + (b.notes||'').replace(/"/g, '""') + '"\n';
+    csv += '"' + b.ref + '","' + (b.placed || '') + '","' + b.name + '","' + b.phone + '","' + b.type + '","' + b.address.replace(/"/g, '""') + '","' + b.date + '","' + b.slot + '","' + b.services.replace(/"/g, '""') + '","' + b.total + '","' + b.status + '","' + (b.notes||'').replace(/"/g, '""') + '"\n';
   });
 
   var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
