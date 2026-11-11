@@ -148,22 +148,6 @@
     button { cursor: pointer; border: none; outline: none; }
     a { color: var(--primary); text-decoration: none; }
 
-    /* Top Emergency Alert Bar */
-    .top-bar {
-      background: var(--slate-900);
-      color: #cbd5e1;
-      font-size: 0.78rem;
-      padding: 7px clamp(14px, 3vw, 32px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .top-bar a { color: #34d399; font-weight: 700; }
-    .top-bar-left { display: flex; align-items: center; gap: 12px; }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } 100% { opacity: 1; transform: scale(1); } }
-
     /* Header */
     header {
       position: sticky;
@@ -327,12 +311,6 @@
       box-shadow: var(--shadow-sm);
     }
     .btn.secondary:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
-    .btn.wa-cta {
-      background: #25D366;
-      color: var(--white);
-      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
-    }
-    .btn.wa-cta:hover { background: #20ba5a; }
     .btn.block { width: 100%; justify-content: center; }
 
     .hero-stats {
@@ -574,26 +552,6 @@
       line-height: 1.5;
     }
 
-    /* Floating WhatsApp Button */
-    .floating-wa {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 90;
-      background: #25D366;
-      color: var(--white);
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 24px rgba(37, 211, 102, 0.45);
-      transition: transform 0.2s var(--ease);
-    }
-    .floating-wa:hover { transform: scale(1.08); }
-    .floating-wa svg { width: 32px; height: 32px; fill: currentColor; }
-
     /* Sticky Bottom Bar for Mobile Cart */
     .sticky-bar {
       position: fixed;
@@ -659,26 +617,6 @@
     }
     .close-btn { background: none; font-size: 1.3rem; color: var(--slate-600); cursor: pointer; }
 
-    /* Admin Styles */
-    .admin-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 18px; }
-    .admin-stat { background: var(--slate-100); padding: 12px 14px; border-radius: 12px; }
-    .admin-stat b { display: block; font-size: 1.25rem; color: var(--primary-dark); }
-    .admin-stat span { font-size: 0.72rem; color: var(--slate-600); text-transform: uppercase; font-weight: 700; }
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 10px; }
-    .admin-table th, .admin-table td { padding: 9px 10px; text-align: left; border-bottom: 1px solid var(--slate-200); white-space: nowrap; }
-    .admin-table th { background: var(--slate-100); color: var(--slate-700); }
-    .status-badge {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .status-confirmed { background: var(--primary-light); color: var(--primary-dark); }
-    .status-completed { background: #dbeafe; color: #1e40af; }
-    .status-cancelled { background: var(--danger-light); color: var(--danger); }
-
     /* Toast */
     #toast {
       position: fixed;
@@ -743,22 +681,10 @@
 </head>
 <body>
 
-  <!-- Top Emergency Hotline Bar -->
-  <aside class="top-bar" aria-label="Customer Hotline and Service Hours">
-    <div class="top-bar-left">
-      <span class="status-dot"></span>
-      <span>Emergency Pest Slots Available Today in Hyderabad</span>
-    </div>
-    <div>
-      <span>Direct Hotline: </span>
-      <a href="tel:+917989912345">+91 79899 12345</a>
-    </div>
-  </aside>
-
   <!-- Main Navigation Header -->
   <header>
     <div class="header-inner">
-      <div class="logo" onclick="handleLogoClick()" title="AS Global Management (Click 3 times for Admin Portal)">
+      <div class="logo" onclick="handleLogoClick()" title="AS Global Management">
         <div class="logo-mark">
           <img src="logo.jpg" alt="AS Global Management Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23059669\'><path d=\'M12 2L4 5v6.1c0 5 3.4 9.7 8 10.9 4.6-1.2 8-5.9 8-10.9V5l-8-3z\'/></svg>'">
         </div>
@@ -791,9 +717,6 @@
           </p>
           <div class="hero-cta">
             <button class="btn" onclick="go('services')">Schedule Service Visit →</button>
-            <a class="btn wa-cta" href="https://wa.me/917989912345?text=Hello%20AS%20Global%20Management,%20I%20need%20a%20pest%20control%20consultation" target="_blank" rel="noopener">
-              💬 Instant WhatsApp Enquiry
-            </a>
           </div>
           <div class="hero-stats">
             <div>
@@ -902,7 +825,7 @@
         <div class="sec-head">
           <span class="eyebrow">Customer Self-Service</span>
           <h2>Track Your Bookings &amp; Warranty</h2>
-          <p>Enter your 10-digit registered WhatsApp or mobile number to retrieve appointments, invoices, and certificates.</p>
+          <p>Enter your 10-digit registered mobile number to retrieve appointments, invoices, and certificates.</p>
         </div>
 
         <div class="panel" style="max-width: 520px; margin-bottom: 24px;">
@@ -942,7 +865,7 @@
                   <input type="text" id="comm-name" placeholder="Full name" required>
                 </div>
                 <div class="field">
-                  <label>Work Phone / WhatsApp</label>
+                  <label>Work Phone / Mobile</label>
                   <input type="tel" id="comm-phone" placeholder="10-digit mobile" maxlength="10" required>
                 </div>
               </div>
@@ -996,7 +919,7 @@
                 <div class="err">Please enter your full name.</div>
               </div>
               <div class="field" id="f-phone">
-                <label for="in-phone">WhatsApp / Mobile Number *</label>
+                <label for="in-phone">Mobile Number *</label>
                 <input type="tel" id="in-phone" placeholder="10-digit mobile number" maxlength="10" required oninput="validatePhoneLive(this)">
                 <div class="err">Please enter a valid 10-digit Indian mobile number.</div>
               </div>
@@ -1037,7 +960,7 @@
               Confirm Service Visit (Pay Post-Service) ✔
             </button>
             <p style="text-align: center; font-size: 0.76rem; color: var(--slate-400); margin-top: 10px;">
-              🔒 Instant WhatsApp &amp; SMS confirmation. Zero advance payment required.
+              🔒 Instant confirmation. Zero advance payment required.
             </p>
           </form>
 
@@ -1087,11 +1010,6 @@
     <button class="sticky-bar-btn" onclick="go('book')">Review &amp; Schedule →</button>
   </div>
 
-  <!-- Floating WhatsApp Quick Button -->
-  <a class="floating-wa" href="https://wa.me/917989912345?text=Hello%20AS%20Global%20Management,%20I%20have%20an%20enquiry%20regarding%20pest%20control" target="_blank" rel="noopener" aria-label="Chat with AS Global Management on WhatsApp">
-    <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41 1.56 1.56 2.41 3.63 2.41 5.83 0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.24-.74-.66-1.24-1.48-1.39-1.73-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1 1.02-.15 1.7-.69 1.94-1.36.24-.66.24-1.23.17-1.36-.07-.13-.24-.2-.49-.33Z"/></svg>
-  </a>
-
   <!-- MODAL: DETAILED SERVICE INFORMATION -->
   <div class="modal-overlay" id="service-modal" onclick="if(event.target===this)closeModal('service-modal')">
     <div class="modal-card">
@@ -1114,7 +1032,7 @@
         <div>
           <h2 style="font-size: 1.3rem; color: var(--primary-dark);">AS GLOBAL MANAGEMENT</h2>
           <p style="font-size: 0.78rem; color: var(--slate-600);">Govt. Approved Pest Management &amp; Disinfection Services</p>
-          <p style="font-size: 0.76rem; color: var(--slate-400);">Contact: +91 79899 12345 | asglobalmanagement@gmail.com</p>
+          <p style="font-size: 0.76rem; color: var(--slate-400);">Contact: asglobalmanagement@gmail.com</p>
         </div>
         <button class="close-btn print-hide" onclick="closeModal('print-modal')">✕</button>
       </div>
@@ -1143,52 +1061,6 @@
     </div>
   </div>
 
-  <!-- MODAL: OWNER ADMIN PORTAL -->
-  <div class="modal-overlay" id="admin-modal" onclick="if(event.target===this)closeModal('admin-modal')">
-    <div class="modal-card" style="max-width: 960px;">
-      <div class="modal-header">
-        <div>
-          <h3>🔒 Owner Administration Console</h3>
-          <p style="font-size: 0.76rem; color: var(--slate-400);">AS Global Management Internal Portal</p>
-        </div>
-        <button class="close-btn" onclick="closeModal('admin-modal')">✕</button>
-      </div>
-      
-      <div class="admin-stats-grid">
-        <div class="admin-stat"><b id="adm-total-count">0</b><span>Total Bookings</span></div>
-        <div class="admin-stat"><b id="adm-pending-count">0</b><span>Pending Visits</span></div>
-        <div class="admin-stat"><b id="adm-completed-count">0</b><span>Completed</span></div>
-        <div class="admin-stat"><b id="adm-total-revenue">₹0</b><span>Est. Pipeline</span></div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-        <input type="text" id="adm-search" placeholder="Search by customer name, phone, or ref..." style="padding: 8px 12px; border: 1px solid var(--slate-200); border-radius: 8px; font-size: 0.84rem; width: 280px;" oninput="renderAdminBookings()">
-        <div style="display: flex; gap: 8px;">
-          <button class="btn secondary" style="padding: 7px 14px; font-size: 0.8rem;" onclick="exportBookingsCSV()">📥 Export CSV</button>
-          <button class="btn" style="padding: 7px 14px; font-size: 0.8rem;" onclick="openPriceManager()">⚙️ Edit Prices</button>
-        </div>
-      </div>
-
-      <div style="overflow-x: auto;">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Ref</th>
-              <th>Customer</th>
-              <th>Phone</th>
-              <th>Services</th>
-              <th>Slot</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="adm-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
   <div id="toast"></div>
 
   <!-- Footer -->
@@ -1207,16 +1079,15 @@
       </div>
       <div class="foot-links">
         <h4>Core Services</h4>
-        <a href="#services" onclick="go('services'); filterServiceType('cockroach');">Cockroach Gel Treatment</a>
-        <a href="#services" onclick="go('services'); filterServiceType('termite');">Termite Drill &amp; Inject</a>
-        <a href="#services" onclick="go('services'); filterServiceType('bedbugs');">Bed Bug Steam Extermination</a>
-        <a href="#services" onclick="go('services'); filterServiceType('rodent');">Rodent Proofing &amp; Trapping</a>
+        <a href="#services" onclick="go('services');">Cockroach Gel Treatment</a>
+        <a href="#services" onclick="go('services');">Termite Drill &amp; Inject</a>
+        <a href="#services" onclick="go('services');">Bed Bug Steam Extermination</a>
+        <a href="#services" onclick="go('services');">Rodent Proofing &amp; Trapping</a>
       </div>
       <div class="foot-links">
         <h4>Client Resources</h4>
         <a href="#portal" onclick="go('portal')">Customer Booking Portal</a>
         <a href="#commercial" onclick="go('commercial')">Commercial Site Audits</a>
-        <a href="https://wa.me/917989912345" target="_blank" rel="noopener">WhatsApp Support Desk</a>
       </div>
       <div>
         <h4>Operating Hours</h4>
@@ -1230,9 +1101,6 @@
     </div>
     <div class="foot-bottom">
       <span>© 2026 AS GLOBAL MANAGEMENT. All rights reserved.</span>
-      <a href="#" onclick="promptAdminLogin(); return false;" style="color: #6ee7b7; text-decoration: underline;">
-        🔒 Owner Administration Portal (Login)
-      </a>
     </div>
   </footer>
 
@@ -1242,8 +1110,6 @@
        CONFIGURATION & BUSINESS DATA
        ========================================================================= */
     const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJ_NavOu_a-TVV05DUL0BU0CfaorWEJ1JuFqVjewi9m2PYSXhAQJffoHf_7qdBFAJW/exec";
-    const OWNER_PHONE = "917989912345";
-    const ADMIN_PIN_HASH = "8a25c1ba3f07a514d24a0d922a7f516d0046554b73b40fd059882aa2ae8e97f4"; // SHA-256 for 5665
 
     const CART_STORAGE_KEY = "asgm_cart_v15";
     const BOOKINGS_STORAGE_KEY = "asgm_bookings_v15";
@@ -1378,12 +1244,6 @@
     function calculatePrice(basePrice) {
       const mult = BHK_MULTIPLIERS[currentBHK] || 1.0;
       return Math.round((basePrice * mult) / 10) * 10;
-    }
-
-    async function sha256(str) {
-      const buf = new TextEncoder().encode(str);
-      const hashBuf = await crypto.subtle.digest("SHA-256", buf);
-      return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, "0")).join("");
     }
 
     function toast(msg) {
@@ -1766,16 +1626,15 @@
         <div class="panel" style="margin-bottom: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <b>Booking Ref: <code style="color: var(--primary-dark);">${b.ref}</code></b>
-            <span class="status-badge status-${b.status.toLowerCase()}">${b.status}</span>
+            <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary-dark);">${b.status}</span>
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; font-size: 0.86rem;">
             <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${b.services}</b></div>
             <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${new Date(b.date).toDateString()} (${b.slot})</b></div>
             <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">AMOUNT</span><b>${fmt(b.total)} (Pay Post-Service)</b></div>
           </div>
-          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--slate-100); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--slate-100);">
             <button class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem;" onclick="openPrintModalData('${b.ref}')">🖨️ View Warranty &amp; Invoice</button>
-            <a class="btn wa-cta" style="padding: 6px 14px; font-size: 0.8rem;" href="https://wa.me/${OWNER_PHONE}?text=Hello%20AS%20Global,%20I%20am%20inquiring%20about%20booking%20ref%20${b.ref}" target="_blank">💬 WhatsApp Support</a>
           </div>
         </div>
       `).join("");
@@ -1786,20 +1645,8 @@
        ========================================================================= */
     function handleCommercialInquiry(e) {
       e.preventDefault();
-      const org = $("comm-org").value.trim();
-      const person = $("comm-name").value.trim();
-      const phone = $("comm-phone").value.trim();
-      const type = $("comm-type").value;
-      const notes = $("comm-notes").value.trim();
-
-      const msg = `*Commercial Audit Request - AS Global Management*\n` +
-                  `Company: ${org}\n` +
-                  `Contact: ${person} (${phone})\n` +
-                  `Type: ${type}\n` +
-                  `Details: ${notes}`;
-
-      window.open(`https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
-      toast("Commercial inquiry formatted. Opening WhatsApp...");
+      toast("Commercial enquiry recorded. Our team will contact you shortly.");
+      e.target.reset();
     }
 
     /* =========================================================================
@@ -1824,124 +1671,13 @@
       openModal("print-modal");
     }
 
-    /* =========================================================================
-       OWNER ADMIN DASHBOARD
-       ========================================================================= */
+    /* Hidden Admin Trigger via Logo (3 Clicks) */
     let clickCount = 0;
     function handleLogoClick() {
       clickCount++;
       if (clickCount >= 3) {
         clickCount = 0;
-        promptAdminLogin();
-      }
-    }
-
-    async function promptAdminLogin() {
-      const pin = prompt("Owner Authentication - Enter 4-Digit Admin PIN:");
-      if (!pin) return;
-      const hash = await sha256(pin.trim());
-      if (hash === ADMIN_PIN_HASH) {
-        openAdminModal();
-      } else {
-        toast("❌ Access Denied: Incorrect PIN");
-      }
-    }
-
-    function openAdminModal() {
-      renderAdminBookings();
-      openModal("admin-modal");
-    }
-
-    function renderAdminBookings() {
-      const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-      const search = ($("adm-search") ? $("adm-search").value.toLowerCase() : "");
-
-      $("adm-total-count").textContent = bookings.length;
-      $("adm-pending-count").textContent = bookings.filter(b => b.status === "Confirmed").length;
-      $("adm-completed-count").textContent = bookings.filter(b => b.status === "Completed").length;
-      const rev = bookings.reduce((sum, b) => sum + (Number(b.total) || 0), 0);
-      $("adm-total-revenue").textContent = fmt(rev);
-
-      const filtered = bookings.filter(b => 
-        b.name.toLowerCase().includes(search) || 
-        b.phone.includes(search) || 
-        b.ref.toLowerCase().includes(search)
-      );
-
-      const tbody = $("adm-tbody");
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 20px; color: var(--slate-400);">No matching bookings registered on this browser.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(b => `
-        <tr>
-          <td><b>${b.ref}</b></td>
-          <td>${b.name}</td>
-          <td><a href="tel:${b.phone}">${b.phone}</a></td>
-          <td>${b.services}</td>
-          <td>${b.date} (${b.slot})</td>
-          <td><b>${fmt(b.total)}</b></td>
-          <td>
-            <select onchange="updateBookingStatus('${b.ref}', this.value)" style="font-size: 0.76rem; padding: 3px 6px; border-radius: 6px;">
-              <option ${b.status==='Confirmed'?'selected':''}>Confirmed</option>
-              <option ${b.status==='Completed'?'selected':''}>Completed</option>
-              <option ${b.status==='Cancelled'?'selected':''}>Cancelled</option>
-            </select>
-          </td>
-          <td>
-            <button style="background: none; color: var(--danger); font-weight: 700;" onclick="deleteBookingAdmin('${b.ref}')">✕ Delete</button>
-          </td>
-        </tr>
-      `).join("");
-    }
-
-    function updateBookingStatus(ref, newStatus) {
-      const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-      const target = bookings.find(b => b.ref === ref);
-      if (target) {
-        target.status = newStatus;
-        localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
-        toast(`Ref ${ref} updated to ${newStatus}`);
-      }
-    }
-
-    function deleteBookingAdmin(ref) {
-      if (!confirm(`Permanently delete booking record ${ref}?`)) return;
-      let bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-      bookings = bookings.filter(b => b.ref !== ref);
-      localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
-      renderAdminBookings();
-      toast(`Booking ${ref} deleted`);
-    }
-
-    function exportBookingsCSV() {
-      const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-      if (bookings.length === 0) {
-        toast("No bookings available to export");
-        return;
-      }
-      let csv = "Booking Ref,Date Placed,Name,Phone,Property Type,Address,Service Date,Slot,Services,Total,Status,Notes\n";
-      bookings.forEach(b => {
-        csv += `"${b.ref}","${b.placed||''}","${b.name}","${b.phone}","${b.type}","${b.address.replace(/"/g, '""')}","${b.date}","${b.slot}","${b.services.replace(/"/g, '""')}","${b.total}","${b.status}","${(b.notes||'').replace(/"/g, '""')}"\n`;
-      });
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.setAttribute("download", `AS_Global_Bookings_${formatLocalDate(new Date())}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      toast("📥 CSV Export downloaded successfully.");
-    }
-
-    function openPriceManager() {
-      const newCockroachPrice = prompt("Enter Base Price (1 BHK) for Cockroach Control:", servicesCatalog.find(s=>s.id==="cockroach").basePrice);
-      if (newCockroachPrice && !isNaN(newCockroachPrice)) {
-        servicesCatalog.find(s=>s.id==="cockroach").basePrice = Number(newCockroachPrice);
-        localStorage.setItem(PRICING_STORAGE_KEY, JSON.stringify(servicesCatalog));
-        renderServiceCards();
-        toast("Base prices updated successfully");
+        window.location.href = "admin.html";
       }
     }
 
