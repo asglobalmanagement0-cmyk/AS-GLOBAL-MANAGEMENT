@@ -1,5 +1,9 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — FULL JAVASCRIPT ENGINE
+   AS GLOBAL MANAGEMENT — FULL UPGRADED JAVASCRIPT ENGINE
+   Features:
+   - 15-20 Words Address Validation with Live Counter
+   - Option A: Real-Time 1-to-1 Slot Availability from Firebase
+   - Loading Animation on Submission
    ========================================================================= */
 
 // 1. FIREBASE CONFIGURATION
@@ -443,7 +447,27 @@ function openServiceModal(id) {
   openModal("service-modal");
 }
 
-// 7. FORM VALIDATION
+// ==========================================
+// 7. UPGRADED: 15 WORDS ADDRESS VALIDATION
+// ==========================================
+function countWords(str) {
+  if (!str) return 0;
+  return str.trim().split(/\s+/).filter((word) => word.length > 0).length;
+}
+
+function validateAddressLive(textarea) {
+  const words = countWords(textarea.value);
+  const counter = $("address-word-count");
+  const isValid = words >= 15;
+
+  if (counter) {
+    counter.textContent = `${words} / 15 words minimum`;
+    counter.style.color = isValid ? "var(--primary)" : "var(--danger)";
+  }
+
+  validateLive("f-address", isValid);
+}
+
 function validateLive(fieldId, isValid) {
   const el = $(fieldId);
   if (!el) return;
@@ -460,7 +484,10 @@ function validatePhoneLive(input) {
   validateLive("f-phone", isValidIndianPhone(input.value));
 }
 
-function refreshSlots() {
+// ==========================================
+// 8. UPGRADED: OPTION A REAL-TIME SLOT BOOKING
+// ==========================================
+async function refreshSlots() {
   const dateInput = $("in-date");
   const slotSelect = $("in-slot");
   if (!dateInput || !slotSelect) return;
@@ -471,26 +498,58 @@ function refreshSlots() {
   const isToday = dateVal === todayStr;
   const currentHour = now.getHours();
 
+  slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
+
+  // Check which slots are already booked in Firebase for this date (Option A)
+  const bookedSlots = new Set();
+
+  if (db && dateVal) {
+    try {
+      const snap = await db.collection("bookings").where("date", "==", dateVal).get();
+      snap.forEach((doc) => {
+        const data = doc.data();
+        if (data.slot) {
+          bookedSlots.add(data.slot);
+        }
+      });
+    } catch (err) {
+      console.warn("Could not fetch real-time slots:", err);
+    }
+  }
+
+  // Also check local bookings backup
+  const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
+  localBookings.forEach((b) => {
+    if (b.date === dateVal && b.slot) {
+      bookedSlots.add(b.slot);
+    }
+  });
+
   slotSelect.innerHTML = '<option value="">Select available slot…</option>';
-  let count = 0;
+  let availableCount = 0;
 
   AVAILABLE_SLOTS.forEach((slot) => {
     const isPassed = isToday && currentHour >= slot.cutoffHour;
+    const isBooked = bookedSlots.has(slot.label);
+
     const opt = document.createElement("option");
     opt.value = slot.label;
-    if (isPassed) {
-      opt.textContent = `${slot.label} (Window Passed)`;
+
+    if (isBooked) {
+      opt.textContent = `❌ ${slot.label} (Booked / Unavailable)`;
+      opt.disabled = true;
+    } else if (isPassed) {
+      opt.textContent = `⏰ ${slot.label} (Window Passed)`;
       opt.disabled = true;
     } else {
-      opt.textContent = slot.label;
-      count++;
+      opt.textContent = `✓ ${slot.label}`;
+      availableCount++;
     }
     slotSelect.appendChild(opt);
   });
 
-  if (isToday && count === 0) {
-    toast("⏰ Regular hours ended for today. Tomorrow selected.");
-    selectQuickDate(1, $("btn-tmrw"));
+  if (availableCount === 0) {
+    toast(`All slots booked or passed for ${dateVal}. Please choose another date.`);
   }
 }
 
@@ -519,7 +578,8 @@ function handleDateChange() {
 function validateBookingForm() {
   const nameOk = $("in-name").value.trim().length >= 2;
   const phoneOk = isValidIndianPhone($("in-phone").value);
-  const addressOk = $("in-address").value.trim().length >= 8;
+  const words = countWords($("in-address").value);
+  const addressOk = words >= 15;
   const dateInput = $("in-date");
   const dateOk = dateInput.value !== "" && dateInput.value >= dateInput.min;
   const slotOk = $("in-slot").value !== "";
@@ -530,14 +590,17 @@ function validateBookingForm() {
   validateLive("f-date", dateOk);
   validateLive("f-slot", slotOk);
 
-  if (!nameOk || !phoneOk || !addressOk || !dateOk || !slotOk) {
-    toast("Please verify all marked fields.");
-    return false;
-  }
+  if (!nameOk) { toast("Please enter your full name."); return false; }
+  if (!phoneOk) { toast("Please enter a valid 10-digit mobile number."); return false; }
+  if (!addressOk) { toast(`Address requires at least 15 words (currently ${words} words).`); return false; }
+  if (!dateOk || !slotOk) { toast("Please select a valid date and available slot."); return false; }
+
   return true;
 }
 
-// 8. DATA SUBMISSION (FIREBASE & SHEETS)
+// ==========================================
+// 9. UPGRADED: BOOKING SUBMISSION & ANIMATED LOADER
+// ==========================================
 async function syncOfflineQueue() {
   if (!navigator.onLine) return;
   const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
@@ -574,8 +637,10 @@ async function handleBookingSubmission(e) {
 
   isSubmitting = true;
   const submitBtn = $("submit-btn");
-  submitBtn.textContent = "Securing Appointment...";
   submitBtn.disabled = true;
+
+  // SHOW ANIMATED LOADING SCREEN
+  openModal("loading-modal");
 
   try {
     const total = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
@@ -598,24 +663,30 @@ async function handleBookingSubmission(e) {
       createdAt: typeof firebase !== "undefined" ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
     };
 
+    // Save to Firebase Cloud Firestore
     if (db) {
       await db.collection("bookings").doc(ref).set(booking);
       console.log("✓ Saved to Firebase!");
     }
 
+    // Save locally for instant Portal retrieval
     const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
     bookings.unshift(booking);
     localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
     latestBooking = booking;
 
+    // Queue Google Sheet sync
     const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
     queue.push(booking);
     localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
     syncOfflineQueue().catch(() => {});
 
+    // Minimum delay so customer experiences the smooth loader
+    await new Promise((resolve) => setTimeout(resolve, 1400));
+
+    // Reset Form & Cart
     cart = [];
     localStorage.removeItem(CART_STORAGE_KEY);
-
     $("booking-form").reset();
     document.querySelectorAll(".field").forEach((f) => f.classList.remove("valid", "invalid"));
     initDateInputs();
@@ -623,6 +694,9 @@ async function handleBookingSubmission(e) {
     renderServiceCards();
     renderCart();
     updateStickyBar();
+
+    // Close Loading Screen
+    closeModal("loading-modal");
 
     $("success-ref").textContent = ref;
     $("success-details").innerHTML = `
@@ -633,16 +707,16 @@ async function handleBookingSubmission(e) {
 
     go("success");
   } catch (err) {
+    closeModal("loading-modal");
     console.error("Booking error:", err);
     toast("An error occurred while saving your booking. Cart retained.");
   } finally {
     isSubmitting = false;
-    submitBtn.textContent = "Confirm Service Visit (Pay Post-Service) ✔";
     submitBtn.disabled = false;
   }
 }
 
-// 9. PORTAL & COMMERCIAL
+// 10. PORTAL & COMMERCIAL
 async function handlePortalLookup(e) {
   e.preventDefault();
   const phoneInput = $("portal-phone").value.trim();
@@ -767,7 +841,7 @@ function initDateInputs() {
   }
 }
 
-// 10. RUN IMMEDIATELY UPON PAGE LOAD
+// 11. RUN IMMEDIATELY UPON PAGE LOAD
 window.addEventListener("DOMContentLoaded", () => {
   initDateInputs();
   renderServiceCards();
