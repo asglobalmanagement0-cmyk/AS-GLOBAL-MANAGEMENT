@@ -18,6 +18,8 @@
   <meta property="og:image" content="logo.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#059669">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <link rel="icon" type="image/jpeg" href="logo.jpg">
 
@@ -93,12 +95,12 @@
       --white: #ffffff;
       --danger: #dc2626;
       --danger-light: #fee2e2;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
       --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
       --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.14);
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -107,6 +109,7 @@
       padding: 0;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     html {
@@ -114,6 +117,7 @@
       font-size: 16px;
       width: 100%;
       overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -132,15 +136,6 @@
       padding-right: env(safe-area-inset-right);
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-    }
-
     h1, h2, h3, h4, .brand-title, .price-tag, .stat-value {
       font-family: 'Space Grotesk', system-ui, sans-serif;
       letter-spacing: -0.025em;
@@ -148,8 +143,10 @@
 
     button, input, select, textarea, a {
       font-family: inherit;
+      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
+    /* Prevents iPhone Safari auto-zoom on form click */
     input, select, textarea {
       font-size: 16px !important;
     }
@@ -159,7 +156,12 @@
       border: none;
       outline: none;
       min-height: 44px;
-      min-width: 44px;
+      user-select: none;
+    }
+
+    /* Haptic-style visual tap on touch devices */
+    button:active, .action-btn:active, .bhk-btn:active, .qdate-pill:active {
+      transform: scale(0.96) !important;
     }
 
     button:disabled {
@@ -173,23 +175,24 @@
       text-decoration: none;
     }
 
+    /* Header */
     header {
       position: sticky;
       top: 0;
       z-index: 80;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--slate-200);
-      box-shadow: var(--shadow-sm);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
       width: 100%;
     }
 
     .header-inner {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 0 clamp(16px, 3vw, 32px);
-      height: 70px;
+      padding: 0 clamp(16px, 4vw, 32px);
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -206,8 +209,8 @@
     }
 
     .logo-mark {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       flex-shrink: 0;
       overflow: hidden;
@@ -216,7 +219,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px var(--primary-glow);
+      box-shadow: 0 4px 10px var(--primary-glow);
     }
 
     .logo-mark img {
@@ -226,7 +229,7 @@
     }
 
     .brand-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 800;
       color: var(--slate-900);
       line-height: 1.15;
@@ -235,10 +238,10 @@
     .brand-title small {
       display: block;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 700;
       color: var(--slate-600);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
     }
 
@@ -249,7 +252,7 @@
     }
 
     .nav-link {
-      padding: 10px 14px;
+      padding: 9px 14px;
       border-radius: 10px;
       font-size: 0.88rem;
       font-weight: 700;
@@ -258,7 +261,6 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s var(--ease);
       white-space: nowrap;
     }
 
@@ -268,11 +270,10 @@
     .nav-link.cta-btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: var(--white);
-      padding: 10px 18px;
+      padding: 9px 18px;
       border-radius: 999px;
-      box-shadow: 0 4px 16px var(--primary-glow);
+      box-shadow: 0 4px 14px var(--primary-glow);
     }
-    .nav-link.cta-btn:hover { transform: translateY(-1px); }
 
     .cart-badge {
       display: inline-flex;
@@ -298,14 +299,14 @@
       width: 44px;
       height: 44px;
       background: var(--slate-100);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 10px;
       z-index: 100;
     }
 
     .menu-toggle span {
       width: 22px;
-      height: 2px;
+      height: 2.2px;
       background: var(--slate-800);
       border-radius: 2px;
       transition: transform 0.25s var(--ease), opacity 0.2s;
@@ -319,8 +320,8 @@
       position: fixed;
       inset: 0;
       background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 90;
       display: none;
       opacity: 0;
@@ -358,12 +359,15 @@
       width: 100%;
       text-align: left;
       justify-content: flex-start;
-      padding: 12px 16px;
+      padding: 13px 16px;
       font-size: 1rem;
-      border-radius: 12px;
+      border-radius: 14px;
       font-weight: 700;
       color: var(--slate-700);
       background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .mobile-nav-list button.active {
@@ -372,53 +376,63 @@
     }
 
     .mobile-nav-list button.cta-mobile {
-      margin-top: 12px;
-      background: var(--primary);
+      margin-top: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: var(--white);
       text-align: center;
       justify-content: center;
+      box-shadow: 0 4px 14px var(--primary-glow);
     }
 
+    /* Views with smooth flow transition */
     main { flex: 1; width: 100%; }
     .view { display: none; width: 100%; }
-    .view.show { display: block; animation: fadeIn 0.3s var(--ease); }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-    .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 32px); width: 100%; }
-    .page { padding-top: 24px; padding-bottom: 90px; }
+    .view.show { 
+      display: block; 
+      animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    }
+    @keyframes slideUpFade { 
+      from { opacity: 0; transform: translateY(14px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
 
-    .sec-head { margin-bottom: 24px; max-width: 700px; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px); width: 100%; }
+    .page { padding-top: 20px; padding-bottom: 110px; }
+
+    .sec-head { margin-bottom: 20px; max-width: 700px; }
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--primary-dark);
       background: var(--primary-light);
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 999px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       border: 1px solid rgba(5, 150, 105, 0.2);
     }
-    .sec-head h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); margin-bottom: 8px; line-height: 1.2; }
-    .sec-head p { color: var(--slate-600); font-size: 0.95rem; }
+    .sec-head h2 { font-size: clamp(1.45rem, 3.8vw, 2.2rem); margin-bottom: 6px; line-height: 1.25; }
+    .sec-head p { color: var(--slate-600); font-size: 0.92rem; line-height: 1.5; }
 
+    /* Hero section */
     .hero {
-      padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 32px) 24px;
+      padding: clamp(20px, 4vw, 42px) clamp(16px, 4vw, 32px) 20px;
       max-width: 1240px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: clamp(24px, 4vw, 48px);
+      gap: clamp(20px, 3.5vw, 40px);
       align-items: center;
       width: 100%;
     }
     .hero-text h1 {
-      font-size: clamp(2rem, 4.5vw, 3.3rem);
-      line-height: 1.15;
-      margin-bottom: 16px;
+      font-size: clamp(1.85rem, 5vw, 3.1rem);
+      line-height: 1.18;
+      margin-bottom: 14px;
     }
     .hero-text h1 span {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -427,11 +441,11 @@
     }
     .hero-text p {
       color: var(--slate-600);
-      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-      margin-bottom: 24px;
+      font-size: clamp(0.92rem, 1.8vw, 1.02rem);
+      margin-bottom: 22px;
       max-width: 540px;
     }
-    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+    .hero-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
 
     .btn {
       display: inline-flex;
@@ -440,16 +454,14 @@
       gap: 8px;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: var(--white);
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
+      padding: 12px 22px;
+      border-radius: 14px;
+      font-size: 0.94rem;
       font-weight: 700;
-      transition: all 0.2s var(--ease);
-      box-shadow: 0 4px 16px var(--primary-glow);
+      box-shadow: 0 4px 14px var(--primary-glow);
       text-align: center;
+      min-height: 48px;
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(5, 150, 105, 0.35); }
-    .btn:active { transform: translateY(0); }
     .btn.secondary {
       background: var(--white);
       color: var(--slate-800);
@@ -462,49 +474,38 @@
     .hero-stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 10px;
       border-top: 1px solid var(--slate-200);
-      padding-top: 20px;
+      padding-top: 18px;
     }
-    .hero-stats .stat-value { font-size: clamp(1.2rem, 2.5vw, 1.45rem); font-weight: 800; color: var(--slate-900); }
-    .hero-stats .stat-label { font-size: 0.74rem; color: var(--slate-600); font-weight: 600; display: block; }
+    .hero-stats .stat-value { font-size: clamp(1.15rem, 2.5vw, 1.4rem); font-weight: 800; color: var(--slate-900); }
+    .hero-stats .stat-label { font-size: 0.72rem; color: var(--slate-600); font-weight: 600; display: block; }
 
-    .hero-card-col { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+    .hero-card-col { display: flex; flex-direction: column; gap: 14px; width: 100%; }
 
     .hero-banner-shield {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary-deep));
       color: var(--white);
       border-radius: var(--radius-lg);
-      padding: 28px 24px;
+      padding: 24px 20px;
       box-shadow: var(--shadow-md);
-      border: 2px solid var(--white);
+      border: 1.5px solid rgba(255,255,255,0.2);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      min-height: 200px;
+      min-height: 180px;
       position: relative;
       overflow: hidden;
     }
-    .hero-banner-shield::after {
-      content: "SHIELD-PRO";
-      position: absolute;
-      right: -20px;
-      bottom: -15px;
-      font-size: 3.5rem;
-      font-weight: 800;
-      opacity: 0.06;
-      font-family: 'Space Grotesk', sans-serif;
-      pointer-events: none;
-    }
     .hero-banner-shield h3 {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: #6ee7b7;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .hero-banner-shield p {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: var(--slate-200);
-      line-height: 1.6;
+      line-height: 1.55;
     }
 
     .trust-panel {
@@ -514,26 +515,27 @@
       padding: 16px;
       box-shadow: var(--shadow-sm);
     }
-    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .trust-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; }
-    .trust-item b { display: block; color: var(--slate-900); font-size: 0.86rem; }
-    .trust-item span { color: var(--slate-600); font-size: 0.74rem; }
+    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .trust-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; }
+    .trust-item b { display: block; color: var(--slate-900); font-size: 0.84rem; }
+    .trust-item span { color: var(--slate-600); font-size: 0.72rem; }
 
+    /* BHK configuration bar (Enhanced for mobile touch scroll) */
     .calc-box {
       background: var(--white);
       border: 1.5px solid rgba(5, 150, 105, 0.25);
       border-radius: var(--radius-md);
-      padding: 16px 20px;
+      padding: 14px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin: 24px 0;
+      margin: 18px 0;
       box-shadow: var(--shadow-sm);
       width: 100%;
     }
-    .calc-title { font-weight: 700; font-size: 0.92rem; display: flex; align-items: center; gap: 8px; }
+    .calc-title { font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; gap: 6px; }
     .bhk-pill-group {
       display: flex;
       gap: 6px;
@@ -541,7 +543,10 @@
       max-width: 100%;
       padding-bottom: 4px;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .bhk-pill-group::-webkit-scrollbar { display: none; }
+
     .bhk-btn {
       background: var(--slate-100);
       color: var(--slate-700);
@@ -551,20 +556,20 @@
       font-size: 0.82rem;
       font-weight: 700;
       white-space: nowrap;
-      transition: all 0.2s var(--ease);
+      min-height: 40px;
     }
-    .bhk-btn:hover { background: var(--primary-light); color: var(--primary-dark); }
     .bhk-btn.active {
       background: var(--primary);
       color: var(--white);
       border-color: var(--primary);
-      box-shadow: 0 4px 12px var(--primary-glow);
+      box-shadow: 0 3px 10px var(--primary-glow);
     }
 
+    /* Cards Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      gap: 16px;
       width: 100%;
     }
     .card {
@@ -575,13 +580,7 @@
       display: flex;
       flex-direction: column;
       box-shadow: var(--shadow-sm);
-      transition: all 0.25s var(--ease);
       position: relative;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
-      border-color: rgba(5, 150, 105, 0.4);
     }
     .card.selected {
       border-color: var(--primary);
@@ -589,10 +588,10 @@
       box-shadow: 0 0 0 2px var(--primary);
     }
     .card-body {
-      padding: 20px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       flex: 1;
     }
     .card-header-row {
@@ -605,8 +604,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
       background: var(--primary-light);
       color: var(--primary-dark);
@@ -621,22 +620,22 @@
       background: var(--slate-100);
       color: var(--slate-700);
     }
-    .card h3 { font-size: 1.15rem; color: var(--slate-900); }
-    .card p { font-size: 0.86rem; color: var(--slate-600); flex: 1; }
-    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .card h3 { font-size: 1.12rem; color: var(--slate-900); }
+    .card p { font-size: 0.85rem; color: var(--slate-600); flex: 1; line-height: 1.5; }
+    .chips { display: flex; flex-wrap: wrap; gap: 5px; }
     .chip {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
       color: var(--slate-700);
       background: var(--slate-100);
-      padding: 3px 9px;
+      padding: 3px 8px;
       border-radius: 999px;
     }
     .card-foot {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 14px;
+      padding-top: 12px;
       border-top: 1px solid var(--slate-100);
       margin-top: auto;
     }
@@ -644,14 +643,14 @@
     .price-tag small { font-size: 0.7rem; font-weight: 600; color: var(--slate-400); }
     .card-actions { display: flex; gap: 8px; }
     .action-btn {
-      padding: 8px 14px;
+      padding: 8px 16px;
       border-radius: 999px;
       font-size: 0.82rem;
       font-weight: 700;
       border: 1.5px solid var(--primary);
       background: var(--white);
       color: var(--primary-dark);
-      transition: all 0.2s var(--ease);
+      min-height: 40px;
     }
     .action-btn.added { background: var(--primary); color: var(--white); }
     .detail-link {
@@ -661,27 +660,28 @@
       background: none;
       padding: 8px 10px;
       border-radius: 999px;
+      min-height: 40px;
     }
-    .detail-link:hover { color: var(--primary); background: var(--primary-light); }
 
+    /* Testimonials */
     .testi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
+      gap: 14px;
+      margin-top: 16px;
       width: 100%;
     }
     .testi-card {
       background: var(--white);
       border: 1px solid var(--slate-200);
       border-radius: var(--radius-md);
-      padding: 20px;
+      padding: 18px;
       box-shadow: var(--shadow-sm);
     }
-    .testi-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .testi-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
     .testi-avatar {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: var(--primary-light);
       color: var(--primary-dark);
@@ -691,13 +691,14 @@
       font-weight: 800;
       font-size: 0.95rem;
     }
-    .testi-card p { font-size: 0.86rem; color: var(--slate-600); line-height: 1.6; }
-    .testi-star { color: #f59e0b; font-size: 0.85rem; margin-bottom: 4px; }
+    .testi-card p { font-size: 0.84rem; color: var(--slate-600); line-height: 1.55; }
+    .testi-star { color: #f59e0b; font-size: 0.82rem; margin-bottom: 4px; }
 
+    /* Booking Form Mobile Polish */
     .booking-grid {
       display: grid;
       grid-template-columns: 1.3fr 0.9fr;
-      gap: 24px;
+      gap: 20px;
       align-items: start;
       width: 100%;
     }
@@ -705,22 +706,21 @@
       background: var(--white);
       border: 1px solid var(--slate-200);
       border-radius: var(--radius-lg);
-      padding: clamp(16px, 3vw, 26px);
+      padding: clamp(16px, 4vw, 26px);
       box-shadow: var(--shadow-sm);
       width: 100%;
     }
-    .panel h3 { font-size: 1.18rem; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
-    .field { margin-bottom: 16px; position: relative; }
+    .panel h3 { font-size: 1.15rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .field { margin-bottom: 15px; position: relative; }
     .field label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--slate-800); margin-bottom: 6px; }
     .field input, .field select, .field textarea {
       width: 100%;
-      min-height: 44px;
-      padding: 10px 14px;
+      min-height: 48px;
+      padding: 12px 14px;
       border: 1.5px solid var(--slate-200);
       border-radius: 12px;
       color: var(--slate-900);
       background: var(--slate-50);
-      transition: all 0.2s;
     }
     .field input:focus, .field select:focus, .field textarea:focus {
       outline: none;
@@ -742,11 +742,11 @@
       background: var(--slate-100);
       color: var(--slate-700);
       border: 1px solid var(--slate-200);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.78rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
       font-weight: 700;
-      min-height: 44px;
+      min-height: 42px;
     }
     .qdate-pill.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
@@ -764,11 +764,13 @@
     .cart-item-remove {
       background: none;
       color: var(--danger);
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       padding: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
     }
     .cart-total-row {
       display: flex;
@@ -792,18 +794,19 @@
       line-height: 1.5;
     }
 
+    /* Safe Bottom Sticky Mobile Action Bar (iPhone & Android) */
     .sticky-bar {
       position: fixed;
-      bottom: calc(14px + env(safe-area-inset-bottom));
+      bottom: calc(12px + env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%) translateY(140px);
-      width: calc(100% - 32px);
-      max-width: 540px;
-      background: rgba(15, 23, 42, 0.96);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      width: calc(100% - 24px);
+      max-width: 520px;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       color: var(--white);
-      padding: 10px 18px;
+      padding: 10px 16px;
       border-radius: 999px;
       display: flex;
       align-items: center;
@@ -816,10 +819,11 @@
     .sticky-bar-btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: var(--white);
-      padding: 9px 20px;
+      padding: 10px 22px;
       border-radius: 999px;
       font-weight: 800;
-      font-size: 0.86rem;
+      font-size: 0.88rem;
+      min-height: 44px;
     }
 
     /* Modal System */
@@ -836,13 +840,13 @@
       justify-content: center;
       overflow-y: auto;
     }
-    .modal-overlay.show { display: flex; }
+    .modal-overlay.show { display: flex; animation: slideUpFade 0.25s var(--ease); }
     .modal-card {
       background: var(--white);
       width: 100%;
-      max-width: 600px;
+      max-width: 560px;
       border-radius: var(--radius-lg);
-      padding: clamp(18px, 3vw, 28px);
+      padding: clamp(18px, 4vw, 26px);
       position: relative;
       box-shadow: var(--shadow-lg);
       max-height: 90vh;
@@ -871,13 +875,13 @@
 
     /* Loading Spinner */
     .spinner {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       border: 5px solid var(--slate-200);
       border-top-color: var(--primary);
       border-radius: 50%;
       animation: spin 0.85s linear infinite;
-      margin: 0 auto 18px;
+      margin: 0 auto 16px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -890,7 +894,7 @@
 
     #toast {
       position: fixed;
-      bottom: calc(24px + env(safe-area-inset-bottom));
+      bottom: calc(20px + env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%) translateY(100px);
       background: var(--slate-900);
@@ -913,17 +917,17 @@
     .foot-grid {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 40px clamp(16px, 3vw, 32px) 24px;
+      padding: 36px clamp(16px, 4vw, 32px) 24px;
       display: grid;
       grid-template-columns: 1.4fr 1fr 1fr 1fr;
-      gap: 28px;
+      gap: 24px;
     }
     footer h4 { color: var(--white); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
     .foot-links a { display: block; color: #94a3b8; font-size: 0.86rem; margin-bottom: 8px; min-height: 24px; }
     .foot-links a:hover { color: #34d399; }
     .foot-bottom {
       border-top: 1px solid #064e3b;
-      padding: 16px clamp(16px, 3vw, 32px);
+      padding: 16px clamp(16px, 4vw, 32px);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -933,6 +937,7 @@
       padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 
+    /* Mobile Responsive Optimizations */
     @media (max-width: 1024px) {
       .hero { grid-template-columns: 1fr; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
@@ -944,15 +949,10 @@
       .booking-grid { grid-template-columns: 1fr; }
       .row2 { grid-template-columns: 1fr; }
       .foot-grid { grid-template-columns: 1fr; }
-      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    }
-
-    @media print {
-      body * { visibility: hidden; }
-      #print-modal, #print-modal * { visibility: visible; }
-      #print-modal { position: absolute; left: 0; top: 0; width: 100%; background: none; padding: 0; }
-      .modal-card { border: none; box-shadow: none; max-width: 100%; padding: 0; }
-      .print-hide { display: none !important; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .hero { padding-top: 16px; }
+      .btn { width: 100%; }
+      .hero-cta { flex-direction: column; }
     }
   </style>
 </head>
@@ -1095,12 +1095,12 @@
         </div>
         <div class="grid" id="home-services-grid"></div>
 
-        <div style="text-align: center; margin: 32px 0 48px;">
+        <div style="text-align: center; margin: 32px 0 44px;">
           <button class="btn secondary" onclick="go('services')">View Full Catalog &amp; Chemical Details →</button>
         </div>
 
         <!-- Verified Testimonials -->
-        <div class="sec-head" style="margin-top: 36px;">
+        <div class="sec-head" style="margin-top: 30px;">
           <span class="eyebrow">Customer Feedback</span>
           <h2>Verified Client Reviews</h2>
           <p>Read authenticated experiences from residential and commercial clients across Hyderabad.</p>
@@ -1114,7 +1114,7 @@
                 <div class="testi-star">★★★★★</div>
               </div>
             </div>
-            <p>"Booked the cockroach gel treatment for our 3 BHK in Madhapur. The technician was on time, completely odorless application, and no utensils needed shifting. Zero roaches observed after 4 days."</p>
+            <p>"Booked the cockroach gel treatment for our 3 BHK in Madhapur. Technician on time, odorless application, utensils didn't need shifting. Zero roaches observed after 4 days."</p>
           </div>
           <div class="testi-card">
             <div class="testi-head">
@@ -1124,7 +1124,7 @@
                 <div class="testi-star">★★★★★</div>
               </div>
             </div>
-            <p>"Had severe termite infestation in our bedroom wardrobe frames. The drill-and-fill injection treatment was executed cleanly and neatly color-matched. Best part was paying only after inspection."</p>
+            <p>"Had severe termite infestation in bedroom wardrobe frames. Drill-and-fill injection was executed cleanly and neatly color-matched. Best part was paying only after inspection."</p>
           </div>
           <div class="testi-card">
             <div class="testi-head">
@@ -1134,10 +1134,10 @@
                 <div class="testi-star">★★★★★</div>
               </div>
             </div>
-            <p>"We engaged AS Global for commercial kitchen sanitization and rodent proofing at our restaurant. Compliance certificates and invoice were issued on the spot. Highly professional team."</p>
+            <p>"We engaged AS Global for commercial kitchen sanitization and rodent proofing at our restaurant. Compliance certificates issued immediately. Very professional team."</p>
           </div>
         </div>
-        <div style="height: 48px;"></div>
+        <div style="height: 30px;"></div>
       </div>
     </section>
 
@@ -1163,7 +1163,7 @@
 
         <div class="grid" id="catalog-services-grid"></div>
 
-        <div style="margin-top: 36px; text-align: center;">
+        <div style="margin-top: 32px; text-align: center;">
           <button class="btn" onclick="go('book')">Proceed to Schedule Service Visit →</button>
         </div>
       </div>
@@ -1238,10 +1238,10 @@
           </div>
           <div class="panel" style="background: var(--slate-100);">
             <h3>🛡️ Corporate Compliance Standards</h3>
-            <ul style="margin-left: 20px; font-size: 0.9rem; line-height: 1.8; color: var(--slate-700);">
+            <ul style="margin-left: 18px; font-size: 0.88rem; line-height: 1.8; color: var(--slate-700);">
               <li><b>Zero-Disruption Scheduling:</b> Night-shift and weekend treatments.</li>
               <li><b>Regulatory Documentation:</b> Material Safety Data Sheets (MSDS) provided.</li>
-              <li><b>Integrated Pest Management (IPM):</b> Non-toxic baiting + structural exclusion.</li>
+              <li><b>Integrated Pest Management:</b> Non-toxic baiting + structural exclusion.</li>
               <li><b>Dedicated Account Manager:</b> Single point of contact for routine audits.</li>
             </ul>
           </div>
@@ -1275,14 +1275,11 @@
               </div>
             </div>
 
-            <!-- UPGRADED ADDRESS SECTION: 15-20 WORDS MINIMUM -->
+            <!-- CLEAN ADDRESS FIELD (No 15-words restriction) -->
             <div class="field" id="f-address">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <label for="in-address" style="margin: 0;">Complete Service Address &amp; Landmark *</label>
-                <span id="address-word-count" style="font-size: 0.76rem; font-weight: 700; color: var(--danger);">0 / 15 words minimum</span>
-              </div>
-              <textarea id="in-address" rows="3" placeholder="Enter complete address including Flat / Door No., Apartment / Society Name, Road, Landmark, Area and Pincode (At least 15 words)" required oninput="validateAddressLive(this)"></textarea>
-              <div class="err">Please enter a detailed address (minimum 15 words required for technician navigation).</div>
+              <label for="in-address">Complete Service Address &amp; Landmark *</label>
+              <textarea id="in-address" rows="2" placeholder="Flat / Door No., Apartment Name, Street, Landmark, Area" required oninput="validateLive('f-address', this.value.trim().length >= 8)"></textarea>
+              <div class="err">Please enter your address with flat/street details.</div>
             </div>
 
             <div class="row2">
@@ -1297,7 +1294,7 @@
                 <div class="err">Please select a valid future date.</div>
               </div>
               <div class="field" id="f-slot">
-                <label for="in-slot">Arrival Slot (Option A: 1 Booking Per Slot) *</label>
+                <label for="in-slot">Arrival Slot (Option A: 1-to-1 Booking) *</label>
                 <select id="in-slot" onchange="validateLive('f-slot', this.value !== '')">
                   <option value="">Checking slot availability…</option>
                 </select>
@@ -1319,7 +1316,7 @@
           </form>
 
           <!-- Sticky Treatment Summary -->
-          <aside class="panel" style="position: sticky; top: 90px;">
+          <aside class="panel">
             <h3>🧾 Selected Treatments</h3>
             <div id="cart-container"></div>
             <div class="cart-total-row" id="cart-total-row" style="display: none;">
@@ -1338,16 +1335,16 @@
     <!-- VIEW: SUCCESS CONFIRMATION -->
     <section class="view" id="view-success">
       <div class="wrap page">
-        <div class="panel" style="max-width: 600px; margin: 40px auto; text-align: center;">
+        <div class="panel" style="max-width: 600px; margin: 30px auto; text-align: center;">
           <div style="font-size: 3rem; margin-bottom: 12px;">✅</div>
           <h2>Booking Confirmed!</h2>
           <p style="color: var(--slate-600); margin-bottom: 14px;">Your service reference code has been generated:</p>
-          <div style="font-size: 1.4rem; font-weight: 800; font-family: 'Space Grotesk'; color: var(--primary-dark); background: var(--primary-light); padding: 8px 24px; border-radius: 12px; display: inline-block; margin-bottom: 20px;" id="success-ref">
+          <div style="font-size: 1.35rem; font-weight: 800; font-family: 'Space Grotesk'; color: var(--primary-dark); background: var(--primary-light); padding: 8px 24px; border-radius: 12px; display: inline-block; margin-bottom: 20px;" id="success-ref">
             ASM-000000
           </div>
-          <p id="success-details" style="font-size: 0.95rem; color: var(--slate-700); line-height: 1.7; margin-bottom: 24px;"></p>
-          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-            <button class="btn secondary" onclick="openPrintModalCurrent()">🖨️ View Invoice &amp; Warranty Card</button>
+          <p id="success-details" style="font-size: 0.92rem; color: var(--slate-700); line-height: 1.65; margin-bottom: 24px;"></p>
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn secondary" onclick="openPrintModalCurrent()">🖨️ View Invoice &amp; Warranty</button>
             <button class="btn" onclick="startNewBooking()">Schedule Another Service →</button>
           </div>
         </div>
@@ -1358,18 +1355,18 @@
   <!-- Sticky Mobile Cart Bar -->
   <div id="sticky-bar" class="sticky-bar">
     <div>
-      <span id="sb-count" style="font-size: 0.74rem; color: var(--slate-400); display: block; font-weight: 700; text-transform: uppercase;">0 Treatments</span>
+      <span id="sb-count" style="font-size: 0.72rem; color: var(--slate-400); display: block; font-weight: 700; text-transform: uppercase;">0 Treatments</span>
       <span id="sb-total" style="font-size: 1.15rem; font-weight: 800; color: #34d399;">₹0</span>
     </div>
-    <button class="sticky-bar-btn" onclick="go('book')">Review &amp; Schedule →</button>
+    <button class="sticky-bar-btn" onclick="go('book')">Schedule →</button>
   </div>
 
-  <!-- UPGRADE: ANIMATED LOADING MODAL -->
+  <!-- ANIMATED LOADING MODAL -->
   <div class="modal-overlay" id="loading-modal">
-    <div class="modal-card" style="text-align: center; max-width: 440px; padding: 36px 24px;">
+    <div class="modal-card" style="text-align: center; max-width: 420px; padding: 34px 22px;">
       <div class="spinner"></div>
-      <h3 style="font-size: 1.2rem; color: var(--slate-900); margin-bottom: 8px;">Securing Your Appointment...</h3>
-      <p style="font-size: 0.88rem; color: var(--slate-600); line-height: 1.6;">
+      <h3 style="font-size: 1.18rem; color: var(--slate-900); margin-bottom: 8px;">Securing Your Appointment...</h3>
+      <p style="font-size: 0.86rem; color: var(--slate-600); line-height: 1.55;">
         Assigning technician window, verifying slot availability, and generating 30-day written warranty certificate...
       </p>
     </div>
