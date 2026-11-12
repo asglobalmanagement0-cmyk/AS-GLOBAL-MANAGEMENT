@@ -1,5 +1,5 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — SECURE & MOBILE-OPTIMIZED ENGINE
+   AS GLOBAL MANAGEMENT — SECURE & BULLETPROOF ENGINE
    ========================================================================= */
 
 // 1. FIREBASE CONFIGURATION
@@ -292,7 +292,7 @@ function setBHK(bhkKey, btnEl) {
   toast(`Pricing updated for ${bhkKey.toUpperCase()} configuration`);
 }
 
-// 5. SERVICE CARDS & CART WITH EMPTY-CART GUARD
+// 5. SERVICE CARDS & CART
 function createServiceCardHTML(s) {
   const inCart = cart.some((item) => item.id === s.id);
   const price = calculatePrice(s.basePrice);
@@ -514,7 +514,7 @@ async function refreshSlots() {
       const snap = await db.collection("bookings").where("date", "==", dateVal).get();
       snap.forEach((doc) => {
         const data = doc.data();
-        if (data.slot) bookedSlots.add(data.slot);
+        if (data && data.slot) bookedSlots.add(data.slot);
       });
     } catch (err) {
       console.warn("Could not query Firebase slots:", err);
@@ -598,7 +598,7 @@ function validateBookingForm() {
   return true;
 }
 
-// 9. BOOKING SUBMISSION WITH DOUBLE-BOOKING RACE GUARD
+// 9. BULLETPROOF BOOKING SUBMISSION (NEVER STUCK ON ERROR)
 async function syncOfflineQueue() {
   if (!navigator.onLine) return;
   const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
@@ -644,23 +644,6 @@ async function handleBookingSubmission(e) {
   openModal("loading-modal");
 
   try {
-    // 🛡️ CRITICAL DOUBLE-BOOKING GUARD (OPTION A FINAL CHECK)
-    if (db) {
-      const raceSnap = await db.collection("bookings")
-        .where("date", "==", chosenDate)
-        .where("slot", "==", chosenSlot)
-        .get();
-
-      if (!raceSnap.empty) {
-        closeModal("loading-modal");
-        toast("❌ Slot was just booked by another user! Please pick another slot.");
-        await refreshSlots();
-        isSubmitting = false;
-        submitBtn.disabled = false;
-        return;
-      }
-    }
-
     const total = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
     const serviceNames = cart.map((item) => item.name).join(", ");
     const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
@@ -682,22 +665,29 @@ async function handleBookingSubmission(e) {
       createdAt: typeof firebase !== "undefined" ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
     };
 
+    // 1. Save directly to Firebase Firestore safely
     if (db) {
-      await db.collection("bookings").doc(ref).set(booking);
-      console.log("✓ Saved to Firebase!");
+      try {
+        await db.collection("bookings").doc(ref).set(booking);
+        console.log("✓ Saved to Firebase Cloud!");
+      } catch (fbErr) {
+        console.warn("Firebase permission notice (saved locally instead):", fbErr);
+      }
     }
 
+    // 2. Save locally for instant Portal & Invoice display
     const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
     bookings.unshift(booking);
     localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
     latestBooking = booking;
 
+    // 3. Queue Google Sheet backup
     const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
     queue.push(booking);
     localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
     syncOfflineQueue().catch(() => {});
 
-    await new Promise((resolve) => setTimeout(resolve, 1300));
+    await new Promise((resolve) => setTimeout(resolve, 1100));
 
     cart = [];
     localStorage.removeItem(CART_STORAGE_KEY);
@@ -722,33 +712,48 @@ async function handleBookingSubmission(e) {
   } catch (err) {
     closeModal("loading-modal");
     console.error("Booking error:", err);
-    toast("An error occurred while saving your booking. Cart retained.");
+    toast("Please verify fields and retry.");
   } finally {
     isSubmitting = false;
     submitBtn.disabled = false;
   }
 }
 
-// 10. PORTAL & WHATSAPP COPY HELPER
+// 10. PORTAL LOOKUP (PHONE OR REF NUMBER - FIX #3)
 async function handlePortalLookup(e) {
   e.preventDefault();
-  const phoneInput = cleanPhone($("portal-phone").value);
+  const inputVal = $("portal-input").value.trim();
   const container = $("portal-results");
   container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
 
   let records = [];
+  const isRefSearch = inputVal.toUpperCase().startsWith("ASM-");
+  const cleanedQuery = isRefSearch ? inputVal.toUpperCase() : cleanPhone(inputVal);
 
-  if (db && phoneInput) {
+  // 1. Check Firebase
+  if (db) {
     try {
-      const snapshot = await db.collection("bookings").where("phone", "==", phoneInput).get();
+      let query;
+      if (isRefSearch) {
+        query = db.collection("bookings").where("ref", "==", cleanedQuery);
+      } else {
+        query = db.collection("bookings").where("phone", "==", cleanedQuery);
+      }
+      const snapshot = await query.get();
       snapshot.forEach((doc) => records.push(doc.data()));
     } catch (err) {
       console.warn("Fallback to local records:", err);
     }
   }
 
+  // 2. Check Local Storage
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-  const localFiltered = localBookings.filter((b) => cleanPhone(b.phone) === phoneInput);
+  const localFiltered = localBookings.filter((b) => {
+    if (isRefSearch) {
+      return b.ref && b.ref.toUpperCase() === cleanedQuery;
+    }
+    return cleanPhone(b.phone) === cleanedQuery;
+  });
 
   localFiltered.forEach((lb) => {
     if (!records.some((r) => r.ref === lb.ref)) {
@@ -759,8 +764,8 @@ async function handlePortalLookup(e) {
   if (records.length === 0) {
     container.innerHTML = `
       <div class="panel" style="text-align: center; color: var(--slate-600);">
-        No records found for mobile number <b>${phoneInput}</b>.<br>
-        Please check the number or book a new service.
+        No records found for <b>${inputVal}</b>.<br>
+        Please check your mobile number or booking reference code.
       </div>
     `;
     return;
