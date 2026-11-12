@@ -63,6 +63,32 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 
+  <!-- ================= FIREBASE SDK LIBRARIES ================= -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics-compat.js"></script>
+
+  <script>
+    // AS GLOBAL MANAGEMENT - LIVE FIREBASE CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyCgMKwYuU9luFWaH08eSLn7LMXMRBAXHek",
+      authDomain: "as-global-f15db.firebaseapp.com",
+      projectId: "as-global-f15db",
+      storageBucket: "as-global-f15db.firebasestorage.app",
+      messagingSenderId: "133737235635",
+      appId: "1:133737235635:web:39a731b8a71b55e7835cc6",
+      measurementId: "G-4DS8JXR6FX"
+    };
+
+    // Initialize Firebase Services
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    if (typeof firebase.analytics === "function") {
+      firebase.analytics();
+    }
+  </script>
+  <!-- ========================================================== -->
+
   <style>
     :root {
       --primary: #059669;
@@ -141,7 +167,6 @@
       font-family: inherit;
     }
 
-    /* Prevent auto-zooming on iOS inputs by maintaining minimum 16px font-size */
     input, select, textarea {
       font-size: 16px !important;
     }
@@ -165,7 +190,7 @@
       text-decoration: none;
     }
 
-    /* Header & Navigation */
+    /* Header */
     header {
       position: sticky;
       top: 0;
@@ -235,7 +260,7 @@
       text-transform: uppercase;
     }
 
-    /* Desktop Nav */
+    /* Desktop Navigation */
     .desktop-nav {
       display: flex;
       align-items: center;
@@ -283,7 +308,7 @@
       font-weight: 800;
     }
 
-    /* Mobile Hamburger */
+    /* Hamburger Toggle */
     .menu-toggle {
       display: none;
       flex-direction: column;
@@ -470,7 +495,6 @@
 
     .hero-card-col { display: flex; flex-direction: column; gap: 16px; width: 100%; }
 
-    /* Performance Trust Banner (Replaces Unsplash Photo) */
     .hero-banner-shield {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary-deep));
       color: var(--white);
@@ -562,7 +586,7 @@
       box-shadow: 0 4px 12px var(--primary-glow);
     }
 
-    /* Cards Grid (Clean Design - No External Photos) */
+    /* Cards Grid (Clean Design - No Photos) */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -615,7 +639,6 @@
       font-size: 1.25rem;
       border: 1px solid rgba(5, 150, 105, 0.2);
     }
-    .card-top { display: flex; justify-content: space-between; align-items: center; }
     .card-badge {
       font-size: 0.72rem;
       font-weight: 700;
@@ -698,7 +721,7 @@
     .testi-card p { font-size: 0.86rem; color: var(--slate-600); line-height: 1.6; }
     .testi-star { color: #f59e0b; font-size: 0.85rem; margin-bottom: 4px; }
 
-    /* Booking Wizard & Cart */
+    /* Booking Wizard & Form */
     .booking-grid {
       display: grid;
       grid-template-columns: 1.3fr 0.9fr;
@@ -1044,7 +1067,6 @@
         </div>
 
         <div class="hero-card-col">
-          <!-- Lightweight Performance Shield (Zero External Photos) -->
           <div class="hero-banner-shield">
             <h3>Govt. Certified IPM Protocols</h3>
             <p>100% odorless residential formulations, high-density German Bayer gel treatments, and deep drill-and-inject anti-termite barriers.</p>
@@ -1154,7 +1176,7 @@
           <div class="calc-title"><span>🏠 Active Property Configuration:</span></div>
           <div class="bhk-pill-group">
             <button class="bhk-btn active" onclick="setBHK('1bhk', this)">1 BHK</button>
-            <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
+            <button class="bhk-btn" onclick="setBhk('2bhk', this)">2 BHK</button>
             <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
             <button class="bhk-btn" onclick="setBHK('villa', this)">Villa</button>
             <button class="bhk-btn" onclick="setBHK('commercial', this)">Commercial</button>
@@ -1459,13 +1481,13 @@
   <!-- Application Engine -->
   <script>
     /* =========================================================================
-       CONSTANTS & SERVICE DEFINITIONS (NO EXTERNAL PHOTOS)
+       CONSTANTS & SERVICE DEFINITIONS
        ========================================================================= */
     const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJ_NavOu_a-TVV05DUL0BU0CfaorWEJ1JuFqVjewi9m2PYSXhAQJffoHf_7qdBFAJW/exec";
 
-    const CART_STORAGE_KEY = "asgm_cart_v17";
-    const BOOKINGS_STORAGE_KEY = "asgm_bookings_v17";
-    const SYNC_QUEUE_KEY = "asgm_sync_queue_v3";
+    const CART_STORAGE_KEY = "asgm_cart_v18";
+    const BOOKINGS_STORAGE_KEY = "asgm_bookings_v18";
+    const SYNC_QUEUE_KEY = "asgm_sync_queue_v4";
 
     let currentBHK = "1bhk";
     const BHK_MULTIPLIERS = {
@@ -1592,7 +1614,7 @@
     ];
 
     /* =========================================================================
-       STATE STORE (REACTIVE PERSISTENCE)
+       STATE STORE
        ========================================================================= */
     function loadSavedCart() {
       try {
@@ -1676,12 +1698,10 @@
       const target = $("view-" + viewId);
       if (target) target.classList.add("show");
 
-      // Desktop links
       document.querySelectorAll(".desktop-nav .nav-link").forEach(b => b.classList.remove("active"));
       const navBtn = $("nav-" + viewId);
       if (navBtn) navBtn.classList.add("active");
 
-      // Mobile links
       document.querySelectorAll(".mobile-nav-list button").forEach(b => b.classList.remove("active"));
       const mNavBtn = $("mnav-" + viewId);
       if (mNavBtn) mNavBtn.classList.add("active");
@@ -1715,7 +1735,7 @@
     }
 
     /* =========================================================================
-       SERVICE CARD GENERATION (NO EXTERNAL PHOTOS)
+       SERVICE CARD GENERATION
        ========================================================================= */
     function createServiceCardHTML(s) {
       const inCart = cart.some(item => item.id === s.id);
@@ -1762,7 +1782,7 @@
     }
 
     /* =========================================================================
-       CART STATE MACHINE (ATOMIC & DETERMINISTIC)
+       CART ENGINE
        ========================================================================= */
     function toggleCart(serviceId) {
       const existingIndex = cart.findIndex(item => item.id === serviceId);
@@ -1850,7 +1870,7 @@
     }
 
     /* =========================================================================
-       MODALS (WITH BODY SCROLL LOCK)
+       MODALS
        ========================================================================= */
     function openModal(id) {
       const el = $(id);
@@ -1903,7 +1923,7 @@
     }
 
     /* =========================================================================
-       FORM VALIDATION ENGINE
+       VALIDATION
        ========================================================================= */
     function validateLive(fieldId, isValid) {
       const el = $(fieldId);
@@ -2000,7 +2020,7 @@
     }
 
     /* =========================================================================
-       SUBMISSION & CART RESET
+       SUBMISSION & FIREBASE DATABASE WRITE
        ========================================================================= */
     async function syncOfflineQueue() {
       if (!navigator.onLine) return;
@@ -2010,6 +2030,7 @@
       const remaining = [];
       for (const item of queue) {
         try {
+          // Secondary webhook sync
           await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
             method: "POST",
             mode: "no-cors",
@@ -2017,7 +2038,6 @@
             body: JSON.stringify(item)
           });
         } catch (err) {
-          // Keep item in queue if fetch throws
           remaining.push(item);
         }
       }
@@ -2025,7 +2045,7 @@
     }
     window.addEventListener("online", syncOfflineQueue);
 
-    function handleBookingSubmission(e) {
+    async function handleBookingSubmission(e) {
       e.preventDefault();
 
       if (isSubmitting) return;
@@ -2060,22 +2080,29 @@
           services: serviceNames,
           total: total,
           status: "Confirmed",
-          placed: new Date().toLocaleDateString("en-IN")
+          placed: new Date().toLocaleDateString("en-IN"),
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
-        // 1. Save to local storage
+        // 1. SAVE TO FIREBASE CLOUD FIRESTORE DIRECTLY
+        if (typeof db !== "undefined") {
+          await db.collection("bookings").doc(ref).set(booking);
+          console.log("✓ Saved to Firebase Firestore successfully!");
+        }
+
+        // 2. Backup to localStorage for instant Portal access
         const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
         bookings.unshift(booking);
         localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
         latestBooking = booking;
 
-        // 2. Queue for background sync
+        // 3. Queue secondary Google Sheet sync
         const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
         queue.push(booking);
         localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
         syncOfflineQueue().catch(() => {});
 
-        // 3. Clear cart and reset form
+        // 4. Clear cart and reset form
         cart = [];
         localStorage.removeItem(CART_STORAGE_KEY);
         
@@ -2083,7 +2110,7 @@
         document.querySelectorAll(".field").forEach(f => f.classList.remove("valid", "invalid"));
         initDateInputs();
 
-        // 4. Update UI
+        // 5. Update UI
         renderServiceCards();
         renderCart();
         updateStickyBar();
@@ -2107,16 +2134,40 @@
     }
 
     /* =========================================================================
-       CUSTOMER PORTAL LOOKUP
+       CUSTOMER PORTAL LOOKUP (HYBRID: LOCAL + FIREBASE)
        ========================================================================= */
-    function handlePortalLookup(e) {
+    async function handlePortalLookup(e) {
       e.preventDefault();
       const phoneInput = $("portal-phone").value.trim();
-      const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-      const filtered = bookings.filter(b => b.phone.replace(/\D/g, "").endsWith(phoneInput.slice(-10)));
-
       const container = $("portal-results");
-      if (filtered.length === 0) {
+      container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
+
+      let records = [];
+
+      // Check Firebase Firestore first
+      if (typeof db !== "undefined") {
+        try {
+          const snapshot = await db.collection("bookings")
+            .where("phone", "==", phoneInput)
+            .get();
+
+          snapshot.forEach(doc => records.push(doc.data()));
+        } catch (err) {
+          console.warn("Firebase query fallback to local storage:", err);
+        }
+      }
+
+      // Merge local storage records
+      const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
+      const localFiltered = localBookings.filter(b => b.phone.replace(/\D/g, "").endsWith(phoneInput.slice(-10)));
+
+      localFiltered.forEach(lb => {
+        if (!records.some(r => r.ref === lb.ref)) {
+          records.push(lb);
+        }
+      });
+
+      if (records.length === 0) {
         container.innerHTML = `
           <div class="panel" style="text-align: center; color: var(--slate-600);">
             No records found for mobile number <b>${phoneInput}</b>.<br>
@@ -2126,7 +2177,7 @@
         return;
       }
 
-      container.innerHTML = filtered.map(b => `
+      container.innerHTML = records.map(b => `
         <div class="panel" style="margin-bottom: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <b>Booking Ref: <code style="color: var(--primary-dark); font-weight: 800;">${b.ref}</code></b>
@@ -2147,8 +2198,27 @@
     /* =========================================================================
        COMMERCIAL ENQUIRY
        ========================================================================= */
-    function handleCommercialInquiry(e) {
+    async function handleCommercialInquiry(e) {
       e.preventDefault();
+      
+      const inquiry = {
+        org: $("comm-org").value.trim(),
+        name: $("comm-name").value.trim(),
+        phone: $("comm-phone").value.trim(),
+        type: $("comm-type").value,
+        notes: $("comm-notes").value.trim(),
+        date: new Date().toLocaleDateString("en-IN"),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      if (typeof db !== "undefined") {
+        try {
+          await db.collection("commercial_inquiries").add(inquiry);
+        } catch (err) {
+          console.warn("Failed saving commercial inquiry to Firebase:", err);
+        }
+      }
+
       toast("Commercial site audit inquiry registered. Our corporate manager will call you.");
       const form = $("comm-form");
       if (form) form.reset();
@@ -2215,26 +2285,5 @@
       go("home");
     });
   </script>
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCgMKwYuU9luFWaH08eSLn7LMXMRBAXHek",
-  authDomain: "as-global-f15db.firebaseapp.com",
-  projectId: "as-global-f15db",
-  storageBucket: "as-global-f15db.firebasestorage.app",
-  messagingSenderId: "133737235635",
-  appId: "1:133737235635:web:39a731b8a71b55e7835cc6",
-  measurementId: "G-4DS8JXR6FX"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 </body>
 </html>
