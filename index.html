@@ -146,8 +146,14 @@
       transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
+    /* Prevents iPhone Safari auto-zoom on form click */
     input, select, textarea {
       font-size: 16px !important;
+    }
+
+    /* REMOVE RESIZE HANDLE FROM TEXTAREAS (FIX #2) */
+    textarea {
+      resize: none !important;
     }
 
     button {
@@ -518,7 +524,7 @@
     .trust-item b { display: block; color: var(--slate-900); font-size: 0.84rem; }
     .trust-item span { color: var(--slate-600); font-size: 0.72rem; }
 
-    /* Configuration Selector (Scrollable Touch Bar) */
+    /* Configuration Selector */
     .calc-box {
       background: var(--white);
       border: 1.5px solid rgba(5, 150, 105, 0.25);
@@ -692,7 +698,7 @@
     .testi-card p { font-size: 0.84rem; color: var(--slate-600); line-height: 1.55; }
     .testi-star { color: #f59e0b; font-size: 0.82rem; margin-bottom: 4px; }
 
-    /* Booking Form Mobile Polish */
+    /* Booking Form */
     .booking-grid {
       display: grid;
       grid-template-columns: 1.3fr 0.9fr;
@@ -792,7 +798,7 @@
       line-height: 1.5;
     }
 
-    /* Safe Bottom Sticky Mobile Action Bar (iPhone & Android) */
+    /* Sticky Bar */
     .sticky-bar {
       position: fixed;
       bottom: calc(12px + env(safe-area-inset-bottom));
@@ -871,7 +877,6 @@
       justify-content: center;
     }
 
-    /* Loading Spinner */
     .spinner {
       width: 50px;
       height: 50px;
@@ -1151,7 +1156,6 @@
           <div class="calc-title"><span>🏠 Active Property Configuration:</span></div>
           <div class="bhk-pill-group">
             <button class="bhk-btn active" onclick="setBHK('1bhk', this)">1 BHK</button>
-            <!-- TYPO PERMANENTLY FIXED TO setBHK -->
             <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
             <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
             <button class="bhk-btn" onclick="setBHK('villa', this)">Villa</button>
@@ -1167,20 +1171,20 @@
       </div>
     </section>
 
-    <!-- VIEW: CUSTOMER PORTAL -->
+    <!-- VIEW: CUSTOMER PORTAL (UPGRADED: PHONE OR REF CODE SEARCH) -->
     <section class="view" id="view-portal">
       <div class="wrap page">
         <div class="sec-head">
           <span class="eyebrow">Customer Self-Service</span>
           <h2>Track Your Bookings &amp; Warranty</h2>
-          <p>Enter your 10-digit registered mobile number to retrieve appointments, invoices, and certificates.</p>
+          <p>Enter your 10-digit mobile number OR your 9-digit Reference Code (e.g. ASM-123456).</p>
         </div>
 
         <div class="panel" style="max-width: 520px; margin-bottom: 24px;">
           <form onsubmit="handlePortalLookup(event)">
             <div class="field">
-              <label for="portal-phone">Registered 10-Digit Mobile Number</label>
-              <input type="tel" id="portal-phone" inputmode="numeric" placeholder="e.g. 9876543210" maxlength="10" required>
+              <label for="portal-input">Registered Mobile Number or Booking Reference Code</label>
+              <input type="text" id="portal-input" placeholder="e.g. 9876543210 or ASM-123456" required>
             </div>
             <button type="submit" class="btn block">Lookup Service Records</button>
           </form>
@@ -1273,7 +1277,7 @@
               </div>
             </div>
 
-            <!-- Standard Clean Address Field -->
+            <!-- Clean address without resize handle -->
             <div class="field" id="f-address">
               <label for="in-address">Complete Service Address &amp; Landmark *</label>
               <textarea id="in-address" rows="2" placeholder="Flat / Door No., Apartment Name, Street, Landmark, Area" required oninput="validateLive('f-address', this.value.trim().length >= 8)"></textarea>
@@ -1313,7 +1317,7 @@
             </p>
           </form>
 
-          <!-- Treatment Summary (Empty Guard included) -->
+          <!-- Treatment Summary -->
           <aside class="panel">
             <h3>🧾 Selected Treatments</h3>
             <div id="cart-container"></div>
