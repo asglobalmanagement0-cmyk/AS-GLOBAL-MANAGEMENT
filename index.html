@@ -146,7 +146,6 @@
       transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    /* Prevents iPhone Safari auto-zoom on form click */
     input, select, textarea {
       font-size: 16px !important;
     }
@@ -159,7 +158,6 @@
       user-select: none;
     }
 
-    /* Haptic-style visual tap on touch devices */
     button:active, .action-btn:active, .bhk-btn:active, .qdate-pill:active {
       transform: scale(0.96) !important;
     }
@@ -180,7 +178,7 @@
       position: sticky;
       top: 0;
       z-index: 80;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid rgba(226, 232, 240, 0.8);
@@ -384,7 +382,7 @@
       box-shadow: 0 4px 14px var(--primary-glow);
     }
 
-    /* Views with smooth flow transition */
+    /* Views */
     main { flex: 1; width: 100%; }
     .view { display: none; width: 100%; }
     .view.show { 
@@ -520,7 +518,7 @@
     .trust-item b { display: block; color: var(--slate-900); font-size: 0.84rem; }
     .trust-item span { color: var(--slate-600); font-size: 0.72rem; }
 
-    /* BHK configuration bar (Enhanced for mobile touch scroll) */
+    /* Configuration Selector (Scrollable Touch Bar) */
     .calc-box {
       background: var(--white);
       border: 1.5px solid rgba(5, 150, 105, 0.25);
@@ -937,7 +935,6 @@
       padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 
-    /* Mobile Responsive Optimizations */
     @media (max-width: 1024px) {
       .hero { grid-template-columns: 1fr; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
@@ -1154,6 +1151,7 @@
           <div class="calc-title"><span>🏠 Active Property Configuration:</span></div>
           <div class="bhk-pill-group">
             <button class="bhk-btn active" onclick="setBHK('1bhk', this)">1 BHK</button>
+            <!-- TYPO PERMANENTLY FIXED TO setBHK -->
             <button class="bhk-btn" onclick="setBHK('2bhk', this)">2 BHK</button>
             <button class="bhk-btn" onclick="setBHK('3bhk', this)">3 BHK</button>
             <button class="bhk-btn" onclick="setBHK('villa', this)">Villa</button>
@@ -1275,7 +1273,7 @@
               </div>
             </div>
 
-            <!-- CLEAN ADDRESS FIELD (No 15-words restriction) -->
+            <!-- Standard Clean Address Field -->
             <div class="field" id="f-address">
               <label for="in-address">Complete Service Address &amp; Landmark *</label>
               <textarea id="in-address" rows="2" placeholder="Flat / Door No., Apartment Name, Street, Landmark, Area" required oninput="validateLive('f-address', this.value.trim().length >= 8)"></textarea>
@@ -1315,7 +1313,7 @@
             </p>
           </form>
 
-          <!-- Sticky Treatment Summary -->
+          <!-- Treatment Summary (Empty Guard included) -->
           <aside class="panel">
             <h3>🧾 Selected Treatments</h3>
             <div id="cart-container"></div>
@@ -1344,8 +1342,9 @@
           </div>
           <p id="success-details" style="font-size: 0.92rem; color: var(--slate-700); line-height: 1.65; margin-bottom: 24px;"></p>
           <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-            <button class="btn secondary" onclick="openPrintModalCurrent()">🖨️ View Invoice &amp; Warranty</button>
-            <button class="btn" onclick="startNewBooking()">Schedule Another Service →</button>
+            <button class="btn" style="background: #25d366; color: white;" onclick="copyBookingDetails()">📋 Copy Booking for WhatsApp</button>
+            <button class="btn secondary" onclick="openPrintModalCurrent()">🖨️ View Warranty Card</button>
+            <button class="btn" onclick="startNewBooking()">Schedule Another Visit →</button>
           </div>
         </div>
       </div>
@@ -1419,8 +1418,9 @@
         </p>
       </div>
       <div class="print-hide" style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn secondary" onclick="copyBookingDetails()">📋 Copy</button>
         <button class="btn secondary" onclick="closeModal('print-modal')">Close</button>
-        <button class="btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+        <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
       </div>
     </div>
   </div>
