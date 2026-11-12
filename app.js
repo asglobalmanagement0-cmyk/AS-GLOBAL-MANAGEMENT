@@ -1,9 +1,5 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — FULL JAVASCRIPT ENGINE (MOBILE-FIRST OPTIMIZED)
-   - Option A: Real-Time 1-to-1 Slot Availability from Firebase
-   - Normal address validation (word limit removed)
-   - Animated loading modal on confirmation
-   - Android & iPhone touch handling
+   AS GLOBAL MANAGEMENT — SECURE & MOBILE-OPTIMIZED ENGINE
    ========================================================================= */
 
 // 1. FIREBASE CONFIGURATION
@@ -162,6 +158,7 @@ let latestBooking = null;
 let activeView = "home";
 let isSubmitting = false;
 let clickCount = 0;
+let clickTimer = null;
 
 function loadSavedCart() {
   try {
@@ -175,6 +172,16 @@ function loadSavedCart() {
 
 const $ = (id) => document.getElementById(id);
 const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+
+function cleanPhone(val) {
+  if (!val) return "";
+  return String(val).replace(/\D/g, "").slice(-10);
+}
+
+function isValidIndianPhone(val) {
+  const clean = cleanPhone(val);
+  return /^[6-9]\d{9}$/.test(clean);
+}
 
 function formatLocalDate(d) {
   const year = d.getFullYear();
@@ -196,7 +203,20 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// 4. NAVIGATION WITH SMOOTH FLOW
+// 4. NAVIGATION WITH SMOOTH FLOW & BACK GESTURE HANDLING
+window.addEventListener("popstate", () => {
+  const openModalEl = document.querySelector(".modal-overlay.show");
+  if (openModalEl) {
+    openModalEl.classList.remove("show");
+    document.body.style.overflow = "";
+    return;
+  }
+  const drawer = $("mobile-drawer");
+  if (drawer && drawer.classList.contains("open")) {
+    closeMobileMenu();
+  }
+});
+
 function toggleMobileMenu() {
   const drawer = $("mobile-drawer");
   const overlay = $("drawer-overlay");
@@ -210,6 +230,7 @@ function toggleMobileMenu() {
     overlay.classList.add("active");
     toggle.classList.add("open");
     document.body.style.overflow = "hidden";
+    history.pushState({ drawer: true }, "");
   }
 }
 
@@ -271,7 +292,7 @@ function setBHK(bhkKey, btnEl) {
   toast(`Pricing updated for ${bhkKey.toUpperCase()} configuration`);
 }
 
-// 5. SERVICE CARDS & CART
+// 5. SERVICE CARDS & CART WITH EMPTY-CART GUARD
 function createServiceCardHTML(s) {
   const inCart = cart.some((item) => item.id === s.id);
   const price = calculatePrice(s.basePrice);
@@ -344,17 +365,28 @@ function renderCart() {
 
   const container = $("cart-container");
   const totalRow = $("cart-total-row");
+  const submitBtn = $("submit-btn");
   if (!container) return;
 
   if (count === 0) {
     container.innerHTML = `
-      <div style="padding: 20px; text-align: center; color: var(--slate-400); background: var(--slate-50); border: 1.5px dashed var(--slate-200); border-radius: 12px; font-size: 0.88rem;">
-        No treatment selected yet.<br>
-        <a href="#services" onclick="go('services'); return false;" style="font-weight: 700;">Browse catalog →</a>
+      <div style="padding: 24px 16px; text-align: center; color: var(--slate-600); background: #fef3c7; border: 1.5px dashed var(--accent); border-radius: 14px; font-size: 0.9rem;">
+        <b>⚠ No Treatment Selected Yet</b>
+        <p style="font-size: 0.8rem; margin: 6px 0 12px; color: #92400e;">Please choose at least one pest eradication service.</p>
+        <button type="button" class="btn" style="padding: 8px 16px; font-size: 0.84rem; min-height: 40px;" onclick="go('services')">👉 Select a Treatment (+ Add)</button>
       </div>
     `;
     if (totalRow) totalRow.style.display = "none";
+    if (submitBtn) {
+      submitBtn.textContent = "Select a Treatment First (+ Add)";
+      submitBtn.disabled = true;
+    }
     return;
+  }
+
+  if (submitBtn && !isSubmitting) {
+    submitBtn.textContent = "Confirm Service Visit (Pay Post-Service) ✔";
+    submitBtn.disabled = false;
   }
 
   container.innerHTML = cart.map((item) => {
@@ -402,6 +434,7 @@ function openModal(id) {
   if (el) {
     el.classList.add("show");
     document.body.style.overflow = "hidden";
+    history.pushState({ modalId: id }, "");
   }
 }
 
@@ -455,13 +488,9 @@ function validateLive(fieldId, isValid) {
   el.classList.toggle("invalid", !isValid);
 }
 
-function isValidIndianPhone(val) {
-  const clean = String(val).replace(/\D/g, "");
-  return /^[6-9]\d{9}$/.test(clean);
-}
-
 function validatePhoneLive(input) {
-  validateLive("f-phone", isValidIndianPhone(input.value));
+  const clean = cleanPhone(input.value);
+  validateLive("f-phone", /^[6-9]\d{9}$/.test(clean));
 }
 
 // 8. OPTION A: REAL-TIME SLOT AVAILABILITY (1-TO-1)
@@ -569,7 +598,7 @@ function validateBookingForm() {
   return true;
 }
 
-// 9. BOOKING SUBMISSION & ANIMATED LOADER
+// 9. BOOKING SUBMISSION WITH DOUBLE-BOOKING RACE GUARD
 async function syncOfflineQueue() {
   if (!navigator.onLine) return;
   const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
@@ -604,6 +633,9 @@ async function handleBookingSubmission(e) {
 
   if (!validateBookingForm()) return;
 
+  const chosenDate = $("in-date").value;
+  const chosenSlot = $("in-slot").value;
+
   isSubmitting = true;
   const submitBtn = $("submit-btn");
   submitBtn.disabled = true;
@@ -612,18 +644,36 @@ async function handleBookingSubmission(e) {
   openModal("loading-modal");
 
   try {
+    // 🛡️ CRITICAL DOUBLE-BOOKING GUARD (OPTION A FINAL CHECK)
+    if (db) {
+      const raceSnap = await db.collection("bookings")
+        .where("date", "==", chosenDate)
+        .where("slot", "==", chosenSlot)
+        .get();
+
+      if (!raceSnap.empty) {
+        closeModal("loading-modal");
+        toast("❌ Slot was just booked by another user! Please pick another slot.");
+        await refreshSlots();
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        return;
+      }
+    }
+
     const total = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
     const serviceNames = cart.map((item) => item.name).join(", ");
     const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
+    const sanitizedPhone = cleanPhone($("in-phone").value);
 
     const booking = {
       ref: ref,
       name: $("in-name").value.trim(),
-      phone: $("in-phone").value.trim(),
+      phone: sanitizedPhone,
       type: currentBHK.toUpperCase(),
       address: $("in-address").value.trim(),
-      date: $("in-date").value,
-      slot: $("in-slot").value,
+      date: chosenDate,
+      slot: chosenSlot,
       notes: $("in-notes").value.trim(),
       services: serviceNames,
       total: total,
@@ -647,7 +697,6 @@ async function handleBookingSubmission(e) {
     localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
     syncOfflineQueue().catch(() => {});
 
-    // 1.3s delay to let animation finish smoothly
     await new Promise((resolve) => setTimeout(resolve, 1300));
 
     cart = [];
@@ -680,16 +729,16 @@ async function handleBookingSubmission(e) {
   }
 }
 
-// 10. PORTAL & COMMERCIAL
+// 10. PORTAL & WHATSAPP COPY HELPER
 async function handlePortalLookup(e) {
   e.preventDefault();
-  const phoneInput = $("portal-phone").value.trim();
+  const phoneInput = cleanPhone($("portal-phone").value);
   const container = $("portal-results");
   container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
 
   let records = [];
 
-  if (db) {
+  if (db && phoneInput) {
     try {
       const snapshot = await db.collection("bookings").where("phone", "==", phoneInput).get();
       snapshot.forEach((doc) => records.push(doc.data()));
@@ -699,7 +748,7 @@ async function handlePortalLookup(e) {
   }
 
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-  const localFiltered = localBookings.filter((b) => b.phone.replace(/\D/g, "").endsWith(phoneInput.slice(-10)));
+  const localFiltered = localBookings.filter((b) => cleanPhone(b.phone) === phoneInput);
 
   localFiltered.forEach((lb) => {
     if (!records.some((r) => r.ref === lb.ref)) {
@@ -728,11 +777,26 @@ async function handlePortalLookup(e) {
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${new Date(b.date).toDateString()} (${b.slot})</b></div>
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">AMOUNT</span><b>${fmt(b.total)} (Post-Service)</b></div>
       </div>
-      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--slate-100);">
-        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem; min-height: 38px;" onclick="openPrintModalData('${b.ref}')">🖨️ View Warranty &amp; Invoice</button>
+      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--slate-100); display: flex; gap: 8px;">
+        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem; min-height: 38px;" onclick="openPrintModalData('${b.ref}')">🖨️ Warranty Card</button>
       </div>
     </div>
   `).join("");
+}
+
+function copyBookingDetails() {
+  const b = latestBooking;
+  if (!b) return;
+
+  const text = `*AS Global Management Booking*\nRef: ${b.ref}\nServices: ${b.services}\nDate: ${new Date(b.date).toDateString()} (${b.slot})\nTotal: ${fmt(b.total)}\nStatus: Pay Post-Service with 30-Day Warranty`;
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      toast("✓ Booking details copied! Ready to paste into WhatsApp.");
+    });
+  } else {
+    toast("Ref: " + b.ref);
+  }
 }
 
 async function handleCommercialInquiry(e) {
@@ -740,7 +804,7 @@ async function handleCommercialInquiry(e) {
   const inquiry = {
     org: $("comm-org").value.trim(),
     name: $("comm-name").value.trim(),
-    phone: $("comm-phone").value.trim(),
+    phone: cleanPhone($("comm-phone").value),
     type: $("comm-type").value,
     notes: $("comm-notes").value.trim(),
     date: new Date().toLocaleDateString("en-IN"),
@@ -771,6 +835,7 @@ function openPrintModalCurrent() {
 }
 
 function showPrintModal(b) {
+  latestBooking = b;
   $("m-ref").textContent = b.ref;
   $("m-date").textContent = b.placed || new Date().toLocaleDateString("en-IN");
   $("m-name").textContent = b.name;
@@ -782,12 +847,18 @@ function showPrintModal(b) {
   openModal("print-modal");
 }
 
+// 11. ADMIN PORTAL TRIGGER (3 QUICK TAPS IN 2 SECONDS)
 function handleLogoClick() {
+  clearTimeout(clickTimer);
   clickCount++;
   if (clickCount >= 3) {
     clickCount = 0;
     window.location.href = "admin.html";
+    return;
   }
+  clickTimer = setTimeout(() => {
+    clickCount = 0;
+  }, 2000);
 }
 
 function initDateInputs() {
@@ -805,7 +876,7 @@ function initDateInputs() {
   }
 }
 
-// 11. RUN ON LOAD
+// 12. RUN ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
   initDateInputs();
   renderServiceCards();
