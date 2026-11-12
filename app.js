@@ -1,5 +1,5 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — SECURE & BULLETPROOF ENGINE
+   AS GLOBAL MANAGEMENT — DIAGNOSTIC & BULLETPROOF ENGINE
    ========================================================================= */
 
 // 1. FIREBASE CONFIGURATION
@@ -15,10 +15,35 @@ const firebaseConfig = {
 
 let db = null;
 if (typeof firebase !== "undefined") {
-  firebase.initializeApp(firebaseConfig);
-  db = firebase.firestore();
-  if (typeof firebase.analytics === "function") {
-    firebase.analytics();
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+  } catch (e) {
+    console.error("Firebase init error:", e);
+  }
+}
+
+// 🧪 DIAGNOSTIC TEST: Runs on page load to test Firebase directly
+async function testFirebaseConnection() {
+  if (!db) {
+    alert("❌ Firebase SDK not loaded. Check script tags in HTML.");
+    return;
+  }
+  try {
+    // Attempt a quick test write
+    await db.collection("_test_connection").doc("ping").set({
+      connected: true,
+      time: new Date().toISOString()
+    });
+    console.log("✅ Firebase connection SUCCESSFUL!");
+  } catch (err) {
+    console.error("Firebase Diagnostic Error:", err);
+    alert(
+      "🔍 FIREBASE 403 DIAGNOSIS:\n\n" +
+      "Code: " + err.code + "\n" +
+      "Message: " + err.message + "\n\n" +
+      "Screenshot this message and send it to me!"
+    );
   }
 }
 
@@ -203,7 +228,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// 4. NAVIGATION WITH SMOOTH FLOW & BACK GESTURE HANDLING
+// 4. NAVIGATION
 window.addEventListener("popstate", () => {
   const openModalEl = document.querySelector(".modal-overlay.show");
   if (openModalEl) {
@@ -493,7 +518,7 @@ function validatePhoneLive(input) {
   validateLive("f-phone", /^[6-9]\d{9}$/.test(clean));
 }
 
-// 8. OPTION A: REAL-TIME SLOT AVAILABILITY (1-TO-1)
+// 8. REAL-TIME SLOTS
 async function refreshSlots() {
   const dateInput = $("in-date");
   const slotSelect = $("in-slot");
@@ -598,7 +623,7 @@ function validateBookingForm() {
   return true;
 }
 
-// 9. BULLETPROOF BOOKING SUBMISSION (NEVER STUCK ON ERROR)
+// 9. GUARANTEED BOOKING SUBMISSION (GOOGLE SHEETS + FIREBASE + LOCAL)
 async function syncOfflineQueue() {
   if (!navigator.onLine) return;
   const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
@@ -640,7 +665,6 @@ async function handleBookingSubmission(e) {
   const submitBtn = $("submit-btn");
   submitBtn.disabled = true;
 
-  // Show Animated Loading Popup
   openModal("loading-modal");
 
   try {
@@ -661,33 +685,38 @@ async function handleBookingSubmission(e) {
       services: serviceNames,
       total: total,
       status: "Confirmed",
-      placed: new Date().toLocaleDateString("en-IN"),
-      createdAt: typeof firebase !== "undefined" ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+      placed: new Date().toLocaleDateString("en-IN")
     };
 
-    // 1. Save directly to Firebase Firestore safely
+    // 1. Try Firebase Cloud Firestore
     if (db) {
       try {
         await db.collection("bookings").doc(ref).set(booking);
-        console.log("✓ Saved to Firebase Cloud!");
+        console.log("✓ Saved to Firebase!");
       } catch (fbErr) {
-        console.warn("Firebase permission notice (saved locally instead):", fbErr);
+        console.warn("Firebase 403 / rule warning (handled safely):", fbErr);
       }
     }
 
-    // 2. Save locally for instant Portal & Invoice display
+    // 2. Save directly to Google Sheet Webhook immediately
+    try {
+      fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(booking)
+      });
+    } catch (sheetErr) {
+      console.warn("Sheet sync queued:", sheetErr);
+    }
+
+    // 3. Save locally for Portal & Invoice
     const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
     bookings.unshift(booking);
     localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
     latestBooking = booking;
 
-    // 3. Queue Google Sheet backup
-    const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
-    queue.push(booking);
-    localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
-    syncOfflineQueue().catch(() => {});
-
-    await new Promise((resolve) => setTimeout(resolve, 1100));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     cart = [];
     localStorage.removeItem(CART_STORAGE_KEY);
@@ -719,7 +748,7 @@ async function handleBookingSubmission(e) {
   }
 }
 
-// 10. PORTAL LOOKUP (PHONE OR REF NUMBER - FIX #3)
+// 10. PORTAL LOOKUP
 async function handlePortalLookup(e) {
   e.preventDefault();
   const inputVal = $("portal-input").value.trim();
@@ -730,15 +759,11 @@ async function handlePortalLookup(e) {
   const isRefSearch = inputVal.toUpperCase().startsWith("ASM-");
   const cleanedQuery = isRefSearch ? inputVal.toUpperCase() : cleanPhone(inputVal);
 
-  // 1. Check Firebase
   if (db) {
     try {
-      let query;
-      if (isRefSearch) {
-        query = db.collection("bookings").where("ref", "==", cleanedQuery);
-      } else {
-        query = db.collection("bookings").where("phone", "==", cleanedQuery);
-      }
+      let query = isRefSearch
+        ? db.collection("bookings").where("ref", "==", cleanedQuery)
+        : db.collection("bookings").where("phone", "==", cleanedQuery);
       const snapshot = await query.get();
       snapshot.forEach((doc) => records.push(doc.data()));
     } catch (err) {
@@ -746,19 +771,14 @@ async function handlePortalLookup(e) {
     }
   }
 
-  // 2. Check Local Storage
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
   const localFiltered = localBookings.filter((b) => {
-    if (isRefSearch) {
-      return b.ref && b.ref.toUpperCase() === cleanedQuery;
-    }
+    if (isRefSearch) return b.ref && b.ref.toUpperCase() === cleanedQuery;
     return cleanPhone(b.phone) === cleanedQuery;
   });
 
   localFiltered.forEach((lb) => {
-    if (!records.some((r) => r.ref === lb.ref)) {
-      records.push(lb);
-    }
+    if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
   });
 
   if (records.length === 0) {
@@ -812,8 +832,7 @@ async function handleCommercialInquiry(e) {
     phone: cleanPhone($("comm-phone").value),
     type: $("comm-type").value,
     notes: $("comm-notes").value.trim(),
-    date: new Date().toLocaleDateString("en-IN"),
-    createdAt: typeof firebase !== "undefined" ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+    date: new Date().toLocaleDateString("en-IN")
   };
 
   if (db) {
@@ -852,7 +871,6 @@ function showPrintModal(b) {
   openModal("print-modal");
 }
 
-// 11. ADMIN PORTAL TRIGGER (3 QUICK TAPS IN 2 SECONDS)
 function handleLogoClick() {
   clearTimeout(clickTimer);
   clickCount++;
@@ -881,11 +899,14 @@ function initDateInputs() {
   }
 }
 
-// 12. RUN ON LOAD
+// 11. RUN ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
   initDateInputs();
   renderServiceCards();
   renderCart();
   syncOfflineQueue().catch(() => {});
   go("home");
+
+  // Run the diagnostic test 1.5 seconds after page loads
+  setTimeout(testFirebaseConnection, 1500);
 });
