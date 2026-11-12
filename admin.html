@@ -277,7 +277,7 @@
       try {
         await auth.signInWithEmailAndPassword(email, pass);
       } catch (err) {
-        errBox.textContent = "Invalid login credentials. Please verify your email and password.";
+         errBox.textContent = err.code + " — " + err.message;
         errBox.style.display = "block";
       } finally {
         btn.textContent = "Secure Login →";
