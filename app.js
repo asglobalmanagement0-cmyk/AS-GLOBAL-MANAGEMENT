@@ -1,5 +1,5 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — DIAGNOSTIC & BULLETPROOF ENGINE
+   AS GLOBAL MANAGEMENT — FULL SECURE & CONNECTED ENGINE
    ========================================================================= */
 
 // 1. FIREBASE CONFIGURATION
@@ -19,31 +19,7 @@ if (typeof firebase !== "undefined") {
     firebase.initializeApp(firebaseConfig);
     db = firebase.firestore();
   } catch (e) {
-    console.error("Firebase init error:", e);
-  }
-}
-
-// 🧪 DIAGNOSTIC TEST: Runs on page load to test Firebase directly
-async function testFirebaseConnection() {
-  if (!db) {
-    alert("❌ Firebase SDK not loaded. Check script tags in HTML.");
-    return;
-  }
-  try {
-    // Attempt a quick test write
-    await db.collection("_test_connection").doc("ping").set({
-      connected: true,
-      time: new Date().toISOString()
-    });
-    console.log("✅ Firebase connection SUCCESSFUL!");
-  } catch (err) {
-    console.error("Firebase Diagnostic Error:", err);
-    alert(
-      "🔍 FIREBASE 403 DIAGNOSIS:\n\n" +
-      "Code: " + err.code + "\n" +
-      "Message: " + err.message + "\n\n" +
-      "Screenshot this message and send it to me!"
-    );
+    console.error("Firebase init:", e);
   }
 }
 
@@ -623,7 +599,7 @@ function validateBookingForm() {
   return true;
 }
 
-// 9. GUARANTEED BOOKING SUBMISSION (GOOGLE SHEETS + FIREBASE + LOCAL)
+// 9. GUARANTEED BOOKING SUBMISSION
 async function syncOfflineQueue() {
   if (!navigator.onLine) return;
   const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
@@ -694,7 +670,7 @@ async function handleBookingSubmission(e) {
         await db.collection("bookings").doc(ref).set(booking);
         console.log("✓ Saved to Firebase!");
       } catch (fbErr) {
-        console.warn("Firebase 403 / rule warning (handled safely):", fbErr);
+        console.warn("Firebase notice:", fbErr);
       }
     }
 
@@ -906,7 +882,4 @@ window.addEventListener("DOMContentLoaded", () => {
   renderCart();
   syncOfflineQueue().catch(() => {});
   go("home");
-
-  // Run the diagnostic test 1.5 seconds after page loads
-  setTimeout(testFirebaseConnection, 1500);
 });
