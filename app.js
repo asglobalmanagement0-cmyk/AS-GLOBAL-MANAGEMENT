@@ -1,9 +1,9 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — FULL UPGRADED JAVASCRIPT ENGINE
-   Features:
-   - 15-20 Words Address Validation with Live Counter
+   AS GLOBAL MANAGEMENT — FULL JAVASCRIPT ENGINE (MOBILE-FIRST OPTIMIZED)
    - Option A: Real-Time 1-to-1 Slot Availability from Firebase
-   - Loading Animation on Submission
+   - Normal address validation (word limit removed)
+   - Animated loading modal on confirmation
+   - Android & iPhone touch handling
    ========================================================================= */
 
 // 1. FIREBASE CONFIGURATION
@@ -196,7 +196,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// 4. NAVIGATION
+// 4. NAVIGATION WITH SMOOTH FLOW
 function toggleMobileMenu() {
   const drawer = $("mobile-drawer");
   const overlay = $("drawer-overlay");
@@ -271,7 +271,7 @@ function setBHK(bhkKey, btnEl) {
   toast(`Pricing updated for ${bhkKey.toUpperCase()} configuration`);
 }
 
-// 5. CARDS & CART
+// 5. SERVICE CARDS & CART
 function createServiceCardHTML(s) {
   const inCart = cart.some((item) => item.id === s.id);
   const price = calculatePrice(s.basePrice);
@@ -293,7 +293,7 @@ function createServiceCardHTML(s) {
         <div class="card-foot">
           <div class="price-tag">${fmt(price)} <small>/ ${currentBHK.toUpperCase()}</small></div>
           <div class="card-actions">
-            <button type="button" class="detail-link" onclick="openServiceModal('${s.id}')">Methodology</button>
+            <button type="button" class="detail-link" onclick="openServiceModal('${s.id}')">Info</button>
             <button type="button" class="action-btn ${inCart ? "added" : ""}" onclick="toggleCart('${s.id}')">
               ${inCart ? "✓ Added" : "+ Add"}
             </button>
@@ -348,9 +348,9 @@ function renderCart() {
 
   if (count === 0) {
     container.innerHTML = `
-      <div style="padding: 24px; text-align: center; color: var(--slate-400); background: var(--slate-50); border: 1.5px dashed var(--slate-200); border-radius: 12px; font-size: 0.88rem;">
+      <div style="padding: 20px; text-align: center; color: var(--slate-400); background: var(--slate-50); border: 1.5px dashed var(--slate-200); border-radius: 12px; font-size: 0.88rem;">
         No treatment selected yet.<br>
-        <a href="#services" onclick="go('services'); return false;" style="font-weight: 700;">Browse treatment catalog →</a>
+        <a href="#services" onclick="go('services'); return false;" style="font-weight: 700;">Browse catalog →</a>
       </div>
     `;
     if (totalRow) totalRow.style.display = "none";
@@ -447,27 +447,7 @@ function openServiceModal(id) {
   openModal("service-modal");
 }
 
-// ==========================================
-// 7. UPGRADED: 15 WORDS ADDRESS VALIDATION
-// ==========================================
-function countWords(str) {
-  if (!str) return 0;
-  return str.trim().split(/\s+/).filter((word) => word.length > 0).length;
-}
-
-function validateAddressLive(textarea) {
-  const words = countWords(textarea.value);
-  const counter = $("address-word-count");
-  const isValid = words >= 15;
-
-  if (counter) {
-    counter.textContent = `${words} / 15 words minimum`;
-    counter.style.color = isValid ? "var(--primary)" : "var(--danger)";
-  }
-
-  validateLive("f-address", isValid);
-}
-
+// 7. FORM VALIDATION
 function validateLive(fieldId, isValid) {
   const el = $(fieldId);
   if (!el) return;
@@ -484,9 +464,7 @@ function validatePhoneLive(input) {
   validateLive("f-phone", isValidIndianPhone(input.value));
 }
 
-// ==========================================
-// 8. UPGRADED: OPTION A REAL-TIME SLOT BOOKING
-// ==========================================
+// 8. OPTION A: REAL-TIME SLOT AVAILABILITY (1-TO-1)
 async function refreshSlots() {
   const dateInput = $("in-date");
   const slotSelect = $("in-slot");
@@ -500,7 +478,6 @@ async function refreshSlots() {
 
   slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
 
-  // Check which slots are already booked in Firebase for this date (Option A)
   const bookedSlots = new Set();
 
   if (db && dateVal) {
@@ -508,21 +485,16 @@ async function refreshSlots() {
       const snap = await db.collection("bookings").where("date", "==", dateVal).get();
       snap.forEach((doc) => {
         const data = doc.data();
-        if (data.slot) {
-          bookedSlots.add(data.slot);
-        }
+        if (data.slot) bookedSlots.add(data.slot);
       });
     } catch (err) {
-      console.warn("Could not fetch real-time slots:", err);
+      console.warn("Could not query Firebase slots:", err);
     }
   }
 
-  // Also check local bookings backup
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
   localBookings.forEach((b) => {
-    if (b.date === dateVal && b.slot) {
-      bookedSlots.add(b.slot);
-    }
+    if (b.date === dateVal && b.slot) bookedSlots.add(b.slot);
   });
 
   slotSelect.innerHTML = '<option value="">Select available slot…</option>';
@@ -549,7 +521,7 @@ async function refreshSlots() {
   });
 
   if (availableCount === 0) {
-    toast(`All slots booked or passed for ${dateVal}. Please choose another date.`);
+    toast(`All slots booked for ${dateVal}. Please select another date.`);
   }
 }
 
@@ -578,8 +550,7 @@ function handleDateChange() {
 function validateBookingForm() {
   const nameOk = $("in-name").value.trim().length >= 2;
   const phoneOk = isValidIndianPhone($("in-phone").value);
-  const words = countWords($("in-address").value);
-  const addressOk = words >= 15;
+  const addressOk = $("in-address").value.trim().length >= 8;
   const dateInput = $("in-date");
   const dateOk = dateInput.value !== "" && dateInput.value >= dateInput.min;
   const slotOk = $("in-slot").value !== "";
@@ -592,15 +563,13 @@ function validateBookingForm() {
 
   if (!nameOk) { toast("Please enter your full name."); return false; }
   if (!phoneOk) { toast("Please enter a valid 10-digit mobile number."); return false; }
-  if (!addressOk) { toast(`Address requires at least 15 words (currently ${words} words).`); return false; }
+  if (!addressOk) { toast("Please enter your street address & flat number."); return false; }
   if (!dateOk || !slotOk) { toast("Please select a valid date and available slot."); return false; }
 
   return true;
 }
 
-// ==========================================
-// 9. UPGRADED: BOOKING SUBMISSION & ANIMATED LOADER
-// ==========================================
+// 9. BOOKING SUBMISSION & ANIMATED LOADER
 async function syncOfflineQueue() {
   if (!navigator.onLine) return;
   const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
@@ -639,7 +608,7 @@ async function handleBookingSubmission(e) {
   const submitBtn = $("submit-btn");
   submitBtn.disabled = true;
 
-  // SHOW ANIMATED LOADING SCREEN
+  // Show Animated Loading Popup
   openModal("loading-modal");
 
   try {
@@ -663,28 +632,24 @@ async function handleBookingSubmission(e) {
       createdAt: typeof firebase !== "undefined" ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
     };
 
-    // Save to Firebase Cloud Firestore
     if (db) {
       await db.collection("bookings").doc(ref).set(booking);
       console.log("✓ Saved to Firebase!");
     }
 
-    // Save locally for instant Portal retrieval
     const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
     bookings.unshift(booking);
     localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
     latestBooking = booking;
 
-    // Queue Google Sheet sync
     const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
     queue.push(booking);
     localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
     syncOfflineQueue().catch(() => {});
 
-    // Minimum delay so customer experiences the smooth loader
-    await new Promise((resolve) => setTimeout(resolve, 1400));
+    // 1.3s delay to let animation finish smoothly
+    await new Promise((resolve) => setTimeout(resolve, 1300));
 
-    // Reset Form & Cart
     cart = [];
     localStorage.removeItem(CART_STORAGE_KEY);
     $("booking-form").reset();
@@ -695,7 +660,6 @@ async function handleBookingSubmission(e) {
     renderCart();
     updateStickyBar();
 
-    // Close Loading Screen
     closeModal("loading-modal");
 
     $("success-ref").textContent = ref;
@@ -754,18 +718,18 @@ async function handlePortalLookup(e) {
   }
 
   container.innerHTML = records.map((b) => `
-    <div class="panel" style="margin-bottom: 16px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+    <div class="panel" style="margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
         <b>Booking Ref: <code style="color: var(--primary-dark); font-weight: 800;">${b.ref}</code></b>
         <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary-dark);">${b.status}</span>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; font-size: 0.86rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 0.86rem;">
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${b.services}</b></div>
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${new Date(b.date).toDateString()} (${b.slot})</b></div>
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">AMOUNT</span><b>${fmt(b.total)} (Post-Service)</b></div>
       </div>
-      <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--slate-100);">
-        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem;" onclick="openPrintModalData('${b.ref}')">🖨️ View Warranty &amp; Invoice</button>
+      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--slate-100);">
+        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem; min-height: 38px;" onclick="openPrintModalData('${b.ref}')">🖨️ View Warranty &amp; Invoice</button>
       </div>
     </div>
   `).join("");
@@ -841,7 +805,7 @@ function initDateInputs() {
   }
 }
 
-// 11. RUN IMMEDIATELY UPON PAGE LOAD
+// 11. RUN ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
   initDateInputs();
   renderServiceCards();
