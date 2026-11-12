@@ -732,7 +732,7 @@
       border-color: var(--danger);
       background: var(--danger-light);
     }
-    .field.valid input { border-color: var(--primary); background: #f0fdf4; }
+    .field.valid input, .field.valid textarea { border-color: var(--primary); background: #f0fdf4; }
     .field .err { color: var(--danger); font-size: 0.74rem; font-weight: 600; display: none; margin-top: 4px; }
     .field.invalid .err { display: block; }
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -822,6 +822,7 @@
       font-size: 0.86rem;
     }
 
+    /* Modal System */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -867,6 +868,18 @@
       align-items: center;
       justify-content: center;
     }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 52px;
+      height: 52px;
+      border: 5px solid var(--slate-200);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+      margin: 0 auto 18px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .table-responsive {
       width: 100%;
@@ -1262,10 +1275,14 @@
               </div>
             </div>
 
+            <!-- UPGRADED ADDRESS SECTION: 15-20 WORDS MINIMUM -->
             <div class="field" id="f-address">
-              <label for="in-address">Complete Service Address &amp; Landmark *</label>
-              <textarea id="in-address" rows="2" placeholder="Flat No., Tower, Society Name, Street, Landmark" required oninput="validateLive('f-address', this.value.trim().length >= 8)"></textarea>
-              <div class="err">Please enter an address with street/flat details (min 8 characters).</div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label for="in-address" style="margin: 0;">Complete Service Address &amp; Landmark *</label>
+                <span id="address-word-count" style="font-size: 0.76rem; font-weight: 700; color: var(--danger);">0 / 15 words minimum</span>
+              </div>
+              <textarea id="in-address" rows="3" placeholder="Enter complete address including Flat / Door No., Apartment / Society Name, Road, Landmark, Area and Pincode (At least 15 words)" required oninput="validateAddressLive(this)"></textarea>
+              <div class="err">Please enter a detailed address (minimum 15 words required for technician navigation).</div>
             </div>
 
             <div class="row2">
@@ -1280,11 +1297,11 @@
                 <div class="err">Please select a valid future date.</div>
               </div>
               <div class="field" id="f-slot">
-                <label for="in-slot">Arrival Slot *</label>
+                <label for="in-slot">Arrival Slot (Option A: 1 Booking Per Slot) *</label>
                 <select id="in-slot" onchange="validateLive('f-slot', this.value !== '')">
-                  <option value="">Select available slot…</option>
+                  <option value="">Checking slot availability…</option>
                 </select>
-                <div class="err">Please select an arrival window.</div>
+                <div class="err">Please select an available arrival window.</div>
               </div>
             </div>
 
@@ -1345,6 +1362,17 @@
       <span id="sb-total" style="font-size: 1.15rem; font-weight: 800; color: #34d399;">₹0</span>
     </div>
     <button class="sticky-bar-btn" onclick="go('book')">Review &amp; Schedule →</button>
+  </div>
+
+  <!-- UPGRADE: ANIMATED LOADING MODAL -->
+  <div class="modal-overlay" id="loading-modal">
+    <div class="modal-card" style="text-align: center; max-width: 440px; padding: 36px 24px;">
+      <div class="spinner"></div>
+      <h3 style="font-size: 1.2rem; color: var(--slate-900); margin-bottom: 8px;">Securing Your Appointment...</h3>
+      <p style="font-size: 0.88rem; color: var(--slate-600); line-height: 1.6;">
+        Assigning technician window, verifying slot availability, and generating 30-day written warranty certificate...
+      </p>
+    </div>
   </div>
 
   <!-- MODAL: DETAILED SERVICE INFORMATION -->
