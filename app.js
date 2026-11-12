@@ -1,1 +1,777 @@
+/* =========================================================================
+   AS GLOBAL MANAGEMENT — FULL JAVASCRIPT ENGINE
+   ========================================================================= */
 
+// 1. FIREBASE CONFIGURATION
+const firebaseConfig = {
+  apiKey: "AIzaSyCgMKwYuU9luFWaH08eSLn7LMXMRBAXHek",
+  authDomain: "as-global-f15db.firebaseapp.com",
+  projectId: "as-global-f15db",
+  storageBucket: "as-global-f15db.firebasestorage.app",
+  messagingSenderId: "133737235635",
+  appId: "1:133737235635:web:39a731b8a71b55e7835cc6",
+  measurementId: "G-4DS8JXR6FX"
+};
+
+let db = null;
+if (typeof firebase !== "undefined") {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  if (typeof firebase.analytics === "function") {
+    firebase.analytics();
+  }
+}
+
+// 2. CONSTANTS & SERVICES DATA
+const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJ_NavOu_a-TVV05DUL0BU0CfaorWEJ1JuFqVjewi9m2PYSXhAQJffoHf_7qdBFAJW/exec";
+const CART_STORAGE_KEY = "asgm_cart_v18";
+const BOOKINGS_STORAGE_KEY = "asgm_bookings_v18";
+const SYNC_QUEUE_KEY = "asgm_sync_queue_v4";
+
+const BHK_MULTIPLIERS = {
+  "1bhk": 1.0,
+  "2bhk": 1.25,
+  "3bhk": 1.55,
+  "villa": 2.1,
+  "commercial": 2.4
+};
+
+const SERVICES = [
+  {
+    id: "cockroach",
+    name: "Cockroach Gel Treatment",
+    glyph: "🪳",
+    desc: "Odorless Bayer Maxforce gel dots applied along modular kitchens, hinges, and appliances. No need to empty cupboards.",
+    basePrice: 799,
+    rating: 4.9,
+    chips: ["Odorless Gel", "Kitchen-Safe", "Child & Pet Safe"],
+    protocol: "Targeted application of Fipronil micro-gel dots on cabinet hinges, refrigerator compressors, electrical channels, and drain edges.",
+    safety: "100% non-toxic to humans and animals. Safe around food items and utensils.",
+    warranty: "30-Day Zero-Infestation Guarantee. Complimentary re-application if roaches are sighted.",
+    prep: "No preparation required. You do not need to empty kitchen cabinets or vacate premises."
+  },
+  {
+    id: "termite",
+    name: "Termite Drill & Injection",
+    glyph: "🐜",
+    desc: "Deep chemical barrier drill-and-inject technology preserving wooden door frames, flooring, and wardrobes.",
+    basePrice: 2499,
+    rating: 4.9,
+    chips: ["Drill & Inject", "Written Warranty", "Wall Barrier"],
+    protocol: "12mm holes precision-drilled along skirting and door posts. Pressurized termiticide injection followed by color-matched sealing.",
+    safety: "Odorless synthetic barrier formulation approved for indoor residential usage.",
+    warranty: "1-Year Written Warranty for targeted drilling sites.",
+    prep: "Provide 2 feet of clear access to affected walls, wooden frames, and wardrobes."
+  },
+  {
+    id: "bedbugs",
+    name: "Bed Bug Steam Extermination",
+    glyph: "🛏️",
+    desc: "Comprehensive 2-visit high temperature dry steam + residual contact kill across mattresses, seams, and headboards.",
+    basePrice: 1599,
+    rating: 4.8,
+    chips: ["2 Visits Included", "Dry Steam", "Mattress Safe"],
+    protocol: "180°C superheated dry steam to eliminate bed bug eggs on contact, followed by odorless deltamethrin micro-mist.",
+    safety: "Targeted localized treatment. Mattresses are completely safe for sleeping within 3 hours.",
+    warranty: "Includes mandatory day-15 follow-up inspection and treatment.",
+    prep: "Remove bedsheets and pillow covers for high-heat laundry washing."
+  },
+  {
+    id: "rodent",
+    name: "Rodent Control & Exclusion",
+    glyph: "🐀",
+    desc: "Smart tamper-resistant bait stations, industrial glue boards, and structural entry-point exclusion for rats and mice.",
+    basePrice: 1199,
+    rating: 4.7,
+    chips: ["Smart Baits", "Entry Sealing", "Trapping"],
+    protocol: "Anticoagulant bait blocks secured inside lockable tamper-proof stations along perimeter runs and false ceilings.",
+    safety: "Tamper-resistant bait stations prevent accidental access by children or household pets.",
+    warranty: "30-Day Rodent Density Reduction Guarantee.",
+    prep: "Keep utility and plumbing access shafts accessible for technicians."
+  },
+  {
+    id: "mosquito",
+    name: "Mosquito Fogging & Larvicide",
+    glyph: "🦟",
+    desc: "Thermal outdoor fogging + anti-larval chemical treatment for gardens, terraces, parking lots, and societies.",
+    basePrice: 999,
+    rating: 4.8,
+    chips: ["Thermal Fog", "Anti-Larval", "Society Bulk"],
+    protocol: "Outdoor thermal pulse-jet fogging combined with Bacillus thuringiensis israelensis (BTI) microbial larvicide.",
+    safety: "Outdoor application only. WHO-approved public health standard chemical blend.",
+    warranty: "Immediate adult swarm eradication on day of service.",
+    prep: "Close external balcony doors and windows during active fogging operations."
+  },
+  {
+    id: "ants",
+    name: "General Pest Control",
+    glyph: "🕸️",
+    desc: "Residual perimeter spray covering red and black ants, spiders, silverfish, and crawling domestic insects.",
+    basePrice: 899,
+    rating: 4.7,
+    chips: ["Perimeter Spray", "Ants & Spiders", "Long-Lasting"],
+    protocol: "Odorless synthetic pyrethroid perimeter barrier spray along skirting boards, door thresholds, and window channels.",
+    safety: "CIB-registered non-hazardous chemical. Quick drying within 20 minutes.",
+    warranty: "30-Day General Crawling Insect Barrier Warranty.",
+    prep: "Ensure room corners and baseboards are swept clear."
+  },
+  {
+    id: "woodborer",
+    name: "Wood Borer Micro-Injection",
+    glyph: "🪵",
+    desc: "Specialized petroleum-based solvent injection into powder-falling pinholes to eradicate wood-boring beetle larvae.",
+    basePrice: 1399,
+    rating: 4.8,
+    chips: ["Syringe Injection", "Preserves Wood", "Deep Penetration"],
+    protocol: "Targeted syringe micro-injection of wood preservative directly into active frass-producing pinholes.",
+    safety: "Localized syringe application avoids chemical exposure to ambient room air.",
+    warranty: "60-Day Wood Borer Larvae Warranty.",
+    prep: "Wipe down furniture surface to reveal active pinholes."
+  },
+  {
+    id: "disinfection",
+    name: "Disinfection & Sanitization",
+    glyph: "🧴",
+    desc: "Hospital-grade ULV ultra-low volume cold misting eradicating 99.99% of pathogenic viruses and bacteria.",
+    basePrice: 1299,
+    rating: 4.9,
+    chips: ["Hospital Grade", "99.99% Kill", "Safe Mist"],
+    protocol: "Ultra-low volume atomization of quaternary ammonium formulation covering touch points and workstations.",
+    safety: "EPA-registered hospital disinfectant. Biodegradable and leaves no sticky residue.",
+    warranty: "Certified laboratory standard pathogen kill on application.",
+    prep: "Cover exposed food items and raw paper files."
+  }
+];
+
+const AVAILABLE_SLOTS = [
+  { label: "⚡ Emergency Window (Within 90 mins)", cutoffHour: 19 },
+  { label: "08:00 AM – 11:00 AM", cutoffHour: 11 },
+  { label: "11:00 AM – 02:00 PM", cutoffHour: 14 },
+  { label: "02:00 PM – 05:00 PM", cutoffHour: 17 },
+  { label: "05:00 PM – 08:00 PM", cutoffHour: 20 }
+];
+
+// 3. STATE AND HELPERS
+let currentBHK = "1bhk";
+let cart = loadSavedCart();
+let latestBooking = null;
+let activeView = "home";
+let isSubmitting = false;
+let clickCount = 0;
+
+function loadSavedCart() {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+
+function formatLocalDate(d) {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function calculatePrice(basePrice) {
+  const mult = BHK_MULTIPLIERS[currentBHK] || 1.0;
+  return Math.round((basePrice * mult) / 10) * 10;
+}
+
+function toast(msg) {
+  const t = $("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+// 4. NAVIGATION
+function toggleMobileMenu() {
+  const drawer = $("mobile-drawer");
+  const overlay = $("drawer-overlay");
+  const toggle = $("menu-toggle");
+  if (!drawer || !overlay || !toggle) return;
+
+  if (drawer.classList.contains("open")) {
+    closeMobileMenu();
+  } else {
+    drawer.classList.add("open");
+    overlay.classList.add("active");
+    toggle.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeMobileMenu() {
+  const drawer = $("mobile-drawer");
+  const overlay = $("drawer-overlay");
+  const toggle = $("menu-toggle");
+  if (drawer) drawer.classList.remove("open");
+  if (overlay) overlay.classList.remove("active");
+  if (toggle) toggle.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function goFromDrawer(viewId) {
+  closeMobileMenu();
+  go(viewId);
+}
+
+function go(viewId) {
+  activeView = viewId;
+  document.querySelectorAll(".view").forEach((v) => v.classList.remove("show"));
+  const target = $("view-" + viewId);
+  if (target) target.classList.add("show");
+
+  document.querySelectorAll(".desktop-nav .nav-link").forEach((b) => b.classList.remove("active"));
+  const navBtn = $("nav-" + viewId);
+  if (navBtn) navBtn.classList.add("active");
+
+  document.querySelectorAll(".mobile-nav-list button").forEach((b) => b.classList.remove("active"));
+  const mNavBtn = $("mnav-" + viewId);
+  if (mNavBtn) mNavBtn.classList.add("active");
+
+  if (viewId === "book") {
+    renderCart();
+    refreshSlots();
+  }
+  updateStickyBar();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function startNewBooking() {
+  go("services");
+}
+
+function setBHK(bhkKey, btnEl) {
+  currentBHK = bhkKey;
+  document.querySelectorAll(".bhk-btn").forEach((b) => {
+    b.classList.toggle(
+      "active",
+      b.getAttribute("onclick") &&
+        b.getAttribute("onclick").toLowerCase().includes(`'${bhkKey.toLowerCase()}'`)
+    );
+  });
+  if (btnEl) btnEl.classList.add("active");
+
+  renderServiceCards();
+  renderCart();
+  updateStickyBar();
+  toast(`Pricing updated for ${bhkKey.toUpperCase()} configuration`);
+}
+
+// 5. CARDS & CART
+function createServiceCardHTML(s) {
+  const inCart = cart.some((item) => item.id === s.id);
+  const price = calculatePrice(s.basePrice);
+  const chipsHTML = s.chips.map((c) => `<span class="chip">${c}</span>`).join("");
+
+  return `
+    <div class="card ${inCart ? "selected" : ""}" id="card-${s.id}">
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-glyph-tag">${s.glyph}</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+            <span class="card-badge">★ ${s.rating}</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--primary-dark);">30-Day Guarantee</span>
+          </div>
+        </div>
+        <h3>${s.name}</h3>
+        <p>${s.desc}</p>
+        <div class="chips">${chipsHTML}</div>
+        <div class="card-foot">
+          <div class="price-tag">${fmt(price)} <small>/ ${currentBHK.toUpperCase()}</small></div>
+          <div class="card-actions">
+            <button type="button" class="detail-link" onclick="openServiceModal('${s.id}')">Methodology</button>
+            <button type="button" class="action-btn ${inCart ? "added" : ""}" onclick="toggleCart('${s.id}')">
+              ${inCart ? "✓ Added" : "+ Add"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderServiceCards() {
+  const homeContainer = $("home-services-grid");
+  const catalogContainer = $("catalog-services-grid");
+
+  if (homeContainer) {
+    homeContainer.innerHTML = SERVICES.slice(0, 4).map(createServiceCardHTML).join("");
+  }
+  if (catalogContainer) {
+    catalogContainer.innerHTML = SERVICES.map(createServiceCardHTML).join("");
+  }
+}
+
+function toggleCart(serviceId) {
+  const existingIndex = cart.findIndex((item) => item.id === serviceId);
+
+  if (existingIndex > -1) {
+    cart = cart.filter((item) => item.id !== serviceId);
+    toast("Treatment removed");
+  } else {
+    const s = SERVICES.find((item) => item.id === serviceId);
+    if (!s) return;
+    cart.push({ id: s.id, name: s.name, basePrice: s.basePrice });
+    toast("✓ Treatment added to booking");
+  }
+
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  renderServiceCards();
+  renderCart();
+  updateStickyBar();
+}
+
+function renderCart() {
+  const count = cart.length;
+  const bDesktop = $("cart-badge");
+  const bMobile = $("cart-badge-m");
+  if (bDesktop) bDesktop.textContent = count;
+  if (bMobile) bMobile.textContent = count;
+
+  const container = $("cart-container");
+  const totalRow = $("cart-total-row");
+  if (!container) return;
+
+  if (count === 0) {
+    container.innerHTML = `
+      <div style="padding: 24px; text-align: center; color: var(--slate-400); background: var(--slate-50); border: 1.5px dashed var(--slate-200); border-radius: 12px; font-size: 0.88rem;">
+        No treatment selected yet.<br>
+        <a href="#services" onclick="go('services'); return false;" style="font-weight: 700;">Browse treatment catalog →</a>
+      </div>
+    `;
+    if (totalRow) totalRow.style.display = "none";
+    return;
+  }
+
+  container.innerHTML = cart.map((item) => {
+    const itemPrice = calculatePrice(item.basePrice);
+    return `
+      <div class="cart-item">
+        <div>
+          <span class="cart-item-title">${item.name}</span>
+          <span class="cart-item-subtitle">${currentBHK.toUpperCase()} · 30-Day Written Warranty</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <b style="font-size: 0.95rem;">${fmt(itemPrice)}</b>
+          <button type="button" class="cart-item-remove" onclick="toggleCart('${item.id}')">✕</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const grandTotal = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
+  const totalVal = $("cart-total-val");
+  if (totalVal) totalVal.textContent = fmt(grandTotal);
+  if (totalRow) totalRow.style.display = "flex";
+}
+
+function updateStickyBar() {
+  const bar = $("sticky-bar");
+  if (!bar) return;
+
+  if (cart.length === 0 || activeView === "book" || activeView === "success") {
+    bar.classList.remove("show");
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
+  const sbCount = $("sb-count");
+  const sbTotal = $("sb-total");
+  if (sbCount) sbCount.textContent = `${cart.length} Treatment${cart.length > 1 ? "s" : ""}`;
+  if (sbTotal) sbTotal.textContent = fmt(total);
+  bar.classList.add("show");
+}
+
+// 6. MODALS
+function openModal(id) {
+  const el = $(id);
+  if (el) {
+    el.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeModal(id) {
+  const el = $(id);
+  if (el) {
+    el.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+}
+
+function openServiceModal(id) {
+  const s = SERVICES.find((item) => item.id === id);
+  if (!s) return;
+
+  $("modal-service-title").textContent = s.name;
+  $("modal-service-body").innerHTML = `
+    <div style="font-size: 0.9rem; line-height: 1.7; color: var(--slate-700);">
+      <p style="margin-bottom: 12px;">${s.desc}</p>
+      <div style="background: var(--slate-100); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+        <b style="color: var(--primary-dark); display: block;">🔬 Treatment Process:</b>
+        ${s.protocol}
+      </div>
+      <div style="background: var(--primary-light); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+        <b style="color: var(--primary-dark); display: block;">🛡️ Safety Information:</b>
+        ${s.safety}
+      </div>
+      <div style="background: var(--accent-light); padding: 12px; border-radius: 12px;">
+        <b style="color: #92400e; display: block;">📜 Warranty &amp; Prep:</b>
+        ${s.warranty}<br>
+        <span style="font-size: 0.8rem; color: #78350f;">${s.prep}</span>
+      </div>
+    </div>
+  `;
+
+  const addBtn = $("modal-service-add-btn");
+  const inCart = cart.some((item) => item.id === s.id);
+  addBtn.textContent = inCart ? "Remove from Booking" : "Add to Booking";
+  addBtn.onclick = () => {
+    toggleCart(s.id);
+    closeModal("service-modal");
+  };
+  openModal("service-modal");
+}
+
+// 7. FORM VALIDATION
+function validateLive(fieldId, isValid) {
+  const el = $(fieldId);
+  if (!el) return;
+  el.classList.toggle("valid", isValid);
+  el.classList.toggle("invalid", !isValid);
+}
+
+function isValidIndianPhone(val) {
+  const clean = String(val).replace(/\D/g, "");
+  return /^[6-9]\d{9}$/.test(clean);
+}
+
+function validatePhoneLive(input) {
+  validateLive("f-phone", isValidIndianPhone(input.value));
+}
+
+function refreshSlots() {
+  const dateInput = $("in-date");
+  const slotSelect = $("in-slot");
+  if (!dateInput || !slotSelect) return;
+
+  const dateVal = dateInput.value;
+  const now = new Date();
+  const todayStr = formatLocalDate(now);
+  const isToday = dateVal === todayStr;
+  const currentHour = now.getHours();
+
+  slotSelect.innerHTML = '<option value="">Select available slot…</option>';
+  let count = 0;
+
+  AVAILABLE_SLOTS.forEach((slot) => {
+    const isPassed = isToday && currentHour >= slot.cutoffHour;
+    const opt = document.createElement("option");
+    opt.value = slot.label;
+    if (isPassed) {
+      opt.textContent = `${slot.label} (Window Passed)`;
+      opt.disabled = true;
+    } else {
+      opt.textContent = slot.label;
+      count++;
+    }
+    slotSelect.appendChild(opt);
+  });
+
+  if (isToday && count === 0) {
+    toast("⏰ Regular hours ended for today. Tomorrow selected.");
+    selectQuickDate(1, $("btn-tmrw"));
+  }
+}
+
+function selectQuickDate(offsetDays, btn) {
+  document.querySelectorAll(".qdate-pill").forEach((p) => p.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  const dateInput = $("in-date");
+  if (dateInput) {
+    dateInput.value = formatLocalDate(d);
+    validateLive("f-date", true);
+    refreshSlots();
+  }
+}
+
+function handleDateChange() {
+  document.querySelectorAll(".qdate-pill").forEach((p) => p.classList.remove("active"));
+  const dateInput = $("in-date");
+  if (dateInput) {
+    validateLive("f-date", dateInput.value >= dateInput.min);
+    refreshSlots();
+  }
+}
+
+function validateBookingForm() {
+  const nameOk = $("in-name").value.trim().length >= 2;
+  const phoneOk = isValidIndianPhone($("in-phone").value);
+  const addressOk = $("in-address").value.trim().length >= 8;
+  const dateInput = $("in-date");
+  const dateOk = dateInput.value !== "" && dateInput.value >= dateInput.min;
+  const slotOk = $("in-slot").value !== "";
+
+  validateLive("f-name", nameOk);
+  validateLive("f-phone", phoneOk);
+  validateLive("f-address", addressOk);
+  validateLive("f-date", dateOk);
+  validateLive("f-slot", slotOk);
+
+  if (!nameOk || !phoneOk || !addressOk || !dateOk || !slotOk) {
+    toast("Please verify all marked fields.");
+    return false;
+  }
+  return true;
+}
+
+// 8. DATA SUBMISSION (FIREBASE & SHEETS)
+async function syncOfflineQueue() {
+  if (!navigator.onLine) return;
+  const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
+  if (!queue.length) return;
+
+  const remaining = [];
+  for (const item of queue) {
+    try {
+      await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item)
+      });
+    } catch (err) {
+      remaining.push(item);
+    }
+  }
+  localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(remaining));
+}
+window.addEventListener("online", syncOfflineQueue);
+
+async function handleBookingSubmission(e) {
+  e.preventDefault();
+  if (isSubmitting) return;
+
+  if (cart.length === 0) {
+    toast("⚠ Please add at least one treatment before checkout.");
+    go("services");
+    return;
+  }
+
+  if (!validateBookingForm()) return;
+
+  isSubmitting = true;
+  const submitBtn = $("submit-btn");
+  submitBtn.textContent = "Securing Appointment...";
+  submitBtn.disabled = true;
+
+  try {
+    const total = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
+    const serviceNames = cart.map((item) => item.name).join(", ");
+    const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
+
+    const booking = {
+      ref: ref,
+      name: $("in-name").value.trim(),
+      phone: $("in-phone").value.trim(),
+      type: currentBHK.toUpperCase(),
+      address: $("in-address").value.trim(),
+      date: $("in-date").value,
+      slot: $("in-slot").value,
+      notes: $("in-notes").value.trim(),
+      services: serviceNames,
+      total: total,
+      status: "Confirmed",
+      placed: new Date().toLocaleDateString("en-IN"),
+      createdAt: typeof firebase !== "undefined" ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+    };
+
+    if (db) {
+      await db.collection("bookings").doc(ref).set(booking);
+      console.log("✓ Saved to Firebase!");
+    }
+
+    const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
+    bookings.unshift(booking);
+    localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
+    latestBooking = booking;
+
+    const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
+    queue.push(booking);
+    localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
+    syncOfflineQueue().catch(() => {});
+
+    cart = [];
+    localStorage.removeItem(CART_STORAGE_KEY);
+
+    $("booking-form").reset();
+    document.querySelectorAll(".field").forEach((f) => f.classList.remove("valid", "invalid"));
+    initDateInputs();
+
+    renderServiceCards();
+    renderCart();
+    updateStickyBar();
+
+    $("success-ref").textContent = ref;
+    $("success-details").innerHTML = `
+      Thank you <b>${booking.name}</b>. Your appointment for <b>${booking.services}</b> has been booked for 
+      <b>${new Date(booking.date).toDateString()}</b> (${booking.slot}).<br>
+      Payable amount: <b>${fmt(booking.total)}</b> upon inspection.
+    `;
+
+    go("success");
+  } catch (err) {
+    console.error("Booking error:", err);
+    toast("An error occurred while saving your booking. Cart retained.");
+  } finally {
+    isSubmitting = false;
+    submitBtn.textContent = "Confirm Service Visit (Pay Post-Service) ✔";
+    submitBtn.disabled = false;
+  }
+}
+
+// 9. PORTAL & COMMERCIAL
+async function handlePortalLookup(e) {
+  e.preventDefault();
+  const phoneInput = $("portal-phone").value.trim();
+  const container = $("portal-results");
+  container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
+
+  let records = [];
+
+  if (db) {
+    try {
+      const snapshot = await db.collection("bookings").where("phone", "==", phoneInput).get();
+      snapshot.forEach((doc) => records.push(doc.data()));
+    } catch (err) {
+      console.warn("Fallback to local records:", err);
+    }
+  }
+
+  const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
+  const localFiltered = localBookings.filter((b) => b.phone.replace(/\D/g, "").endsWith(phoneInput.slice(-10)));
+
+  localFiltered.forEach((lb) => {
+    if (!records.some((r) => r.ref === lb.ref)) {
+      records.push(lb);
+    }
+  });
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="panel" style="text-align: center; color: var(--slate-600);">
+        No records found for mobile number <b>${phoneInput}</b>.<br>
+        Please check the number or book a new service.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = records.map((b) => `
+    <div class="panel" style="margin-bottom: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <b>Booking Ref: <code style="color: var(--primary-dark); font-weight: 800;">${b.ref}</code></b>
+        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary-dark);">${b.status}</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; font-size: 0.86rem;">
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${b.services}</b></div>
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${new Date(b.date).toDateString()} (${b.slot})</b></div>
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">AMOUNT</span><b>${fmt(b.total)} (Post-Service)</b></div>
+      </div>
+      <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--slate-100);">
+        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem;" onclick="openPrintModalData('${b.ref}')">🖨️ View Warranty &amp; Invoice</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function handleCommercialInquiry(e) {
+  e.preventDefault();
+  const inquiry = {
+    org: $("comm-org").value.trim(),
+    name: $("comm-name").value.trim(),
+    phone: $("comm-phone").value.trim(),
+    type: $("comm-type").value,
+    notes: $("comm-notes").value.trim(),
+    date: new Date().toLocaleDateString("en-IN"),
+    createdAt: typeof firebase !== "undefined" ? firebase.firestore.FieldValue.serverTimestamp() : new Date()
+  };
+
+  if (db) {
+    try {
+      await db.collection("commercial_inquiries").add(inquiry);
+    } catch (err) {
+      console.warn("Error:", err);
+    }
+  }
+
+  toast("Commercial site audit inquiry registered. Our team will contact you.");
+  const form = $("comm-form");
+  if (form) form.reset();
+}
+
+function openPrintModalData(ref) {
+  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
+  const b = bookings.find((item) => item.ref === ref);
+  if (b) showPrintModal(b);
+}
+
+function openPrintModalCurrent() {
+  if (latestBooking) showPrintModal(latestBooking);
+}
+
+function showPrintModal(b) {
+  $("m-ref").textContent = b.ref;
+  $("m-date").textContent = b.placed || new Date().toLocaleDateString("en-IN");
+  $("m-name").textContent = b.name;
+  $("m-phone").textContent = b.phone;
+  $("m-address").textContent = `${b.type} — ${b.address}`;
+  $("m-slot").textContent = `${new Date(b.date).toDateString()} (${b.slot})`;
+  $("m-services").textContent = b.services;
+  $("m-total").textContent = fmt(b.total) + " (Pay Post-Service)";
+  openModal("print-modal");
+}
+
+function handleLogoClick() {
+  clickCount++;
+  if (clickCount >= 3) {
+    clickCount = 0;
+    window.location.href = "admin.html";
+  }
+}
+
+function initDateInputs() {
+  const now = new Date();
+  const minDate = formatLocalDate(now);
+  const dateInput = $("in-date");
+  if (dateInput) dateInput.min = minDate;
+
+  if (now.getHours() >= 20) {
+    const todayBtn = $("btn-today");
+    if (todayBtn) todayBtn.style.display = "none";
+    selectQuickDate(1, $("btn-tmrw"));
+  } else {
+    selectQuickDate(0, $("btn-today"));
+  }
+}
+
+// 10. RUN IMMEDIATELY UPON PAGE LOAD
+window.addEventListener("DOMContentLoaded", () => {
+  initDateInputs();
+  renderServiceCards();
+  renderCart();
+  syncOfflineQueue().catch(() => {});
+  go("home");
+});
