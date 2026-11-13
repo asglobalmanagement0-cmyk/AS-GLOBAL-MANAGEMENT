@@ -155,7 +155,7 @@ const AVAILABLE_SLOTS = [
 // 3. STATE AND HELPERS
 let currentBHK = "1bhk";
 let cart = loadSavedCart();
-let latestBooking = null;
+let latestBooking = null; let portalRecords = [];
 let activeView = "home";
 let isSubmitting = false;
 let clickCount = 0;
@@ -174,7 +174,7 @@ function loadSavedCart() {
 const $ = (id) => document.getElementById(id);
 const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
 
-function cleanPhone(val) {
+function esc(str) { return String(str || "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); } function cleanPhone(val) {
   if (!val) return "";
   return String(val).replace(/\D/g, "").slice(-10);
 }
@@ -515,7 +515,7 @@ async function refreshSlots() {
       const snap = await db.collection("bookings").where("date", "==", dateVal).get();
       snap.forEach((doc) => {
         const data = doc.data();
-        if (data && data.slot) bookedSlots.add(data.slot);
+        if (data && data.slot && data.status !== "Cancelled") bookedSlots.add(data.slot);
       });
     } catch (err) {
       console.warn("Could not query Firebase slots:", err);
@@ -524,7 +524,7 @@ async function refreshSlots() {
 
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
   localBookings.forEach((b) => {
-    if (b.date === dateVal && b.slot) bookedSlots.add(b.slot);
+    if (b.date === dateVal && b.slot && b.status !== "Cancelled") bookedSlots.add(b.slot);
   });
 
   slotSelect.innerHTML = '<option value="">Select available slot…</option>';
@@ -676,14 +676,14 @@ async function handleBookingSubmission(e) {
 
     // 2. Save directly to Google Sheet Webhook immediately
     try {
-      fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+      if (!navigator.onLine) throw new Error("Offline"); await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(booking)
       });
     } catch (sheetErr) {
-      console.warn("Sheet sync queued:", sheetErr);
+      const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]"); queue.push(booking); localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
     }
 
     // 3. Save locally for Portal & Invoice
@@ -757,7 +757,7 @@ async function handlePortalLookup(e) {
     if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
   });
 
-  if (records.length === 0) {
+   portalRecords = records; if (records.length === 0) {
     container.innerHTML = `
       <div class="panel" style="text-align: center; color: var(--slate-600);">
         No records found for <b>${inputVal}</b>.<br>
@@ -802,7 +802,7 @@ function copyBookingDetails() {
 
 async function handleCommercialInquiry(e) {
   e.preventDefault();
-  const inquiry = {
+  if (!isValidIndianPhone($("comm-phone").value)) { toast("Please enter a valid 10-digit mobile number."); return; } const inquiry = {
     org: $("comm-org").value.trim(),
     name: $("comm-name").value.trim(),
     phone: cleanPhone($("comm-phone").value),
@@ -826,7 +826,7 @@ async function handleCommercialInquiry(e) {
 
 function openPrintModalData(ref) {
   const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-  const b = bookings.find((item) => item.ref === ref);
+  const b = portalRecords.find((item) => item.ref === ref) || bookings.find((item) => item.ref === ref);
   if (b) showPrintModal(b);
 }
 
