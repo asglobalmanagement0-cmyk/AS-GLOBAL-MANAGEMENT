@@ -1,29 +1,9 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — FULL SECURE & CONNECTED ENGINE
+   AS GLOBAL MANAGEMENT — SECURE & CONNECTED ENGINE (NO FIREBASE)
    ========================================================================= */
 
-// 1. FIREBASE CONFIGURATION
-const firebaseConfig = {
-  apiKey: "AIzaSyCgMKwYuU9luFWaH08eSLn7LMXMRBAXHek",
-  authDomain: "as-global-f15db.firebaseapp.com",
-  projectId: "as-global-f15db",
-  storageBucket: "as-global-f15db.firebasestorage.app",
-  messagingSenderId: "133737235635",
-  appId: "1:133737235635:web:39a731b8a71b55e7835cc6",
-  measurementId: "G-4DS8JXR6FX"
-};
-
-let db = null;
-if (typeof firebase !== "undefined") {
-  try {
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.firestore();
-  } catch (e) {
-    console.error("Firebase init:", e);
-  }
-}
-
-// 2. CONSTANTS & SERVICES DATA
+// 1. CONSTANTS & SERVICES DATA
+// Replace this URL if you created a new Google Sheet / Apps Script Web App
 const GOOGLE_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyJ_NavOu_a-TVV05DUL0BU0CfaorWEJ1JuFqVjewi9m2PYSXhAQJffoHf_7qdBFAJW/exec";
 const CART_STORAGE_KEY = "asgm_cart_v18";
 const BOOKINGS_STORAGE_KEY = "asgm_bookings_v18";
@@ -152,7 +132,7 @@ const AVAILABLE_SLOTS = [
   { label: "05:00 PM – 08:00 PM", cutoffHour: 20 }
 ];
 
-// 3. STATE AND HELPERS
+// 2. STATE AND HELPERS
 let currentBHK = "1bhk";
 let cart = loadSavedCart();
 let latestBooking = null;
@@ -212,16 +192,8 @@ function formatReadableDate(dateStr) {
   return new Date(dateStr).toDateString();
 }
 
-function withTimeout(promise, ms = 5000) {
-  return Promise.race([
-    promise,
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Request timed out")), ms)
-    )
-  ]);
-}
-
 async function postToSheetWithTimeout(payload, ms = 6000) {
+  if (!GOOGLE_SHEET_WEBHOOK_URL) return;
   if (!navigator.onLine) throw new Error("Offline");
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ms);
@@ -251,7 +223,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// 4. NAVIGATION
+// 3. NAVIGATION
 window.addEventListener("popstate", () => {
   const openModalEl = document.querySelector(".modal-overlay.show");
   if (openModalEl) {
@@ -340,7 +312,7 @@ function setBHK(bhkKey, btnEl) {
   toast(`Pricing updated for ${bhkKey.toUpperCase()} configuration`);
 }
 
-// 5. SERVICE CARDS & CART
+// 4. SERVICE CARDS & CART
 function createServiceCardHTML(s) {
   const inCart = cart.some((item) => item.id === s.id);
   const price = calculatePrice(s.basePrice);
@@ -476,7 +448,7 @@ function updateStickyBar() {
   bar.classList.add("show");
 }
 
-// 6. MODALS
+// 5. MODALS
 function openModal(id) {
   const el = $(id);
   if (el) {
@@ -528,7 +500,7 @@ function openServiceModal(id) {
   openModal("service-modal");
 }
 
-// 7. FORM VALIDATION
+// 6. FORM VALIDATION
 function validateLive(fieldId, isValid) {
   const el = $(fieldId);
   if (!el) return;
@@ -541,8 +513,8 @@ function validatePhoneLive(input) {
   validateLive("f-phone", /^[6-9]\d{9}$/.test(clean));
 }
 
-// 8. REAL-TIME SLOTS
-async function refreshSlots() {
+// 7. SLOTS AVAILABILITY
+function refreshSlots() {
   const dateInput = $("in-date");
   const slotSelect = $("in-slot");
   if (!dateInput || !slotSelect) return;
@@ -553,27 +525,7 @@ async function refreshSlots() {
   const isToday = dateVal === todayStr;
   const currentHour = now.getHours();
 
-  slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
-
   const bookedSlots = new Set();
-
-  if (db && dateVal) {
-    try {
-      const snap = await withTimeout(
-        db.collection("bookings").where("date", "==", dateVal).get(),
-        4500
-      );
-      snap.forEach((doc) => {
-        const data = doc.data();
-        if (data && data.slot && data.status !== "Cancelled") {
-          bookedSlots.add(data.slot);
-        }
-      });
-    } catch (err) {
-      console.warn("Could not query Firebase slots:", err);
-    }
-  }
-
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
   localBookings.forEach((b) => {
     if (b.date === dateVal && b.slot && b.status !== "Cancelled") {
@@ -653,7 +605,7 @@ function validateBookingForm() {
   return true;
 }
 
-// 9. GUARANTEED BOOKING SUBMISSION
+// 8. BOOKING SUBMISSION & GOOGLE SHEET SYNC
 async function syncOfflineQueue() {
   if (!navigator.onLine) return;
   const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
@@ -713,17 +665,7 @@ async function handleBookingSubmission(e) {
       placed: new Date().toLocaleDateString("en-IN")
     };
 
-    // 1. Try Firebase Cloud Firestore (with 5s timeout so it never hangs)
-    if (db) {
-      try {
-        await withTimeout(db.collection("bookings").doc(ref).set(booking), 5000);
-        console.log("✓ Saved to Firebase!");
-      } catch (fbErr) {
-        console.warn("Firebase notice:", fbErr);
-      }
-    }
-
-    // 2. Save directly to Google Sheet Webhook (with 6s timeout + offline queue)
+    // 1. Save to Google Sheet Webhook (with 6s timeout + offline queue)
     try {
       await postToSheetWithTimeout(booking, 6000);
     } catch (sheetErr) {
@@ -733,7 +675,7 @@ async function handleBookingSubmission(e) {
       localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
     }
 
-    // 3. Save locally for Portal & Invoice
+    // 2. Save locally for Portal & Invoice
     const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
     bookings.unshift(booking);
     localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
@@ -770,37 +712,19 @@ async function handleBookingSubmission(e) {
   }
 }
 
-// 10. PORTAL LOOKUP
-async function handlePortalLookup(e) {
+// 9. PORTAL LOOKUP
+function handlePortalLookup(e) {
   e.preventDefault();
   const inputVal = $("portal-input").value.trim();
   const container = $("portal-results");
-  container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
 
-  let records = [];
   const isRefSearch = inputVal.toUpperCase().startsWith("ASM-");
   const cleanedQuery = isRefSearch ? inputVal.toUpperCase() : cleanPhone(inputVal);
 
-  if (db) {
-    try {
-      const query = isRefSearch
-        ? db.collection("bookings").where("ref", "==", cleanedQuery)
-        : db.collection("bookings").where("phone", "==", cleanedQuery);
-      const snapshot = await withTimeout(query.get(), 5000);
-      snapshot.forEach((doc) => records.push(doc.data()));
-    } catch (err) {
-      console.warn("Fallback to local records:", err);
-    }
-  }
-
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-  const localFiltered = localBookings.filter((b) => {
+  const records = localBookings.filter((b) => {
     if (isRefSearch) return b.ref && b.ref.toUpperCase() === cleanedQuery;
     return cleanPhone(b.phone) === cleanedQuery;
-  });
-
-  localFiltered.forEach((lb) => {
-    if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
   });
 
   portalRecords = records;
@@ -856,20 +780,26 @@ async function handleCommercialInquiry(e) {
   }
 
   const inquiry = {
-    org: $("comm-org").value.trim(),
+    ref: "COM-" + Math.floor(100000 + Math.random() * 900000),
     name: $("comm-name").value.trim(),
     phone: cleanPhone($("comm-phone").value),
-    type: $("comm-type").value,
+    type: "Commercial: " + $("comm-type").value,
+    address: $("comm-org").value.trim(),
+    date: formatLocalDate(new Date()),
+    slot: "Audit Request",
     notes: $("comm-notes").value.trim(),
-    date: new Date().toLocaleDateString("en-IN")
+    services: "Commercial Audit",
+    total: 0,
+    status: "Inquiry",
+    placed: new Date().toLocaleDateString("en-IN")
   };
 
-  if (db) {
-    try {
-      await withTimeout(db.collection("commercial_inquiries").add(inquiry), 5000);
-    } catch (err) {
-      console.warn("Error:", err);
-    }
+  try {
+    await postToSheetWithTimeout(inquiry, 6000);
+  } catch (err) {
+    const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
+    queue.push(inquiry);
+    localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
   }
 
   toast("Commercial site audit inquiry registered. Our team will contact you.");
@@ -928,7 +858,7 @@ function initDateInputs() {
   }
 }
 
-// 11. RUN ON LOAD
+// 10. RUN ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
   initDateInputs();
   renderServiceCards();
