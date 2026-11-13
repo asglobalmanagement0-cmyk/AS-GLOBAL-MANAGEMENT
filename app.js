@@ -155,7 +155,8 @@ const AVAILABLE_SLOTS = [
 // 3. STATE AND HELPERS
 let currentBHK = "1bhk";
 let cart = loadSavedCart();
-let latestBooking = null; let portalRecords = [];
+let latestBooking = null;
+let portalRecords = [];
 let activeView = "home";
 let isSubmitting = false;
 let clickCount = 0;
@@ -174,7 +175,17 @@ function loadSavedCart() {
 const $ = (id) => document.getElementById(id);
 const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
 
-function esc(str) { return String(str || "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m])); } function cleanPhone(val) {
+function esc(str) {
+  return String(str || "").replace(/[&<>"']/g, (m) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[m]));
+}
+
+function cleanPhone(val) {
   if (!val) return "";
   return String(val).replace(/\D/g, "").slice(-10);
 }
@@ -189,6 +200,42 @@ function formatLocalDate(d) {
   const month = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
+}
+
+function formatReadableDate(dateStr) {
+  if (!dateStr) return "";
+  const parts = String(dateStr).split("-");
+  if (parts.length === 3) {
+    const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    return d.toDateString();
+  }
+  return new Date(dateStr).toDateString();
+}
+
+function withTimeout(promise, ms = 5000) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), ms)
+    )
+  ]);
+}
+
+async function postToSheetWithTimeout(payload, ms = 6000) {
+  if (!navigator.onLine) throw new Error("Offline");
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  try {
+    await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function calculatePrice(basePrice) {
@@ -512,10 +559,15 @@ async function refreshSlots() {
 
   if (db && dateVal) {
     try {
-      const snap = await db.collection("bookings").where("date", "==", dateVal).get();
+      const snap = await withTimeout(
+        db.collection("bookings").where("date", "==", dateVal).get(),
+        4500
+      );
       snap.forEach((doc) => {
         const data = doc.data();
-        if (data && data.slot && data.status !== "Cancelled") bookedSlots.add(data.slot);
+        if (data && data.slot && data.status !== "Cancelled") {
+          bookedSlots.add(data.slot);
+        }
       });
     } catch (err) {
       console.warn("Could not query Firebase slots:", err);
@@ -524,7 +576,9 @@ async function refreshSlots() {
 
   const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
   localBookings.forEach((b) => {
-    if (b.date === dateVal && b.slot && b.status !== "Cancelled") bookedSlots.add(b.slot);
+    if (b.date === dateVal && b.slot && b.status !== "Cancelled") {
+      bookedSlots.add(b.slot);
+    }
   });
 
   slotSelect.innerHTML = '<option value="">Select available slot…</option>';
@@ -608,12 +662,7 @@ async function syncOfflineQueue() {
   const remaining = [];
   for (const item of queue) {
     try {
-      await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(item)
-      });
+      await postToSheetWithTimeout(item, 6000);
     } catch (err) {
       remaining.push(item);
     }
@@ -664,26 +713,24 @@ async function handleBookingSubmission(e) {
       placed: new Date().toLocaleDateString("en-IN")
     };
 
-    // 1. Try Firebase Cloud Firestore
+    // 1. Try Firebase Cloud Firestore (with 5s timeout so it never hangs)
     if (db) {
       try {
-        await db.collection("bookings").doc(ref).set(booking);
+        await withTimeout(db.collection("bookings").doc(ref).set(booking), 5000);
         console.log("✓ Saved to Firebase!");
       } catch (fbErr) {
         console.warn("Firebase notice:", fbErr);
       }
     }
 
-    // 2. Save directly to Google Sheet Webhook immediately
+    // 2. Save directly to Google Sheet Webhook (with 6s timeout + offline queue)
     try {
-      if (!navigator.onLine) throw new Error("Offline"); await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(booking)
-      });
+      await postToSheetWithTimeout(booking, 6000);
     } catch (sheetErr) {
-      const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]"); queue.push(booking); localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
+      console.warn("Sheet sync queued:", sheetErr);
+      const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
+      queue.push(booking);
+      localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
     }
 
     // 3. Save locally for Portal & Invoice
@@ -692,7 +739,7 @@ async function handleBookingSubmission(e) {
     localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
     latestBooking = booking;
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
     cart = [];
     localStorage.removeItem(CART_STORAGE_KEY);
@@ -704,21 +751,20 @@ async function handleBookingSubmission(e) {
     renderCart();
     updateStickyBar();
 
-    closeModal("loading-modal");
-
     $("success-ref").textContent = ref;
     $("success-details").innerHTML = `
-      Thank you <b>${esc(booking.name)}}</b>. Your appointment for <b>${esc(booking.services)}</b> has been booked for 
-      <b>${new Date(booking.date).toDateString()}</b> (${booking.slot}).<br>
+      Thank you <b>${esc(booking.name)}</b>. Your appointment for <b>${esc(booking.services)}</b> has been booked for 
+      <b>${formatReadableDate(booking.date)}</b> (${esc(booking.slot)}).<br>
       Payable amount: <b>${fmt(booking.total)}</b> upon inspection.
     `;
 
+    closeModal("loading-modal");
     go("success");
   } catch (err) {
-    closeModal("loading-modal");
     console.error("Booking error:", err);
     toast("Please verify fields and retry.");
   } finally {
+    closeModal("loading-modal");
     isSubmitting = false;
     submitBtn.disabled = false;
   }
@@ -737,10 +783,10 @@ async function handlePortalLookup(e) {
 
   if (db) {
     try {
-      let query = isRefSearch
+      const query = isRefSearch
         ? db.collection("bookings").where("ref", "==", cleanedQuery)
         : db.collection("bookings").where("phone", "==", cleanedQuery);
-      const snapshot = await query.get();
+      const snapshot = await withTimeout(query.get(), 5000);
       snapshot.forEach((doc) => records.push(doc.data()));
     } catch (err) {
       console.warn("Fallback to local records:", err);
@@ -757,7 +803,9 @@ async function handlePortalLookup(e) {
     if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
   });
 
-   portalRecords = records; if (records.length === 0) {
+  portalRecords = records;
+
+  if (records.length === 0) {
     container.innerHTML = `
       <div class="panel" style="text-align: center; color: var(--slate-600);">
         No records found for <b>${esc(inputVal)}</b>.<br>
@@ -770,16 +818,16 @@ async function handlePortalLookup(e) {
   container.innerHTML = records.map((b) => `
     <div class="panel" style="margin-bottom: 14px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-        <b>Booking Ref: <code style="color: var(--primary-dark); font-weight: 800;">${b.ref}</code></b>
-        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary-dark);">${b.status}</span>
+        <b>Booking Ref: <code style="color: var(--primary-dark); font-weight: 800;">${esc(b.ref)}</code></b>
+        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary-dark);">${esc(b.status)}</span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 0.86rem;">
-        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${b.services}</b></div>
-        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${new Date(b.date).toDateString()} (${b.slot})</b></div>
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${esc(b.services)}</b></div>
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${formatReadableDate(b.date)} (${esc(b.slot)})</b></div>
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">AMOUNT</span><b>${fmt(b.total)} (Post-Service)</b></div>
       </div>
       <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--slate-100); display: flex; gap: 8px;">
-        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem; min-height: 38px;" onclick="openPrintModalData('${b.ref}')">🖨️ Warranty Card</button>
+        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem; min-height: 38px;" onclick="openPrintModalData('${esc(b.ref)}')">🖨️ Warranty Card</button>
       </div>
     </div>
   `).join("");
@@ -789,7 +837,7 @@ function copyBookingDetails() {
   const b = latestBooking;
   if (!b) return;
 
-  const text = `*AS Global Management Booking*\nRef: ${b.ref}\nServices: ${b.services}\nDate: ${new Date(b.date).toDateString()} (${b.slot})\nTotal: ${fmt(b.total)}\nStatus: Pay Post-Service with 30-Day Warranty`;
+  const text = `*AS Global Management Booking*\nRef: ${b.ref}\nServices: ${b.services}\nDate: ${formatReadableDate(b.date)} (${b.slot})\nTotal: ${fmt(b.total)}\nStatus: Pay Post-Service with 30-Day Warranty`;
 
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text).then(() => {
@@ -802,7 +850,12 @@ function copyBookingDetails() {
 
 async function handleCommercialInquiry(e) {
   e.preventDefault();
-  if (!isValidIndianPhone($("comm-phone").value)) { toast("Please enter a valid 10-digit mobile number."); return; } const inquiry = {
+  if (!isValidIndianPhone($("comm-phone").value)) {
+    toast("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  const inquiry = {
     org: $("comm-org").value.trim(),
     name: $("comm-name").value.trim(),
     phone: cleanPhone($("comm-phone").value),
@@ -813,7 +866,7 @@ async function handleCommercialInquiry(e) {
 
   if (db) {
     try {
-      await db.collection("commercial_inquiries").add(inquiry);
+      await withTimeout(db.collection("commercial_inquiries").add(inquiry), 5000);
     } catch (err) {
       console.warn("Error:", err);
     }
@@ -841,7 +894,7 @@ function showPrintModal(b) {
   $("m-name").textContent = b.name;
   $("m-phone").textContent = b.phone;
   $("m-address").textContent = `${b.type} — ${b.address}`;
-  $("m-slot").textContent = `${new Date(b.date).toDateString()} (${b.slot})`;
+  $("m-slot").textContent = `${formatReadableDate(b.date)} (${b.slot})`;
   $("m-services").textContent = b.services;
   $("m-total").textContent = fmt(b.total) + " (Pay Post-Service)";
   openModal("print-modal");
