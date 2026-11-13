@@ -708,7 +708,7 @@ async function handleBookingSubmission(e) {
 
     $("success-ref").textContent = ref;
     $("success-details").innerHTML = `
-      Thank you <b>${booking.name}</b>. Your appointment for <b>${booking.services}</b> has been booked for 
+      Thank you <b>${esc(booking.name)}}</b>. Your appointment for <b>${esc(booking.services)}</b> has been booked for 
       <b>${new Date(booking.date).toDateString()}</b> (${booking.slot}).<br>
       Payable amount: <b>${fmt(booking.total)}</b> upon inspection.
     `;
@@ -760,7 +760,7 @@ async function handlePortalLookup(e) {
    portalRecords = records; if (records.length === 0) {
     container.innerHTML = `
       <div class="panel" style="text-align: center; color: var(--slate-600);">
-        No records found for <b>${inputVal}</b>.<br>
+        No records found for <b>${esc(inputVal)}</b>.<br>
         Please check your mobile number or booking reference code.
       </div>
     `;
