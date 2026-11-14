@@ -32,7 +32,7 @@
         "@type": ["HomeAndConstructionBusiness", "PestControlService"],
         "@id": "https://asglobalmanagement0-cmyk.github.io/AS-GLOBAL-MANAGEMENT/#business",
         "name": "AS Global Management",
-        "image":  "logo.jpg",
+        "image": "logo.jpg",
         "email": "asglobalmanagement0@gmail.com",
         "priceRange": "₹799 - ₹9999",
         "address": {
@@ -64,13 +64,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <!-- ================= FIREBASE SDK LIBRARIES ================= -->
-
-  <!-- External JavaScript Engine -->
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase SDK Libraries -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
   <script src="app.js" defer></script>
-  <!-- ========================================================== -->
 
   <style>
     :root {
@@ -191,7 +188,7 @@
       max-width: 1240px;
       margin: 0 auto;
       padding: 0 clamp(16px, 4vw, 32px);
-      height: 88px;
+      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -205,6 +202,14 @@
       cursor: pointer;
       user-select: none;
       min-height: 44px;
+    }
+
+    .logo img.header-logo-img {
+      height: 52px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+      display: block;
     }
 
     .logo-mark {
@@ -385,13 +390,13 @@
 
     main { flex: 1; width: 100%; }
     .view { display: none; width: 100%; }
-    .view.show { 
-      display: block; 
-      animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    .view.show {
+      display: block;
+      animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    @keyframes slideUpFade { 
-      from { opacity: 0; transform: translateY(14px); } 
-      to { opacity: 1; transform: translateY(0); } 
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px); width: 100%; }
@@ -421,7 +426,7 @@
       max-width: 1240px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: clamp(20px, 3.5vw, 40px);
       align-items: center;
       width: 100%;
@@ -480,29 +485,19 @@
 
     .hero-card-col { display: flex; flex-direction: column; gap: 14px; width: 100%; }
 
-    .hero-banner-shield {
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary-deep));
-      color: var(--white);
+    .hero-visual-banner {
       border-radius: var(--radius-lg);
-      padding: 24px 20px;
-      box-shadow: var(--shadow-md);
-      border: 1.5px solid rgba(255,255,255,0.2);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 180px;
-      position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--slate-200);
+      background: var(--white);
+      width: 100%;
     }
-    .hero-banner-shield h3 {
-      font-size: 1.3rem;
-      color: #6ee7b7;
-      margin-bottom: 6px;
-    }
-    .hero-banner-shield p {
-      font-size: 0.86rem;
-      color: var(--slate-200);
-      line-height: 1.55;
+    .hero-visual-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
     }
 
     .trust-panel {
@@ -943,6 +938,39 @@
       .btn { width: 100%; }
       .hero-cta { flex-direction: column; }
     }
+
+    /* Clean PDF / Print styling for Warranty Certificate */
+    @media print {
+      body {
+        background: #ffffff !important;
+        padding: 0 !important;
+      }
+      header,
+      main,
+      footer,
+      .sticky-bar,
+      .mobile-drawer,
+      .mobile-drawer-overlay,
+      #toast,
+      #loading-modal,
+      #service-modal,
+      .print-hide {
+        display: none !important;
+      }
+      #print-modal.modal-overlay.show {
+        display: block !important;
+        position: static !important;
+        background: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+      #print-modal .modal-card {
+        box-shadow: none !important;
+        max-height: none !important;
+        max-width: 100% !important;
+        border: 1px solid #cbd5e1;
+      }
+    }
   </style>
 </head>
 <body>
@@ -950,8 +978,8 @@
   <!-- Header -->
   <header>
     <div class="header-inner">
-       <div class="logo" onclick="handleLogoClick()" title="AS Global Management">
-        <img src="logo.jpg" alt="AS Global Management Logo" style="height: 88px; width: auto; object-fit: contain;">
+      <div class="logo" onclick="handleLogoClick()" title="AS Global Management">
+        <img src="logo.jpg" alt="AS Global Management Logo" class="header-logo-img">
       </div>
 
       <!-- Desktop Nav -->
@@ -1028,9 +1056,8 @@
         </div>
 
         <div class="hero-card-col">
-          <div class="hero-banner-shield">
-            <h3>Govt. Certified IPM Protocols</h3>
-            <p>100% odorless residential formulations, high-density German Bayer gel treatments, and deep drill-and-inject anti-termite barriers.</p>
+          <div class="hero-visual-banner">
+            <img src="chintu.webp" alt="AS Global Management — Safe &amp; Pest-Free Living">
           </div>
           <div class="trust-panel">
             <div class="trust-grid">
@@ -1244,7 +1271,7 @@
         <div class="booking-grid">
           <form class="panel" id="booking-form" novalidate onsubmit="handleBookingSubmission(event)">
             <h3>📋 Service Appointment Form</h3>
-            
+
             <div class="row2">
               <div class="field" id="f-name">
                 <label for="in-name">Full Name *</label>
@@ -1276,7 +1303,7 @@
                 <div class="err">Please select a valid future date.</div>
               </div>
               <div class="field" id="f-slot">
-                <label for="in-slot">Arrival Slot (Option A: 1-to-1 Booking) *</label>
+                <label for="in-slot">Preferred Arrival Slot *</label>
                 <select id="in-slot" onchange="validateLive('f-slot', this.value !== '')">
                   <option value="">Checking slot availability…</option>
                 </select>
@@ -1427,15 +1454,15 @@
       </div>
       <div class="foot-links">
         <h4>Core Services</h4>
-        <a href="#services" onclick="go('services');">Cockroach Gel Treatment</a>
-        <a href="#services" onclick="go('services');">Termite Drill &amp; Inject</a>
-        <a href="#services" onclick="go('services');">Bed Bug Steam Extermination</a>
-        <a href="#services" onclick="go('services');">Rodent Proofing &amp; Trapping</a>
+        <a href="#services" onclick="event.preventDefault(); go('services');">Cockroach Gel Treatment</a>
+        <a href="#services" onclick="event.preventDefault(); go('services');">Termite Drill &amp; Inject</a>
+        <a href="#services" onclick="event.preventDefault(); go('services');">Bed Bug Steam Extermination</a>
+        <a href="#services" onclick="event.preventDefault(); go('services');">Rodent Proofing &amp; Trapping</a>
       </div>
       <div class="foot-links">
         <h4>Client Resources</h4>
-        <a href="#portal" onclick="go('portal')">Customer Booking Portal</a>
-        <a href="#commercial" onclick="go('commercial')">Commercial Site Audits</a>
+        <a href="#portal" onclick="event.preventDefault(); go('portal');">Customer Booking Portal</a>
+        <a href="#commercial" onclick="event.preventDefault(); go('commercial');">Commercial Site Audits</a>
       </div>
       <div>
         <h4>Operating Hours</h4>
