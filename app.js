@@ -2,20 +2,23 @@
    AS GLOBAL MANAGEMENT — FULL SECURE & CONNECTED ENGINE
    ========================================================================= */
 
-// 1. FIREBASE CONFIGURATION — REPLACE THESE LINES WITH YOUR NEW FIREBASE CONFIG
+// 1. NEW FIREBASE CONFIGURATION (as-global-management)
 const firebaseConfig = {
   apiKey: "AIzaSyCjhGH7znnOF6QV_EmRVOxfVUbJLe6E8hI",
   authDomain: "as-global-management.firebaseapp.com",
   projectId: "as-global-management",
   storageBucket: "as-global-management.firebasestorage.app",
   messagingSenderId: "733475933170",
-  appId: "1:733475933170:web:41c763502d6adc5ddaf96b"
+  appId: "1:733475933170:web:41c763502d6adc5ddaf96b",
+  measurementId: "G-WPVH9WWR22"
 };
 
 let db = null;
 if (typeof firebase !== "undefined") {
   try {
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     db = firebase.firestore();
   } catch (e) {
     console.error("Firebase init:", e);
@@ -23,7 +26,6 @@ if (typeof firebase !== "undefined") {
 }
 
 // 2. CONSTANTS & SERVICES DATA
-// Optional: paste your NEW Google Apps Script URL below if you also want Google Sheet backup
 const GOOGLE_SHEET_WEBHOOK_URL = "";
 const CART_STORAGE_KEY = "asgm_cart_v18";
 const BOOKINGS_STORAGE_KEY = "asgm_bookings_v18";
@@ -155,6 +157,7 @@ const AVAILABLE_SLOTS = [
 // 3. STATE AND HELPERS
 let currentBHK = "1bhk";
 let cart = loadSavedCart();
+let customPricingMap = {};
 let latestBooking = null;
 let portalRecords = [];
 let activeView = "home";
@@ -212,7 +215,7 @@ function formatReadableDate(dateStr) {
   return new Date(dateStr).toDateString();
 }
 
-function withTimeout(promise, ms = 5000) {
+function withTimeout(promise, ms = 6000) {
   return Promise.race([
     promise,
     new Promise((_, reject) =>
@@ -239,9 +242,35 @@ async function postToSheetWithTimeout(payload, ms = 6000) {
   }
 }
 
-function calculatePrice(basePrice) {
+function getServicePrice(serviceOrItem) {
+  const id = serviceOrItem.id;
+  if (
+    customPricingMap[id] &&
+    customPricingMap[id][currentBHK] !== undefined &&
+    customPricingMap[id][currentBHK] !== ""
+  ) {
+    return Number(customPricingMap[id][currentBHK]);
+  }
+  const base = Number(serviceOrItem.basePrice || 0);
   const mult = BHK_MULTIPLIERS[currentBHK] || 1.0;
-  return Math.round((basePrice * mult) / 10) * 10;
+  return Math.round((base * mult) / 10) * 10;
+}
+
+function initLivePricing() {
+  if (!db) return;
+  db.collection("settings").doc("service_prices").onSnapshot(
+    (doc) => {
+      if (doc.exists && doc.data() && doc.data().prices) {
+        customPricingMap = doc.data().prices;
+        renderServiceCards();
+        renderCart();
+        updateStickyBar();
+      }
+    },
+    (err) => {
+      console.warn("Live pricing sync skipped:", err.message);
+    }
+  );
 }
 
 function toast(msg) {
@@ -344,7 +373,7 @@ function setBHK(bhkKey, btnEl) {
 // 5. SERVICE CARDS & CART
 function createServiceCardHTML(s) {
   const inCart = cart.some((item) => item.id === s.id);
-  const price = calculatePrice(s.basePrice);
+  const price = getServicePrice(s);
   const chipsHTML = s.chips.map((c) => `<span class="chip">${c}</span>`).join("");
 
   return `
@@ -439,7 +468,7 @@ function renderCart() {
   }
 
   container.innerHTML = cart.map((item) => {
-    const itemPrice = calculatePrice(item.basePrice);
+    const itemPrice = getServicePrice(item);
     return `
       <div class="cart-item">
         <div>
@@ -454,7 +483,7 @@ function renderCart() {
     `;
   }).join("");
 
-  const grandTotal = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
+  const grandTotal = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
   const totalVal = $("cart-total-val");
   if (totalVal) totalVal.textContent = fmt(grandTotal);
   if (totalRow) totalRow.style.display = "flex";
@@ -469,7 +498,7 @@ function updateStickyBar() {
     return;
   }
 
-  const total = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
+  const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
   const sbCount = $("sb-count");
   const sbTotal = $("sb-total");
   if (sbCount) sbCount.textContent = `${cart.length} Treatment${cart.length > 1 ? "s" : ""}`;
@@ -694,7 +723,7 @@ async function handleBookingSubmission(e) {
   openModal("loading-modal");
 
   try {
-    const total = cart.reduce((sum, item) => sum + calculatePrice(item.basePrice), 0);
+    const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
     const serviceNames = cart.map((item) => item.name).join(", ");
     const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
     const sanitizedPhone = cleanPhone($("in-phone").value);
@@ -711,20 +740,19 @@ async function handleBookingSubmission(e) {
       services: serviceNames,
       total: total,
       status: "Confirmed",
-      placed: new Date().toLocaleDateString("en-IN")
+      placed: new Date().toLocaleDateString("en-IN"),
+      createdAtMs: Date.now()
     };
 
-    // 1. Save to Firebase Cloud Firestore
-    if (db) {
-      try {
-        await withTimeout(db.collection("bookings").doc(ref).set(booking), 5000);
-        console.log("✓ Saved to Firebase!");
-      } catch (fbErr) {
-        console.warn("Firebase notice:", fbErr);
-      }
+    if (!db) {
+      throw new Error("Firebase is not initialized.");
     }
 
-    // 2. Optional Google Sheet Webhook
+    await withTimeout(db.collection("bookings").doc(ref).set({
+      ...booking,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }), 7000);
+
     if (GOOGLE_SHEET_WEBHOOK_URL) {
       try {
         await postToSheetWithTimeout(booking, 6000);
@@ -736,13 +764,10 @@ async function handleBookingSubmission(e) {
       }
     }
 
-    // 3. Save locally for Portal & Invoice
     const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
     bookings.unshift(booking);
     localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
     latestBooking = booking;
-
-    await new Promise((resolve) => setTimeout(resolve, 600));
 
     cart = [];
     localStorage.removeItem(CART_STORAGE_KEY);
@@ -764,10 +789,10 @@ async function handleBookingSubmission(e) {
     closeModal("loading-modal");
     go("success");
   } catch (err) {
-    console.error("Booking error:", err);
-    toast("Please verify fields and retry.");
-  } finally {
+    console.error("Booking save failed:", err);
     closeModal("loading-modal");
+    alert("Could not save booking to Firebase (" + (err.code || err.message) + "). Check Firestore Rules.");
+  } finally {
     isSubmitting = false;
     submitBtn.disabled = false;
   }
@@ -864,12 +889,16 @@ async function handleCommercialInquiry(e) {
     phone: cleanPhone($("comm-phone").value),
     type: $("comm-type").value,
     notes: $("comm-notes").value.trim(),
-    date: new Date().toLocaleDateString("en-IN")
+    date: new Date().toLocaleDateString("en-IN"),
+    createdAtMs: Date.now()
   };
 
   if (db) {
     try {
-      await withTimeout(db.collection("commercial_inquiries").add(inquiry), 5000);
+      await withTimeout(db.collection("commercial_inquiries").add({
+        ...inquiry,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }), 5000);
     } catch (err) {
       console.warn("Error:", err);
     }
@@ -933,6 +962,7 @@ function initDateInputs() {
 
 // 11. RUN ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
+  initLivePricing();
   initDateInputs();
   renderServiceCards();
   renderCart();
