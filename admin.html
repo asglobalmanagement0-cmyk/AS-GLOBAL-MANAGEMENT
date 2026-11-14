@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AS Global Management — Admin Dashboard</title>
-  
-  <!-- Typography -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
@@ -30,7 +29,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background: #f8fafc; color: var(--slate-900); min-height: 100vh; }
 
-    /* Auth Card (Shown when logged out) */
     #auth-view {
       display: flex;
       align-items: center;
@@ -50,7 +48,7 @@
     }
     .login-card h2 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 8px; color: var(--primary-dark); }
     .login-card p { font-size: 0.85rem; color: #64748b; margin-bottom: 24px; }
-    
+
     .form-group { text-align: left; margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--slate-700); }
     .form-group input {
@@ -64,19 +62,21 @@
     .form-group input:focus { border-color: var(--primary); }
 
     .btn {
-      width: 100%;
-      padding: 12px;
+      padding: 10px 16px;
       background: var(--primary);
       color: var(--white);
       font-weight: 700;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       transition: background 0.2s;
     }
     .btn:hover { background: var(--primary-dark); }
-    .btn.logout-btn { width: auto; padding: 8px 16px; font-size: 0.85rem; background: var(--slate-700); }
+    .btn.full { width: 100%; padding: 12px; font-size: 0.95rem; }
+    .btn.secondary { background: var(--slate-100); color: var(--slate-900); border: 1px solid var(--slate-200); }
+    .btn.danger { background: #fee2e2; color: var(--danger); padding: 6px 10px; font-size: 0.78rem; }
+    .btn.logout-btn { padding: 8px 16px; font-size: 0.85rem; background: var(--slate-700); }
 
     .error-msg {
       background: #fee2e2;
@@ -89,7 +89,6 @@
       font-weight: 600;
     }
 
-    /* Dashboard Header & Content (Shown when logged in) */
     #dashboard-view { display: none; padding-bottom: 60px; }
     .dash-header {
       background: var(--white);
@@ -98,11 +97,38 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
     .dash-header h1 { font-size: 1.25rem; font-family: 'Space Grotesk', sans-serif; color: var(--primary-dark); }
-    
-    .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
-    
+
+    .container { max-width: 1240px; margin: 24px auto; padding: 0 16px; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--slate-200);
+      background: var(--white);
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--slate-700);
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
     .stats-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -125,21 +151,56 @@
       overflow: hidden;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
+    .table-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--slate-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
     .table-wrapper { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
-    th { background: var(--slate-100); padding: 12px 16px; font-weight: 700; color: var(--slate-700); }
-    td { padding: 14px 16px; border-top: 1px solid var(--slate-200); }
+    th { background: var(--slate-100); padding: 12px 16px; font-weight: 700; color: var(--slate-700); white-space: nowrap; }
+    td { padding: 14px 16px; border-top: 1px solid var(--slate-200); vertical-align: top; }
     tr:hover { background: #f8fafc; }
 
-    .badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 0.75rem;
+    .status-select {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
       font-weight: 700;
+      font-size: 0.8rem;
       background: #ecfdf5;
       color: var(--primary-dark);
+      cursor: pointer;
     }
+
+    .price-input {
+      width: 92px;
+      padding: 8px 10px;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .price-input:focus { border-color: var(--primary); outline: none; }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--slate-900);
+      color: var(--white);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      display: none;
+      z-index: 999;
+    }
+    .toast.show { display: block; }
   </style>
 </head>
 <body>
@@ -148,8 +209,7 @@
   <div id="auth-view">
     <div class="login-card">
       <h2>Admin Login</h2>
-      <p>AS Global Management Management Portal</p>
-      
+      <p>AS Global Management Portal</p>
       <div id="login-error" class="error-msg"></div>
 
       <form onsubmit="handleAdminLogin(event)">
@@ -161,7 +221,7 @@
           <label>Password</label>
           <input type="password" id="admin-password" placeholder="••••••••" required>
         </div>
-        <button type="submit" class="btn" id="login-btn">Secure Login →</button>
+        <button type="submit" class="btn full" id="login-btn">Secure Login →</button>
       </form>
     </div>
   </div>
@@ -171,7 +231,7 @@
     <header class="dash-header">
       <div>
         <h1>AS GLOBAL MANAGEMENT</h1>
-        <small style="color: #64748b;">Live Booking Dispatch Engine</small>
+        <small style="color: #64748b;">Project: <b id="project-id-badge"></b> · Live Dispatch &amp; Pricing</small>
       </div>
       <div style="display: flex; align-items: center; gap: 12px;">
         <span id="user-display" style="font-size: 0.82rem; font-weight: 600; color: var(--slate-700);"></span>
@@ -180,62 +240,158 @@
     </header>
 
     <main class="container">
-      <div class="stats-row">
-        <div class="stat-card">
-          <span>Total Bookings</span>
-          <b id="stat-total">0</b>
-        </div>
-        <div class="stat-card">
-          <span>Expected Revenue</span>
-          <b id="stat-revenue" style="color: var(--primary);">₹0</b>
-        </div>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('bookings', this)">📋 Customer Bookings</button>
+        <button class="tab-btn" onclick="switchTab('pricing', this)">💰 Edit Service Prices</button>
+        <button class="tab-btn" onclick="switchTab('commercial', this)">🏢 Commercial Inquiries</button>
       </div>
 
-      <div class="table-card">
-        <div style="padding: 16px; border-bottom: 1px solid var(--slate-200); display: flex; justify-content: space-between; align-items: center;">
-          <h2 style="font-size: 1.1rem; font-family: 'Space Grotesk';">Customer Bookings</h2>
-          <button class="btn" style="width: auto; padding: 6px 14px; font-size: 0.82rem;" onclick="loadBookings()">↻ Refresh</button>
+      <!-- TAB 1: BOOKINGS -->
+      <section id="tab-bookings" class="tab-panel active">
+        <div class="stats-row">
+          <div class="stat-card">
+            <span>Total Bookings</span>
+            <b id="stat-total">0</b>
+          </div>
+          <div class="stat-card">
+            <span>Expected Revenue</span>
+            <b id="stat-revenue" style="color: var(--primary);">₹0</b>
+          </div>
+          <div class="stat-card">
+            <span>Completed Jobs</span>
+            <b id="stat-completed">0</b>
+          </div>
         </div>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Booking Ref</th>
-                <th>Customer</th>
-                <th>Phone</th>
-                <th>Treatments</th>
-                <th>Arrival Slot</th>
-                <th>Total</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="bookings-table-body">
-              <tr>
-                <td colspan="7" style="text-align: center; color: #94a3b8; padding: 24px;">Loading bookings...</td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h2 style="font-size: 1.1rem; font-family: 'Space Grotesk';">Customer Bookings</h2>
+            <span style="font-size: 0.78rem; color: var(--primary); font-weight: 700;">● Auto-syncing live</span>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Booking Ref</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Treatments</th>
+                  <th>Arrival Slot</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-table-body">
+                <tr>
+                  <td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Loading bookings...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <!-- TAB 2: EDIT SERVICE PRICES -->
+      <section id="tab-pricing" class="tab-panel">
+        <div class="table-card">
+          <div class="table-header">
+            <div>
+              <h2 style="font-size: 1.1rem; font-family: 'Space Grotesk';">Service Price Editor (₹)</h2>
+              <small style="color: #64748b;">Edit any price directly, or use "Auto-fill BHK" from the 1 BHK base price. Click Save to update your website live.</small>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn secondary" onclick="resetDefaultPrices()">Reset Defaults</button>
+              <button class="btn" id="save-prices-btn" onclick="saveServicePrices()">💾 Save All Prices</button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>1 BHK (Base ₹)</th>
+                  <th>2 BHK (₹)</th>
+                  <th>3 BHK (₹)</th>
+                  <th>Villa (₹)</th>
+                  <th>Commercial (₹)</th>
+                  <th>Quick Fill</th>
+                </tr>
+              </thead>
+              <tbody id="pricing-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: COMMERCIAL INQUIRIES -->
+      <section id="tab-commercial" class="tab-panel">
+        <div class="table-card">
+          <div class="table-header">
+            <h2 style="font-size: 1.1rem; font-family: 'Space Grotesk';">Commercial Inquiries</h2>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Organization</th>
+                  <th>Contact Person</th>
+                  <th>Phone</th>
+                  <th>Facility Type</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="commercial-table-body">
+                <tr>
+                  <td colspan="5" style="text-align: center; color: #94a3b8; padding: 24px;">Loading inquiries...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
+  <div id="admin-toast" class="toast"></div>
+
   <script>
-    // Exact Firebase Configuration
+    // NEW FIREBASE CONFIGURATION (as-global-management)
     const firebaseConfig = {
-      apiKey: "AIzaSyCjhGH7znn0F6QV_EmRVOxfVUbJLe6E8hI",
+      apiKey: "AIzaSyCjhGH7znnOF6QV_EmRVOxfVUbJLe6E8hI",
       authDomain: "as-global-management.firebaseapp.com",
       projectId: "as-global-management",
       storageBucket: "as-global-management.firebasestorage.app",
       messagingSenderId: "733475933170",
-      appId: "1:733475933170:web:41c763502d6adc5ddaf96b"
+      appId: "1:733475933170:web:41c763502d6adc5ddaf96b",
+      measurementId: "G-WPVH9WWR22"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+    document.getElementById("project-id-badge").textContent = firebaseConfig.projectId;
 
-    // Escape customer input to prevent XSS
+    const BHK_MULTIPLIERS = { "1bhk": 1.0, "2bhk": 1.25, "3bhk": 1.55, "villa": 2.1, "commercial": 2.4 };
+
+    const DEFAULT_SERVICES = [
+      { id: "cockroach", name: "🪳 Cockroach Gel Treatment", basePrice: 799 },
+      { id: "termite", name: "🐜 Termite Drill & Injection", basePrice: 2499 },
+      { id: "bedbugs", name: "🛏️ Bed Bug Steam Extermination", basePrice: 1599 },
+      { id: "rodent", name: "🐀 Rodent Control & Exclusion", basePrice: 1199 },
+      { id: "mosquito", name: "🦟 Mosquito Fogging & Larvicide", basePrice: 999 },
+      { id: "ants", name: "🕸️ General Pest Control", basePrice: 899 },
+      { id: "woodborer", name: "🪵 Wood Borer Micro-Injection", basePrice: 1399 },
+      { id: "disinfection", name: "🧴 Disinfection & Sanitization", basePrice: 1299 }
+    ];
+
+    let unsubscribeBookings = null;
+    let unsubscribeCommercial = null;
+
+    function calcDefaultPrice(basePrice, bhk) {
+      return Math.round((basePrice * (BHK_MULTIPLIERS[bhk] || 1)) / 10) * 10;
+    }
+
     function escapeHTML(str) {
       if (!str) return "";
       return String(str)
@@ -246,7 +402,20 @@
         .replace(/'/g, "&#039;");
     }
 
-    // Monitor Authentication State
+    function showToast(msg) {
+      const el = document.getElementById("admin-toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 2600);
+    }
+
+    function switchTab(tabName, btn) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("tab-" + tabName).classList.add("active");
+    }
+
     auth.onAuthStateChanged(user => {
       const authView = document.getElementById("auth-view");
       const dashView = document.getElementById("dashboard-view");
@@ -255,14 +424,17 @@
         authView.style.display = "none";
         dashView.style.display = "block";
         document.getElementById("user-display").textContent = user.email;
-        loadBookings();
+        startLiveBookingsListener();
+        startLiveCommercialListener();
+        loadPricingEditor();
       } else {
         authView.style.display = "flex";
         dashView.style.display = "none";
+        if (unsubscribeBookings) unsubscribeBookings();
+        if (unsubscribeCommercial) unsubscribeCommercial();
       }
     });
 
-    // Handle Login
     async function handleAdminLogin(e) {
       e.preventDefault();
       const email = document.getElementById("admin-email").value.trim();
@@ -277,7 +449,7 @@
       try {
         await auth.signInWithEmailAndPassword(email, pass);
       } catch (err) {
-         errBox.textContent = err.code + " — " + err.message;
+        errBox.textContent = err.code + " — " + err.message;
         errBox.style.display = "block";
       } finally {
         btn.textContent = "Secure Login →";
@@ -285,53 +457,210 @@
       }
     }
 
-    // Handle Logout
     function handleLogout() {
       auth.signOut();
     }
 
-    // Fetch and render bookings from Firestore
-    async function loadBookings() {
+    function startLiveBookingsListener() {
       const tbody = document.getElementById("bookings-table-body");
-      try {
-        const snapshot = await db.collection("bookings").get();
-        
-        let totalRev = 0;
-        let count = 0;
-        let rowsHtml = "";
+      if (unsubscribeBookings) unsubscribeBookings();
 
-        if (snapshot.empty) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 24px; color: #94a3b8;">No customer bookings recorded yet.</td></tr>`;
-          document.getElementById("stat-total").textContent = "0";
-          document.getElementById("stat-revenue").textContent = "₹0";
-          return;
+      unsubscribeBookings = db.collection("bookings").onSnapshot(
+        snapshot => {
+          let totalRev = 0;
+          let count = 0;
+          let completedCount = 0;
+          const bookings = [];
+
+          snapshot.forEach(doc => bookings.push({ id: doc.id, ...doc.data() }));
+          bookings.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+
+          if (bookings.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 24px; color: #94a3b8;">No customer bookings recorded yet.</td></tr>`;
+            document.getElementById("stat-total").textContent = "0";
+            document.getElementById("stat-revenue").textContent = "₹0";
+            document.getElementById("stat-completed").textContent = "0";
+            return;
+          }
+
+          tbody.innerHTML = bookings.map(b => {
+            count++;
+            if (b.status !== "Cancelled") totalRev += Number(b.total || 0);
+            if (b.status === "Completed") completedCount++;
+            const status = b.status || "Confirmed";
+
+            return `
+              <tr>
+                <td><b>${escapeHTML(b.ref || b.id)}</b></td>
+                <td>
+                  <b>${escapeHTML(b.name)}</b> <small style="color:#059669;">(${escapeHTML(b.type || "")})</small><br>
+                  <small style="color:#64748b;">${escapeHTML(b.address)}</small>
+                  ${b.notes ? `<br><small style="color:#0f172a;">Note: ${escapeHTML(b.notes)}</small>` : ""}
+                </td>
+                <td><a href="tel:${escapeHTML(b.phone)}" style="color:var(--primary); font-weight:700;">${escapeHTML(b.phone)}</a></td>
+                <td>${escapeHTML(b.services)}</td>
+                <td>${escapeHTML(b.date)}<br><small style="color:#64748b;">${escapeHTML(b.slot)}</small></td>
+                <td><b>₹${Number(b.total || 0).toLocaleString("en-IN")}</b></td>
+                <td>
+                  <select class="status-select" onchange="updateBookingStatus('${escapeHTML(b.id)}', this.value)">
+                    <option value="Confirmed" ${status === "Confirmed" ? "selected" : ""}>Confirmed</option>
+                    <option value="In Progress" ${status === "In Progress" ? "selected" : ""}>In Progress</option>
+                    <option value="Completed" ${status === "Completed" ? "selected" : ""}>Completed</option>
+                    <option value="Cancelled" ${status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+                  </select>
+                </td>
+                <td><button class="btn danger" onclick="deleteBooking('${escapeHTML(b.id)}')">Delete</button></td>
+              </tr>
+            `;
+          }).join("");
+
+          document.getElementById("stat-total").textContent = count;
+          document.getElementById("stat-revenue").textContent = "₹" + totalRev.toLocaleString("en-IN");
+          document.getElementById("stat-completed").textContent = completedCount;
+        },
+        err => {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: red; padding: 24px;">Permission Denied (${escapeHTML(err.code)}). Check Firestore Rules.</td></tr>`;
         }
+      );
+    }
 
-        snapshot.forEach(doc => {
-          const b = doc.data();
-          count++;
-          totalRev += Number(b.total || 0);
-
-          rowsHtml += `
-            <tr>
-              <td><b>${escapeHTML(b.ref || doc.id)}</b></td>
-              <td>${escapeHTML(b.name)}<br><small style="color:#64748b;">${escapeHTML(b.address)}</small></td>
-              <td><a href="tel:${escapeHTML(b.phone)}" style="color:var(--primary); font-weight:700;">${escapeHTML(b.phone)}</a></td>
-              <td>${escapeHTML(b.services)}</td>
-              <td>${escapeHTML(b.date)}<br><small style="color:#64748b;">${escapeHTML(b.slot)}</small></td>
-              <td><b>₹${Number(b.total || 0).toLocaleString('en-IN')}</b></td>
-              <td><span class="badge">${escapeHTML(b.status || 'Confirmed')}</span></td>
-            </tr>
-          `;
-        });
-
-        tbody.innerHTML = rowsHtml;
-        document.getElementById("stat-total").textContent = count;
-        document.getElementById("stat-revenue").textContent = "₹" + totalRev.toLocaleString('en-IN');
+    async function updateBookingStatus(docId, newStatus) {
+      try {
+        await db.collection("bookings").doc(docId).update({ status: newStatus });
+        showToast(`Status updated to ${newStatus}`);
       } catch (err) {
-        console.error("Failed to load bookings:", err);
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: red; padding: 24px;">Permission Denied. Only authorized admin can view records.</td></tr>`;
+        alert("Failed to update status: " + err.message);
       }
+    }
+
+    async function deleteBooking(docId) {
+      if (!confirm(`Delete booking ${docId}?`)) return;
+      try {
+        await db.collection("bookings").doc(docId).delete();
+        showToast("Booking deleted.");
+      } catch (err) {
+        alert("Failed to delete booking: " + err.message);
+      }
+    }
+
+    async function loadPricingEditor() {
+      let savedPrices = {};
+      try {
+        const doc = await db.collection("settings").doc("service_prices").get();
+        if (doc.exists && doc.data().prices) {
+          savedPrices = doc.data().prices;
+        }
+      } catch (err) {
+        console.warn("Could not load saved prices:", err.message);
+      }
+      renderPricingRows(savedPrices);
+    }
+
+    function renderPricingRows(savedPrices) {
+      const tbody = document.getElementById("pricing-table-body");
+      const bhkKeys = ["1bhk", "2bhk", "3bhk", "villa", "commercial"];
+
+      tbody.innerHTML = DEFAULT_SERVICES.map(svc => {
+        const override = savedPrices[svc.id] || {};
+        return `
+          <tr>
+            <td><b>${escapeHTML(svc.name)}</b></td>
+            ${bhkKeys.map(k => {
+              const val = override[k] !== undefined ? override[k] : calcDefaultPrice(svc.basePrice, k);
+              return `
+                <td>
+                  <input type="number" min="0" step="10"
+                    class="price-input"
+                    data-service="${svc.id}"
+                    data-bhk="${k}"
+                    value="${Number(val)}">
+                </td>
+              `;
+            }).join("")}
+            <td>
+              <button type="button" class="btn secondary" style="padding:6px 10px; font-size:0.78rem;" onclick="autoFillRow('${svc.id}')">
+                Auto-fill BHK
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function autoFillRow(serviceId) {
+      const baseInput = document.querySelector(`.price-input[data-service="${serviceId}"][data-bhk="1bhk"]`);
+      if (!baseInput) return;
+      const baseVal = Number(baseInput.value || 0);
+      ["2bhk", "3bhk", "villa", "commercial"].forEach(k => {
+        const inp = document.querySelector(`.price-input[data-service="${serviceId}"][data-bhk="${k}"]`);
+        if (inp) inp.value = calcDefaultPrice(baseVal, k);
+      });
+      showToast("Auto-filled BHK prices from 1 BHK base price!");
+    }
+
+    async function saveServicePrices() {
+      const btn = document.getElementById("save-prices-btn");
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+
+      const pricesPayload = {};
+      document.querySelectorAll(".price-input").forEach(input => {
+        const svcId = input.dataset.service;
+        const bhk = input.dataset.bhk;
+        const val = Math.max(0, Number(input.value || 0));
+        if (!pricesPayload[svcId]) pricesPayload[svcId] = {};
+        pricesPayload[svcId][bhk] = val;
+      });
+
+      try {
+        await db.collection("settings").doc("service_prices").set({
+          prices: pricesPayload,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedBy: auth.currentUser ? auth.currentUser.email : "admin"
+        });
+        showToast("Prices saved! Customer website updated live.");
+      } catch (err) {
+        alert("Failed to save prices: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "💾 Save All Prices";
+      }
+    }
+
+    function resetDefaultPrices() {
+      if (!confirm("Reset inputs to default prices? Click Save All Prices afterward to publish.")) return;
+      renderPricingRows({});
+    }
+
+    function startLiveCommercialListener() {
+      const tbody = document.getElementById("commercial-table-body");
+      if (unsubscribeCommercial) unsubscribeCommercial();
+
+      unsubscribeCommercial = db.collection("commercial_inquiries").onSnapshot(
+        snap => {
+          const items = [];
+          snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+          items.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+
+          if (items.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 24px; color: #94a3b8;">No commercial inquiries yet.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = items.map(c => `
+            <tr>
+              <td><b>${escapeHTML(c.org)}</b></td>
+              <td>${escapeHTML(c.name)}</td>
+              <td><a href="tel:${escapeHTML(c.phone)}" style="color:var(--primary); font-weight:700;">${escapeHTML(c.phone)}</a></td>
+              <td>${escapeHTML(c.type || c.facilityType)}</td>
+              <td>${escapeHTML(c.notes || "-")}</td>
+            </tr>
+          `).join("");
+        },
+        err => {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red; padding: 24px;">Permission Denied loading commercial inquiries.</td></tr>`;
+        }
+      );
     }
   </script>
 </body>
