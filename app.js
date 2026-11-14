@@ -2,7 +2,7 @@
    AS GLOBAL MANAGEMENT — FULL SECURE & CONNECTED ENGINE
    ========================================================================= */
 
-// 1. NEW FIREBASE CONFIGURATION (as-global-management)
+// 1. FIREBASE CONFIGURATION (as-global-management)
 const firebaseConfig = {
   apiKey: "AIzaSyCjhGH7znnOF6QV_EmRVOxfVUbJLe6E8hI",
   authDomain: "as-global-management.firebaseapp.com",
@@ -281,17 +281,32 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// 4. NAVIGATION
+// 4. NAVIGATION & HISTORY SYNC
+function hideModalUI(el) {
+  if (!el) return;
+  el.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function hideMobileDrawerUI() {
+  const drawer = $("mobile-drawer");
+  const overlay = $("drawer-overlay");
+  const toggle = $("menu-toggle");
+  if (drawer) drawer.classList.remove("open");
+  if (overlay) overlay.classList.remove("active");
+  if (toggle) toggle.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
 window.addEventListener("popstate", () => {
   const openModalEl = document.querySelector(".modal-overlay.show");
   if (openModalEl) {
-    openModalEl.classList.remove("show");
-    document.body.style.overflow = "";
+    hideModalUI(openModalEl);
     return;
   }
   const drawer = $("mobile-drawer");
   if (drawer && drawer.classList.contains("open")) {
-    closeMobileMenu();
+    hideMobileDrawerUI();
   }
 });
 
@@ -312,14 +327,13 @@ function toggleMobileMenu() {
   }
 }
 
-function closeMobileMenu() {
+function closeMobileMenu(skipHistory = false) {
   const drawer = $("mobile-drawer");
-  const overlay = $("drawer-overlay");
-  const toggle = $("menu-toggle");
-  if (drawer) drawer.classList.remove("open");
-  if (overlay) overlay.classList.remove("active");
-  if (toggle) toggle.classList.remove("open");
-  document.body.style.overflow = "";
+  const wasOpen = drawer && drawer.classList.contains("open");
+  hideMobileDrawerUI();
+  if (!skipHistory && wasOpen && history.state && history.state.drawer) {
+    history.back();
+  }
 }
 
 function goFromDrawer(viewId) {
@@ -510,17 +524,23 @@ function updateStickyBar() {
 function openModal(id) {
   const el = $(id);
   if (el) {
+    const alreadyOpen = el.classList.contains("show");
     el.classList.add("show");
     document.body.style.overflow = "hidden";
-    history.pushState({ modalId: id }, "");
+    if (!alreadyOpen) {
+      history.pushState({ modalId: id }, "");
+    }
   }
 }
 
-function closeModal(id) {
+function closeModal(id, skipHistory = false) {
   const el = $(id);
   if (el) {
-    el.classList.remove("show");
-    document.body.style.overflow = "";
+    const wasOpen = el.classList.contains("show");
+    hideModalUI(el);
+    if (!skipHistory && wasOpen && history.state && history.state.modalId === id) {
+      history.back();
+    }
   }
 }
 
@@ -572,19 +592,7 @@ function validatePhoneLive(input) {
 }
 
 // 8. REAL-TIME SLOTS
-async function refreshSlots() {
-  const dateInput = $("in-date");
-  const slotSelect = $("in-slot");
-  if (!dateInput || !slotSelect) return;
-
-  const dateVal = dateInput.value;
-  const now = new Date();
-  const todayStr = formatLocalDate(now);
-  const isToday = dateVal === todayStr;
-  const currentHour = now.getHours();
-
-  slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
-
+async function getBookedSlotsForDate(dateVal) {
   const bookedSlots = new Set();
 
   if (db && dateVal) {
@@ -610,6 +618,24 @@ async function refreshSlots() {
       bookedSlots.add(b.slot);
     }
   });
+
+  return bookedSlots;
+}
+
+async function refreshSlots() {
+  const dateInput = $("in-date");
+  const slotSelect = $("in-slot");
+  if (!dateInput || !slotSelect) return;
+
+  const dateVal = dateInput.value;
+  const now = new Date();
+  const todayStr = formatLocalDate(now);
+  const isToday = dateVal === todayStr;
+  const currentHour = now.getHours();
+
+  slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
+
+  const bookedSlots = await getBookedSlotsForDate(dateVal);
 
   slotSelect.innerHTML = '<option value="">Select available slot…</option>';
   let availableCount = 0;
@@ -723,6 +749,19 @@ async function handleBookingSubmission(e) {
   openModal("loading-modal");
 
   try {
+    if (!db) {
+      throw new Error("Firebase is not initialized.");
+    }
+
+    // Re-check slot availability right before saving to prevent double-booking
+    const latestBookedSlots = await getBookedSlotsForDate(chosenDate);
+    if (latestBookedSlots.has(chosenSlot)) {
+      closeModal("loading-modal");
+      await refreshSlots();
+      toast("⚠ That arrival slot was just booked. Please select another slot.");
+      return;
+    }
+
     const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
     const serviceNames = cart.map((item) => item.name).join(", ");
     const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
@@ -743,10 +782,6 @@ async function handleBookingSubmission(e) {
       placed: new Date().toLocaleDateString("en-IN"),
       createdAtMs: Date.now()
     };
-
-    if (!db) {
-      throw new Error("Firebase is not initialized.");
-    }
 
     await withTimeout(db.collection("bookings").doc(ref).set({
       ...booking,
@@ -781,7 +816,7 @@ async function handleBookingSubmission(e) {
 
     $("success-ref").textContent = ref;
     $("success-details").innerHTML = `
-      Thank you <b>${esc(booking.name)}</b>. Your appointment for <b>${esc(booking.services)}</b> has been booked for 
+      Thank you <b>${esc(booking.name)}</b>. Your appointment for <b>${esc(booking.services)}</b> has been booked for
       <b>${formatReadableDate(booking.date)}</b> (${esc(booking.slot)}).<br>
       Payable amount: <b>${fmt(booking.total)}</b> upon inspection.
     `;
@@ -794,7 +829,9 @@ async function handleBookingSubmission(e) {
     alert("Could not save booking to Firebase (" + (err.code || err.message) + "). Check Firestore Rules.");
   } finally {
     isSubmitting = false;
-    submitBtn.disabled = false;
+    if (cart.length > 0) {
+      submitBtn.disabled = false;
+    }
   }
 }
 
