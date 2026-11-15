@@ -484,8 +484,8 @@ main {
 
 .btn.secondary:hover {
   border-color: var(--primary);
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-light);
 }
 
 .btn.block {
@@ -687,6 +687,7 @@ main {
   border-radius: 999px;
   background: var(--primary-light);
   color: var(--primary);
+  border: 1px solid rgba(22, 56, 50, 0.2);
 }
 
 .card h3 {
@@ -711,8 +712,8 @@ main {
   font-size: 0.7rem;
   font-weight: 700;
   color: var(--primary);
-  background: var(--primary-light);:
-border: 1px solid rgba(22, 56, 50, 0.2);
+  background: var(--primary-light);
+  border: 1px solid rgba(22, 56, 50, 0.2);
   padding: 3px 8px;
   border-radius: 999px;
 }
@@ -763,15 +764,16 @@ border: 1px solid rgba(22, 56, 50, 0.2);
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--primary);
-  background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2);
-  padding: 8px 10px;
+  background: var(--primary-light);
+  border: 1px solid rgba(22, 56, 50, 0.2);
+  padding: 8px 14px;
   border-radius: 999px;
   min-height: 40px;
 }
 
 .detail-link:hover {
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-light);
 }
 
 /* -------------------------------------------------------------------------
