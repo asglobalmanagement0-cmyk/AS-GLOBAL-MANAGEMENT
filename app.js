@@ -156,27 +156,54 @@ const AVAILABLE_SLOTS = [
 
 // 3. STATE AND HELPERS
 let currentBHK = "1bhk";
-let cart = loadSavedCart();
 let customPricingMap = {};
 let latestBooking = null;
 let portalRecords = [];
 let activeView = "home";
 let isSubmitting = false;
+let isCommercialSubmitting = false;
 let clickCount = 0;
 let clickTimer = null;
+let toastTimer = null;
 
-function loadSavedCart() {
+function readStorageJSON(key, fallback) {
   try {
-    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    return parsed !== null && typeof parsed === "object" ? parsed : fallback;
   } catch (e) {
-    return [];
+    return fallback;
   }
 }
 
+function writeStorageJSON(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.warn("Storage write skipped:", e);
+  }
+}
+
+function removeStorageItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    console.warn("Storage remove skipped:", e);
+  }
+}
+
+function loadSavedCart() {
+  const parsed = readStorageJSON(CART_STORAGE_KEY, []);
+  if (!Array.isArray(parsed)) return [];
+  const validIds = new Set(SERVICES.map((s) => s.id));
+  return parsed.filter((item) => item && typeof item.id === "string" && validIds.has(item.id));
+}
+
+let cart = loadSavedCart();
+
 const $ = (id) => document.getElementById(id);
-const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+const fmt = (n) => "₹" + Number(n || 0).toLocaleString("en-IN");
 
 function esc(str) {
   return String(str || "").replace(/[&<>"']/g, (m) => ({
@@ -190,7 +217,13 @@ function esc(str) {
 
 function cleanPhone(val) {
   if (!val) return "";
-  return String(val).replace(/\D/g, "").slice(-10);
+  let digits = String(val).replace(/\D/g, "");
+  if (digits.length === 12 && digits.startsWith("91")) {
+    digits = digits.slice(2);
+  } else if (digits.length === 11 && digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
+  return digits;
 }
 
 function isValidIndianPhone(val) {
@@ -210,9 +243,10 @@ function formatReadableDate(dateStr) {
   const parts = String(dateStr).split("-");
   if (parts.length === 3) {
     const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-    return d.toDateString();
+    return Number.isNaN(d.getTime()) ? String(dateStr) : d.toDateString();
   }
-  return new Date(dateStr).toDateString();
+  const d = new Date(dateStr);
+  return Number.isNaN(d.getTime()) ? String(dateStr) : d.toDateString();
 }
 
 function withTimeout(promise, ms = 6000) {
@@ -233,7 +267,7 @@ async function postToSheetWithTimeout(payload, ms = 6000) {
     await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload),
       signal: controller.signal
     });
@@ -276,9 +310,10 @@ function initLivePricing() {
 function toast(msg) {
   const t = $("toast");
   if (!t) return;
+  clearTimeout(toastTimer);
   t.textContent = msg;
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2800);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
 }
 
 // 4. NAVIGATION & HISTORY SYNC
@@ -299,7 +334,7 @@ function hideMobileDrawerUI() {
 }
 
 window.addEventListener("popstate", () => {
-  const openModalEl = document.querySelector(".modal-overlay.show");
+  const openModalEl = document.querySelector(".modal-overlay.show:not(#loading-modal)");
   if (openModalEl) {
     hideModalUI(openModalEl);
     return;
@@ -337,7 +372,7 @@ function closeMobileMenu(skipHistory = false) {
 }
 
 function goFromDrawer(viewId) {
-  closeMobileMenu();
+  closeMobileMenu(true);
   go(viewId);
 }
 
@@ -370,10 +405,10 @@ function startNewBooking() {
 function setBHK(bhkKey, btnEl) {
   currentBHK = bhkKey;
   document.querySelectorAll(".bhk-btn").forEach((b) => {
+    const onclickAttr = b.getAttribute("onclick") || "";
     b.classList.toggle(
       "active",
-      b.getAttribute("onclick") &&
-        b.getAttribute("onclick").toLowerCase().includes(`'${bhkKey.toLowerCase()}'`)
+      onclickAttr.toLowerCase().includes(`'${bhkKey.toLowerCase()}'`)
     );
   });
   if (btnEl) btnEl.classList.add("active");
@@ -397,7 +432,7 @@ function createServiceCardHTML(s) {
           <div class="card-glyph-tag">${s.glyph}</div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
             <span class="card-badge">★ ${s.rating}</span>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--primary-dark);">30-Day Guarantee</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--primary);">30-Day Guarantee</span>
           </div>
         </div>
         <h3>${s.name}</h3>
@@ -442,7 +477,7 @@ function toggleCart(serviceId) {
     toast("✓ Treatment added to booking");
   }
 
-  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  writeStorageJSON(CART_STORAGE_KEY, cart);
   renderServiceCards();
   renderCart();
   updateStickyBar();
@@ -486,12 +521,12 @@ function renderCart() {
     return `
       <div class="cart-item">
         <div>
-          <span class="cart-item-title">${item.name}</span>
+          <span class="cart-item-title">${esc(item.name)}</span>
           <span class="cart-item-subtitle">${currentBHK.toUpperCase()} · 30-Day Written Warranty</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <b style="font-size: 0.95rem;">${fmt(itemPrice)}</b>
-          <button type="button" class="cart-item-remove" onclick="toggleCart('${item.id}')">✕</button>
+          <button type="button" class="cart-item-remove" onclick="toggleCart('${item.id}')" aria-label="Remove ${esc(item.name)}">✕</button>
         </div>
       </div>
     `;
@@ -521,13 +556,13 @@ function updateStickyBar() {
 }
 
 // 6. MODALS
-function openModal(id) {
+function openModal(id, trackHistory = true) {
   const el = $(id);
   if (el) {
     const alreadyOpen = el.classList.contains("show");
     el.classList.add("show");
     document.body.style.overflow = "hidden";
-    if (!alreadyOpen) {
+    if (trackHistory && !alreadyOpen) {
       history.pushState({ modalId: id }, "");
     }
   }
@@ -553,11 +588,11 @@ function openServiceModal(id) {
     <div style="font-size: 0.9rem; line-height: 1.7; color: var(--slate-700);">
       <p style="margin-bottom: 12px;">${s.desc}</p>
       <div style="background: var(--slate-100); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
-        <b style="color: var(--primary-dark); display: block;">🔬 Treatment Process:</b>
+        <b style="color: var(--primary); display: block;">🔬 Treatment Process:</b>
         ${s.protocol}
       </div>
       <div style="background: var(--primary-light); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
-        <b style="color: var(--primary-dark); display: block;">🛡️ Safety Information:</b>
+        <b style="color: var(--primary); display: block;">🛡️ Safety Information:</b>
         ${s.safety}
       </div>
       <div style="background: var(--accent-light); padding: 12px; border-radius: 12px;">
@@ -587,8 +622,7 @@ function validateLive(fieldId, isValid) {
 }
 
 function validatePhoneLive(input) {
-  const clean = cleanPhone(input.value);
-  validateLive("f-phone", /^[6-9]\d{9}$/.test(clean));
+  validateLive("f-phone", isValidIndianPhone(input.value));
 }
 
 // 8. REAL-TIME SLOTS
@@ -612,30 +646,38 @@ async function getBookedSlotsForDate(dateVal) {
     }
   }
 
-  const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-  localBookings.forEach((b) => {
-    if (b.date === dateVal && b.slot && b.status !== "Cancelled") {
-      bookedSlots.add(b.slot);
-    }
-  });
+  const localBookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+  if (Array.isArray(localBookings)) {
+    localBookings.forEach((b) => {
+      if (b && b.date === dateVal && b.slot && b.status !== "Cancelled") {
+        bookedSlots.add(b.slot);
+      }
+    });
+  }
 
   return bookedSlots;
 }
 
-async function refreshSlots() {
+async function refreshSlots(silent = false) {
   const dateInput = $("in-date");
   const slotSelect = $("in-slot");
   if (!dateInput || !slotSelect) return;
 
   const dateVal = dateInput.value;
+  if (!dateVal) return;
+
+  const prevSelectedSlot = slotSelect.value;
+  slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
+
+  const bookedSlots = await getBookedSlotsForDate(dateVal);
+
+  // Prevent stale async responses from overwriting a newly chosen date
+  if (dateInput.value !== dateVal) return;
+
   const now = new Date();
   const todayStr = formatLocalDate(now);
   const isToday = dateVal === todayStr;
   const currentHour = now.getHours();
-
-  slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
-
-  const bookedSlots = await getBookedSlotsForDate(dateVal);
 
   slotSelect.innerHTML = '<option value="">Select available slot…</option>';
   let availableCount = 0;
@@ -655,17 +697,18 @@ async function refreshSlots() {
       opt.disabled = true;
     } else {
       opt.textContent = `✓ ${slot.label}`;
+      if (prevSelectedSlot === slot.label) opt.selected = true;
       availableCount++;
     }
     slotSelect.appendChild(opt);
   });
 
-  if (availableCount === 0) {
+  if (availableCount === 0 && !silent && activeView === "book") {
     toast(`All slots booked for ${dateVal}. Please select another date.`);
   }
 }
 
-function selectQuickDate(offsetDays, btn) {
+function selectQuickDate(offsetDays, btn, silent = false) {
   document.querySelectorAll(".qdate-pill").forEach((p) => p.classList.remove("active"));
   if (btn) btn.classList.add("active");
   const d = new Date();
@@ -674,7 +717,7 @@ function selectQuickDate(offsetDays, btn) {
   if (dateInput) {
     dateInput.value = formatLocalDate(d);
     validateLive("f-date", true);
-    refreshSlots();
+    refreshSlots(silent);
   }
 }
 
@@ -682,7 +725,7 @@ function handleDateChange() {
   document.querySelectorAll(".qdate-pill").forEach((p) => p.classList.remove("active"));
   const dateInput = $("in-date");
   if (dateInput) {
-    validateLive("f-date", dateInput.value >= dateInput.min);
+    validateLive("f-date", Boolean(dateInput.value) && dateInput.value >= dateInput.min);
     refreshSlots();
   }
 }
@@ -702,7 +745,7 @@ function validateBookingForm() {
   validateLive("f-slot", slotOk);
 
   if (!nameOk) { toast("Please enter your full name."); return false; }
-  if (!phoneOk) { toast("Please enter a valid 10-digit mobile number."); return false; }
+  if (!phoneOk) { toast("Please enter a valid 10-digit Indian mobile number."); return false; }
   if (!addressOk) { toast("Please enter your street address & flat number."); return false; }
   if (!dateOk || !slotOk) { toast("Please select a valid date and available slot."); return false; }
 
@@ -712,8 +755,8 @@ function validateBookingForm() {
 // 9. BOOKING SUBMISSION
 async function syncOfflineQueue() {
   if (!GOOGLE_SHEET_WEBHOOK_URL || !navigator.onLine) return;
-  const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
-  if (!queue.length) return;
+  const queue = readStorageJSON(SYNC_QUEUE_KEY, []);
+  if (!Array.isArray(queue) || !queue.length) return;
 
   const remaining = [];
   for (const item of queue) {
@@ -723,7 +766,7 @@ async function syncOfflineQueue() {
       remaining.push(item);
     }
   }
-  localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(remaining));
+  writeStorageJSON(SYNC_QUEUE_KEY, remaining);
 }
 window.addEventListener("online", syncOfflineQueue);
 
@@ -746,7 +789,7 @@ async function handleBookingSubmission(e) {
   const submitBtn = $("submit-btn");
   submitBtn.disabled = true;
 
-  openModal("loading-modal");
+  openModal("loading-modal", false);
 
   try {
     if (!db) {
@@ -756,7 +799,7 @@ async function handleBookingSubmission(e) {
     // Re-check slot availability right before saving to prevent double-booking
     const latestBookedSlots = await getBookedSlotsForDate(chosenDate);
     if (latestBookedSlots.has(chosenSlot)) {
-      closeModal("loading-modal");
+      closeModal("loading-modal", true);
       await refreshSlots();
       toast("⚠ That arrival slot was just booked. Please select another slot.");
       return;
@@ -793,22 +836,25 @@ async function handleBookingSubmission(e) {
         await postToSheetWithTimeout(booking, 6000);
       } catch (sheetErr) {
         console.warn("Sheet sync queued:", sheetErr);
-        const queue = JSON.parse(localStorage.getItem(SYNC_QUEUE_KEY) || "[]");
-        queue.push(booking);
-        localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(queue));
+        const queue = readStorageJSON(SYNC_QUEUE_KEY, []);
+        if (Array.isArray(queue)) {
+          queue.push(booking);
+          writeStorageJSON(SYNC_QUEUE_KEY, queue);
+        }
       }
     }
 
-    const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-    bookings.unshift(booking);
-    localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(bookings));
+    const bookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+    const updatedBookings = Array.isArray(bookings) ? bookings : [];
+    updatedBookings.unshift(booking);
+    writeStorageJSON(BOOKINGS_STORAGE_KEY, updatedBookings);
     latestBooking = booking;
 
     cart = [];
-    localStorage.removeItem(CART_STORAGE_KEY);
+    removeStorageItem(CART_STORAGE_KEY);
     $("booking-form").reset();
     document.querySelectorAll(".field").forEach((f) => f.classList.remove("valid", "invalid"));
-    initDateInputs();
+    initDateInputs(true);
 
     renderServiceCards();
     renderCart();
@@ -821,15 +867,15 @@ async function handleBookingSubmission(e) {
       Payable amount: <b>${fmt(booking.total)}</b> upon inspection.
     `;
 
-    closeModal("loading-modal");
+    closeModal("loading-modal", true);
     go("success");
   } catch (err) {
     console.error("Booking save failed:", err);
-    closeModal("loading-modal");
-    alert("Could not save booking to Firebase (" + (err.code || err.message) + "). Check Firestore Rules.");
+    closeModal("loading-modal", true);
+    toast("Could not save booking (" + (err.code || err.message) + "). Please try again.");
   } finally {
     isSubmitting = false;
-    if (cart.length > 0) {
+    if (cart.length > 0 && submitBtn) {
       submitBtn.disabled = false;
     }
   }
@@ -840,11 +886,22 @@ async function handlePortalLookup(e) {
   e.preventDefault();
   const inputVal = $("portal-input").value.trim();
   const container = $("portal-results");
+
+  const isRefSearch = /^ASM-/i.test(inputVal);
+  const cleanedQuery = isRefSearch ? inputVal.toUpperCase() : cleanPhone(inputVal);
+
+  if (isRefSearch && cleanedQuery.length < 6) {
+    toast("Please enter a valid booking reference code (e.g. ASM-123456).");
+    return;
+  }
+  if (!isRefSearch && !isValidIndianPhone(cleanedQuery)) {
+    toast("Please enter a valid 10-digit mobile number or ASM reference code.");
+    return;
+  }
+
   container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
 
   let records = [];
-  const isRefSearch = inputVal.toUpperCase().startsWith("ASM-");
-  const cleanedQuery = isRefSearch ? inputVal.toUpperCase() : cleanPhone(inputVal);
 
   if (db) {
     try {
@@ -858,15 +915,18 @@ async function handlePortalLookup(e) {
     }
   }
 
-  const localBookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-  const localFiltered = localBookings.filter((b) => {
-    if (isRefSearch) return b.ref && b.ref.toUpperCase() === cleanedQuery;
-    return cleanPhone(b.phone) === cleanedQuery;
-  });
+  const localBookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+  if (Array.isArray(localBookings)) {
+    const localFiltered = localBookings.filter((b) => {
+      if (!b) return false;
+      if (isRefSearch) return b.ref && b.ref.toUpperCase() === cleanedQuery;
+      return b.phone && cleanPhone(b.phone) === cleanedQuery;
+    });
 
-  localFiltered.forEach((lb) => {
-    if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
-  });
+    localFiltered.forEach((lb) => {
+      if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
+    });
+  }
 
   portalRecords = records;
 
@@ -883,8 +943,8 @@ async function handlePortalLookup(e) {
   container.innerHTML = records.map((b) => `
     <div class="panel" style="margin-bottom: 14px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-        <b>Booking Ref: <code style="color: var(--primary-dark); font-weight: 800;">${esc(b.ref)}</code></b>
-        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary-dark);">${esc(b.status)}</span>
+        <b>Booking Ref: <code style="color: var(--primary); font-weight: 800;">${esc(b.ref)}</code></b>
+        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary);">${esc(b.status)}</span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 0.86rem;">
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${esc(b.services)}</b></div>
@@ -904,10 +964,10 @@ function copyBookingDetails() {
 
   const text = `*AS Global Management Booking*\nRef: ${b.ref}\nServices: ${b.services}\nDate: ${formatReadableDate(b.date)} (${b.slot})\nTotal: ${fmt(b.total)}\nStatus: Pay Post-Service with 30-Day Warranty`;
 
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => {
-      toast("✓ Booking details copied! Ready to paste into WhatsApp.");
-    });
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => toast("✓ Booking details copied! Ready to paste into WhatsApp."))
+      .catch(() => toast("Ref: " + b.ref));
   } else {
     toast("Ref: " + b.ref);
   }
@@ -915,14 +975,22 @@ function copyBookingDetails() {
 
 async function handleCommercialInquiry(e) {
   e.preventDefault();
+  if (isCommercialSubmitting) return;
+
+  const org = $("comm-org").value.trim();
+  const name = $("comm-name").value.trim();
+  if (org.length < 2 || name.length < 2) {
+    toast("Please enter your organization and contact name.");
+    return;
+  }
   if (!isValidIndianPhone($("comm-phone").value)) {
-    toast("Please enter a valid 10-digit mobile number.");
+    toast("Please enter a valid 10-digit Indian mobile number.");
     return;
   }
 
   const inquiry = {
-    org: $("comm-org").value.trim(),
-    name: $("comm-name").value.trim(),
+    org: org,
+    name: name,
     phone: cleanPhone($("comm-phone").value),
     type: $("comm-type").value,
     notes: $("comm-notes").value.trim(),
@@ -930,25 +998,33 @@ async function handleCommercialInquiry(e) {
     createdAtMs: Date.now()
   };
 
-  if (db) {
-    try {
-      await withTimeout(db.collection("commercial_inquiries").add({
-        ...inquiry,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }), 5000);
-    } catch (err) {
-      console.warn("Error:", err);
-    }
-  }
+  const btn = $("comm-submit-btn");
+  isCommercialSubmitting = true;
+  if (btn) btn.disabled = true;
 
-  toast("Commercial site audit inquiry registered. Our team will contact you.");
-  const form = $("comm-form");
-  if (form) form.reset();
+  try {
+    if (!db) throw new Error("Database unavailable");
+    await withTimeout(db.collection("commercial_inquiries").add({
+      ...inquiry,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }), 5000);
+
+    toast("✓ Commercial site audit inquiry registered. Our team will contact you.");
+    const form = $("comm-form");
+    if (form) form.reset();
+  } catch (err) {
+    console.warn("Commercial inquiry error:", err);
+    toast("⚠ Could not submit inquiry. Please check your connection and try again.");
+  } finally {
+    isCommercialSubmitting = false;
+    if (btn) btn.disabled = false;
+  }
 }
 
 function openPrintModalData(ref) {
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
-  const b = portalRecords.find((item) => item.ref === ref) || bookings.find((item) => item.ref === ref);
+  const bookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+  const localMatch = Array.isArray(bookings) ? bookings.find((item) => item && item.ref === ref) : null;
+  const b = portalRecords.find((item) => item && item.ref === ref) || localMatch;
   if (b) showPrintModal(b);
 }
 
@@ -982,7 +1058,7 @@ function handleLogoClick() {
   }, 2000);
 }
 
-function initDateInputs() {
+function initDateInputs(silent = true) {
   const now = new Date();
   const minDate = formatLocalDate(now);
   const dateInput = $("in-date");
@@ -991,16 +1067,16 @@ function initDateInputs() {
   if (now.getHours() >= 20) {
     const todayBtn = $("btn-today");
     if (todayBtn) todayBtn.style.display = "none";
-    selectQuickDate(1, $("btn-tmrw"));
+    selectQuickDate(1, $("btn-tmrw"), silent);
   } else {
-    selectQuickDate(0, $("btn-today"));
+    selectQuickDate(0, $("btn-today"), silent);
   }
 }
 
 // 11. RUN ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
   initLivePricing();
-  initDateInputs();
+  initDateInputs(true);
   renderServiceCards();
   renderCart();
   syncOfflineQueue().catch(() => {});
