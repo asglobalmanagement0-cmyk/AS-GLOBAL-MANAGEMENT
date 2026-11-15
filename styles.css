@@ -8,7 +8,7 @@
   --primary-dark: #0f2924;
   --primary-deep: #163832;
   --primary-light: #DAF1DE;
-  --primary-soft: #eef9f0;
+  --primary-soft: #DAF1DE;
   --primary-glow: rgba(22, 56, 50, 0.22);
   --accent: #f59e0b;
   --accent-light: #fef3c7;
@@ -476,7 +476,7 @@ main {
 }
 
 .btn.secondary {
-  background: var(--white);
+  background: var(--primary-light);
   color: var(--primary);
   border: 1.5px solid rgba(22, 56, 50, 0.25);
   box-shadow: var(--shadow-sm);
@@ -711,7 +711,8 @@ main {
   font-size: 0.7rem;
   font-weight: 700;
   color: var(--primary);
-  background: var(--primary-light);
+  background: var(--primary-light);:
+border: 1px solid rgba(22, 56, 50, 0.2);
   padding: 3px 8px;
   border-radius: 999px;
 }
@@ -761,8 +762,8 @@ main {
 .detail-link {
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--slate-600);
-  background: none;
+  color: var(--primary);
+  background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2);
   padding: 8px 10px;
   border-radius: 999px;
   min-height: 40px;
