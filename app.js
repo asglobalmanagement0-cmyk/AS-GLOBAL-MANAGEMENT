@@ -497,7 +497,7 @@ function renderCart() {
 
   if (count === 0) {
     container.innerHTML = `
-      <div style="padding: 24px 16px; text-align: center; color: var(--slate-600); background: #fef3c7; border: 1.5px dashed var(--accent); border-radius: 14px; font-size: 0.9rem;">
+      <div style="padding: 24px 16px; text-align: center; color: var(--slate-600); background: var(--primary-light); border: 1.5px dashed var(--accent); border-radius: 14px; font-size: 0.9rem;">
         <b>⚠ No Treatment Selected Yet</b>
         <p style="font-size: 0.8rem; margin: 6px 0 12px; color: #92400e;">Please choose at least one pest eradication service.</p>
         <button type="button" class="btn" style="padding: 8px 16px; font-size: 0.84rem; min-height: 40px;" onclick="go('services')">👉 Select a Treatment (+ Add)</button>
@@ -587,7 +587,7 @@ function openServiceModal(id) {
   $("modal-service-body").innerHTML = `
     <div style="font-size: 0.9rem; line-height: 1.7; color: var(--slate-700);">
       <p style="margin-bottom: 12px;">${s.desc}</p>
-      <div style="background: var(--slate-100); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+      <div style="background: var(--primary-light); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
         <b style="color: var(--primary); display: block;">🔬 Treatment Process:</b>
         ${s.protocol}
       </div>
@@ -595,7 +595,7 @@ function openServiceModal(id) {
         <b style="color: var(--primary); display: block;">🛡️ Safety Information:</b>
         ${s.safety}
       </div>
-      <div style="background: var(--accent-light); padding: 12px; border-radius: 12px;">
+      <div style="background: var(--primary-light); padding: 12px; border-radius: 12px;">
         <b style="color: #92400e; display: block;">📜 Warranty &amp; Prep:</b>
         ${s.warranty}<br>
         <span style="font-size: 0.8rem; color: #78350f;">${s.prep}</span>
