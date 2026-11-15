@@ -1,1244 +1,1084 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — MAIN STYLESHEET (#163832 & #DAF1DE)
+   AS GLOBAL MANAGEMENT — FULL SECURE & CONNECTED ENGINE
    ========================================================================= */
 
-:root {
-  --primary: #163832;
-  --primary-hover: #1e4b43;
-  --primary-dark: #0f2924;
-  --primary-deep: #163832;
-  --primary-light: #DAF1DE;
-  --primary-soft: #DAF1DE;
-  --primary-glow: rgba(22, 56, 50, 0.22);
-  --accent: #f59e0b;
-  --accent-light: #fef3c7;
-  --slate-900: #0f172a;
-  --slate-800: #1e293b;
-  --slate-700: #334155;
-  --slate-600: #475569;
-  --slate-400: #94a3b8;
-  --slate-200: #e2e8f0;
-  --slate-100: #f1f5f9;
-  --slate-50: #f8fafc;
-  --white: #ffffff;
-  --danger: #dc2626;
-  --danger-light: #fee2e2;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.14);
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* -------------------------------------------------------------------------
-   1. RESET & BASE STYLES
-   ------------------------------------------------------------------------- */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-  width: 100%;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: radial-gradient(130% 90% at 50% -10%, #DAF1DE 0%, #f8fafc 48%, #f1f5f9 100%);
-  color: var(--slate-900);
-  line-height: 1.5;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  width: 100%;
-  -webkit-font-smoothing: antialiased;
-  padding-top: env(safe-area-inset-top);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
-h1, h2, h3, h4, .brand-title, .price-tag, .stat-value {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
-  letter-spacing: -0.025em;
-}
-
-button, input, select, textarea, a {
-  font-family: inherit;
-  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-input, select, textarea {
-  font-size: 16px !important;
-}
-
-textarea {
-  resize: none !important;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
-  min-height: 44px;
-  user-select: none;
-}
-
-button:active, .action-btn:active, .bhk-btn:active, .qdate-pill:active {
-  transform: scale(0.96) !important;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-a {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-/* -------------------------------------------------------------------------
-   2. HEADER & NAVIGATION
-   ------------------------------------------------------------------------- */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 80;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(22, 56, 50, 0.12);
-  box-shadow: 0 2px 10px rgba(22, 56, 50, 0.05);
-  width: 100%;
-}
-
-.header-inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 32px);
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  user-select: none;
-  min-height: 44px;
-}
-
-.logo img.header-logo-img {
-  height: 52px;
-  width: auto;
-  max-width: 180px;
-  object-fit: contain;
-  display: block;
-}
-
-.logo-mark {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  overflow: hidden;
-  background: var(--white);
-  border: 2px solid var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px var(--primary-glow);
-}
-
-.logo-mark img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.brand-title {
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--slate-900);
-  line-height: 1.15;
-}
-
-.brand-title small {
-  display: block;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: var(--slate-600);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.desktop-nav {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.nav-link {
-  padding: 9px 14px;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--slate-600);
-  background: transparent;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-}
-
-.nav-link:hover {
-  color: var(--primary);
-  background: var(--primary-light);
-}
-
-.nav-link.active {
-  color: var(--primary);
-  background: var(--primary-light);
-}
-
-.nav-link.cta-btn {
-  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
-  color: var(--white);
-  padding: 9px 18px;
-  border-radius: 999px;
-  box-shadow: 0 4px 14px var(--primary-glow);
-}
-
-.nav-link.cta-btn:hover {
-  background: var(--primary-dark);
-  color: var(--white);
-}
-
-.cart-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  margin-left: 6px;
-  border-radius: 999px;
-  background: var(--primary-light);
-  color: var(--primary);
-  font-size: 0.72rem;
-  font-weight: 800;
-}
-
-/* Mobile Menu & Drawer */
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 44px;
-  height: 44px;
-  background: var(--primary-light);
-  border-radius: 12px;
-  padding: 10px;
-  z-index: 100;
-}
-
-.menu-toggle span {
-  width: 22px;
-  height: 2.2px;
-  background: var(--primary);
-  border-radius: 2px;
-  transition: transform 0.25s var(--ease), opacity 0.2s;
-}
-
-.menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.menu-toggle.open span:nth-child(2) { opacity: 0; }
-.menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-.mobile-drawer-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 90;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.mobile-drawer-overlay.active {
-  display: block;
-  opacity: 1;
-}
-
-.mobile-drawer {
-  position: fixed;
-  top: 0;
-  right: -310px;
-  width: min(85vw, 310px);
-  height: 100%;
-  background: var(--white);
-  z-index: 95;
-  display: flex;
-  flex-direction: column;
-  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
-  transition: right 0.3s var(--ease);
-  overflow-y: auto;
-}
-
-.mobile-drawer.open {
-  right: 0;
-}
-
-.mobile-nav-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 50px;
-}
-
-.mobile-nav-list button {
-  width: 100%;
-  text-align: left;
-  justify-content: flex-start;
-  padding: 13px 16px;
-  font-size: 1rem;
-  border-radius: 14px;
-  font-weight: 700;
-  color: var(--slate-700);
-  background: transparent;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.mobile-nav-list button.active {
-  background: var(--primary-light);
-  color: var(--primary);
-}
-
-.mobile-nav-list button.cta-mobile {
-  margin-top: 14px;
-  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
-  color: var(--white);
-  text-align: center;
-  justify-content: center;
-  box-shadow: 0 4px 14px var(--primary-glow);
-}
-
-/* -------------------------------------------------------------------------
-   3. LAYOUT, VIEWS & SECTION HEADERS
-   ------------------------------------------------------------------------- */
-main {
-  flex: 1;
-  width: 100%;
-}
-
-.view {
-  display: none;
-  width: 100%;
-}
-
-.view.show {
-  display: block;
-  animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes slideUpFade {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.wrap {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 32px);
-  width: 100%;
-}
-
-.page {
-  padding-top: 20px;
-  padding-bottom: 110px;
-}
-
-.sec-head {
-  margin-bottom: 20px;
-  max-width: 700px;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--primary);
-  background: var(--primary-light);
-  padding: 5px 12px;
-  border-radius: 999px;
-  margin-bottom: 8px;
-  border: 1px solid rgba(22, 56, 50, 0.2);
-}
-
-.sec-head h2 {
-  font-size: clamp(1.45rem, 3.8vw, 2.2rem);
-  margin-bottom: 6px;
-  line-height: 1.25;
-  color: var(--primary);
-}
-
-.sec-head p {
-  color: var(--slate-600);
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
-
-/* -------------------------------------------------------------------------
-   4. HERO & TRUST PANEL
-   ------------------------------------------------------------------------- */
-.hero {
-  padding: clamp(20px, 4vw, 42px) clamp(16px, 4vw, 32px) 20px;
-  max-width: 1240px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(20px, 3.5vw, 40px);
-  align-items: center;
-  width: 100%;
-}
-
-.hero-text h1 {
-  font-size: clamp(1.85rem, 5vw, 3.1rem);
-  line-height: 1.18;
-  margin-bottom: 14px;
-  color: var(--slate-900);
-}
-
-.hero-text h1 span {
-  background: linear-gradient(135deg, #21574e, var(--primary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-text p {
-  color: var(--slate-600);
-  font-size: clamp(0.92rem, 1.8vw, 1.02rem);
-  margin-bottom: 22px;
-  max-width: 540px;
-}
-
-.hero-cta {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
-  color: var(--white);
-  padding: 12px 22px;
-  border-radius: 14px;
-  font-size: 0.94rem;
-  font-weight: 700;
-  box-shadow: 0 4px 14px var(--primary-glow);
-  text-align: center;
-  min-height: 48px;
-}
-
-.btn:hover {
-  background: var(--primary-dark);
-}
-
-.btn.secondary {
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1.5px solid rgba(22, 56, 50, 0.25);
-  box-shadow: var(--shadow-sm);
-}
-
-.btn.secondary:hover {
-  border-color: var(--primary);
-  background: var(--primary);
-  color: var(--primary-light);
-}
-
-.btn.block {
-  width: 100%;
-}
-
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  border-top: 1px solid rgba(22, 56, 50, 0.15);
-  padding-top: 18px;
-}
-
-.hero-stats .stat-value {
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
-  font-weight: 800;
-  color: var(--primary);
-}
-
-.hero-stats .stat-label {
-  font-size: 0.72rem;
-  color: var(--slate-600);
-  font-weight: 600;
-  display: block;
-}
-
-.hero-card-col {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 100%;
-}
-
-.hero-visual-banner {
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(22, 56, 50, 0.15);
-  background: var(--white);
-  width: 100%;
-}
-
-.hero-visual-banner img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
-
-.trust-panel {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(22, 56, 50, 0.15);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  box-shadow: var(--shadow-sm);
-}
-
-.trust-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.trust-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 0.82rem;
-}
-
-.trust-item b {
-  display: block;
-  color: var(--primary);
-  font-size: 0.84rem;
-}
-
-.trust-item span {
-  color: var(--slate-600);
-  font-size: 0.72rem;
-}
-
-/* -------------------------------------------------------------------------
-   5. PROPERTY CALCULATOR & SERVICE CARDS
-   ------------------------------------------------------------------------- */
-.calc-box {
-  background: var(--white);
-  border: 1.5px solid rgba(22, 56, 50, 0.25);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 18px 0;
-  box-shadow: var(--shadow-sm);
-  width: 100%;
-}
-
-.calc-title {
-  font-weight: 700;
-  font-size: 0.88rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--primary);
-}
-
-.bhk-pill-group {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  max-width: 100%;
-  padding-bottom: 4px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.bhk-pill-group::-webkit-scrollbar {
-  display: none;
-}
-
-.bhk-btn {
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1px solid rgba(22, 56, 50, 0.2);
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  white-space: nowrap;
-  min-height: 40px;
-}
-
-.bhk-btn.active {
-  background: var(--primary);
-  color: var(--primary-light);
-  border-color: var(--primary);
-  box-shadow: 0 3px 10px var(--primary-glow);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  width: 100%;
-}
-
-.card {
-  background: var(--white);
-  border: 1px solid var(--slate-200);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow-sm);
-  position: relative;
-}
-
-.card.selected {
-  border-color: var(--primary);
-  background: var(--primary-soft);
-  box-shadow: 0 0 0 2px var(--primary);
-}
-
-.card-body {
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-
-.card-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.card-glyph-tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--primary-light);
-  color: var(--primary);
-  font-size: 1.25rem;
-  border: 1px solid rgba(22, 56, 50, 0.2);
-}
-
-.card-badge {
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1px solid rgba(22, 56, 50, 0.2);
-}
-
-.card h3 {
-  font-size: 1.12rem;
-  color: var(--primary);
-}
-
-.card p {
-  font-size: 0.85rem;
-  color: var(--slate-600);
-  flex: 1;
-  line-height: 1.5;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.chip {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--primary);
-  background: var(--primary-light);
-  border: 1px solid rgba(22, 56, 50, 0.2);
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
-.card-foot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 12px;
-  border-top: 1px solid var(--slate-100);
-  margin-top: auto;
-}
-
-.price-tag {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--primary);
-}
-
-.price-tag small {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--slate-400);
-}
-
-.card-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.action-btn {
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  border: 1.5px solid var(--primary);
-  background: var(--white);
-  color: var(--primary);
-  min-height: 40px;
-}
-
-.action-btn.added {
-  background: var(--primary);
-  color: var(--primary-light);
-}
-
-.detail-link {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--primary);
-  background: var(--primary-light);
-  border: 1px solid rgba(22, 56, 50, 0.2);
-  padding: 8px 14px;
-  border-radius: 999px;
-  min-height: 40px;
-}
-
-.detail-link:hover {
-  background: var(--primary);
-  color: var(--primary-light);
-}
-
-/* -------------------------------------------------------------------------
-   6. TESTIMONIALS
-   ------------------------------------------------------------------------- */
-.testi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 14px;
-  margin-top: 16px;
-  width: 100%;
-}
-
-.testi-card {
-  background: var(--white);
-  border: 1px solid var(--slate-200);
-  border-radius: var(--radius-md);
-  padding: 18px;
-  box-shadow: var(--shadow-sm);
-}
-
-.testi-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.testi-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: var(--primary-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 0.95rem;
-}
-
-.testi-card p {
-  font-size: 0.84rem;
-  color: var(--slate-600);
-  line-height: 1.55;
-}
-
-.testi-star {
-  color: #f59e0b;
-  font-size: 0.82rem;
-  margin-bottom: 4px;
-}
-
-/* -------------------------------------------------------------------------
-   7. BOOKING FORM, PANELS & CART
-   ------------------------------------------------------------------------- */
-.booking-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 0.9fr;
-  gap: 20px;
-  align-items: start;
-  width: 100%;
-}
-
-.panel {
-  background: var(--white);
-  border: 1px solid var(--slate-200);
-  border-radius: var(--radius-lg);
-  padding: clamp(16px, 4vw, 26px);
-  box-shadow: var(--shadow-sm);
-  width: 100%;
-}
-
-.panel h3 {
-  font-size: 1.15rem;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--primary);
-}
-
-.field {
-  margin-bottom: 15px;
-  position: relative;
-}
-
-.field label {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--slate-800);
-  margin-bottom: 6px;
-}
-
-.field input, .field select, .field textarea {
-  width: 100%;
-  min-height: 48px;
-  padding: 12px 14px;
-  border: 1.5px solid var(--slate-200);
-  border-radius: 12px;
-  color: var(--slate-900);
-  background: var(--slate-50);
-}
-
-.field input:focus, .field select:focus, .field textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  background: var(--white);
-  box-shadow: 0 0 0 3px var(--primary-glow);
-}
-
-.field.invalid input, .field.invalid select, .field.invalid textarea {
-  border-color: var(--danger);
-  background: var(--danger-light);
-}
-
-.field.valid input, .field.valid textarea {
-  border-color: var(--primary);
-  background: var(--primary-soft);
-}
-
-.field .err {
-  color: var(--danger);
-  font-size: 0.74rem;
-  font-weight: 600;
-  display: none;
-  margin-top: 4px;
-}
-
-.field.invalid .err {
-  display: block;
-}
-
-.row2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.quick-dates {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-}
-
-.qdate-pill {
-  background: var(--primary-light);
-  color: var(--primary);
-  border: 1px solid rgba(22, 56, 50, 0.2);
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  min-height: 42px;
-}
-
-.qdate-pill.active {
-  background: var(--primary);
-  color: var(--primary-light);
-  border-color: var(--primary);
-}
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px dashed var(--slate-200);
-  font-size: 0.88rem;
-  gap: 12px;
-}
-
-.cart-item-title {
-  font-weight: 700;
-  color: var(--slate-900);
-}
-
-.cart-item-subtitle {
-  font-size: 0.74rem;
-  color: var(--slate-400);
-  display: block;
-}
-
-.cart-item-remove {
-  background: none;
-  color: var(--danger);
-  font-size: 1.15rem;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-}
-
-.cart-total-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 14px;
-  border-top: 2px solid var(--primary);
-  margin-top: 12px;
-  font-size: 1.05rem;
-  font-weight: 800;
-}
-
-.cart-total-row .total-num {
-  font-size: 1.35rem;
-  color: var(--primary);
-}
-
-.guarantee-callout {
-  margin-top: 16px;
-  background: var(--primary-light);
-  border: 1px solid rgba(22, 56, 50, 0.25);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  font-size: 0.8rem;
-  color: var(--primary);
-  line-height: 1.5;
-}
-
-/* -------------------------------------------------------------------------
-   8. STICKY CART BAR, MODALS, SPINNER & TOAST
-   ------------------------------------------------------------------------- */
-.sticky-bar {
-  position: fixed;
-  bottom: calc(12px + env(safe-area-inset-bottom));
-  left: 50%;
-  transform: translateX(-50%) translateY(140px);
-  width: calc(100% - 24px);
-  max-width: 520px;
-  background: rgba(22, 56, 50, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: var(--white);
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(218, 241, 222, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 85;
-  box-shadow: var(--shadow-lg);
-  transition: transform 0.3s var(--ease);
-}
-
-.sticky-bar.show {
-  transform: translateX(-50%) translateY(0);
-}
-
-.sticky-bar-btn {
-  background: var(--primary-light);
-  color: var(--primary);
-  padding: 10px 22px;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 0.88rem;
-  min-height: 44px;
-}
-
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 110;
-  padding: clamp(12px, 3vw, 24px);
-  align-items: center;
-  justify-content: center;
-  overflow-y: auto;
-}
-
-.modal-overlay.show {
-  display: flex;
-  animation: slideUpFade 0.25s var(--ease);
-}
-
-.modal-card {
-  background: var(--white);
-  width: 100%;
-  max-width: 560px;
-  border-radius: var(--radius-lg);
-  padding: clamp(18px, 4vw, 26px);
-  position: relative;
-  box-shadow: var(--shadow-lg);
-  max-height: 90vh;
-  overflow-y: auto;
-  margin: auto;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--slate-200);
-  padding-bottom: 12px;
-  margin-bottom: 14px;
-}
-
-.close-btn {
-  background: var(--primary-light);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid var(--primary-light);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.85s linear infinite;
-  margin: 0 auto 16px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin-bottom: 16px;
-}
-
-#toast {
-  position: fixed;
-  bottom: calc(20px + env(safe-area-inset-bottom));
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--primary);
-  color: var(--primary-light);
-  padding: 12px 22px;
-  border-radius: 999px;
-  border: 1px solid rgba(218, 241, 222, 0.3);
-  font-weight: 700;
-  font-size: 0.86rem;
-  transition: transform 0.3s var(--ease), opacity 0.3s;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 130;
-  max-width: 90vw;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-}
-
-#toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-/* -------------------------------------------------------------------------
-   9. FOOTER
-   ------------------------------------------------------------------------- */
-footer {
-  background: var(--primary-deep);
-  color: #cde5d2;
-  margin-top: auto;
-  width: 100%;
-}
-
-.foot-grid {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 36px clamp(16px, 4vw, 32px) 24px;
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  gap: 24px;
-}
-
-footer h4 {
-  color: var(--primary-light);
-  font-size: 0.82rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 12px;
-}
-
-.foot-links a {
-  display: block;
-  color: #cde5d2;
-  font-size: 0.86rem;
-  margin-bottom: 8px;
-  min-height: 24px;
-}
-
-.foot-links a:hover {
-  color: var(--primary-light);
-  text-decoration: underline;
-}
-
-.foot-bottom {
-  border-top: 1px solid rgba(218, 241, 222, 0.18);
-  padding: 16px clamp(16px, 4vw, 32px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.78rem;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
-}
-
-/* -------------------------------------------------------------------------
-   10. RESPONSIVE BREAKPOINTS & PRINT STYLES
-   ------------------------------------------------------------------------- */
-@media (max-width: 1024px) {
-  .hero { grid-template-columns: 1fr; }
-  .foot-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 768px) {
-  .desktop-nav { display: none; }
-  .menu-toggle { display: flex; }
-  .booking-grid { grid-template-columns: 1fr; }
-  .row2 { grid-template-columns: 1fr; }
-  .foot-grid { grid-template-columns: 1fr; }
-  .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .hero { padding-top: 16px; }
-  .btn { width: 100%; }
-  .hero-cta { flex-direction: column; }
-}
-
-/* Clean PDF / Print styling for Warranty Certificate */
-@media print {
-  body {
-    background: #ffffff !important;
-    padding: 0 !important;
-  }
-  header,
-  main,
-  footer,
-  .sticky-bar,
-  .mobile-drawer,
-  .mobile-drawer-overlay,
-  #toast,
-  #loading-modal,
-  #service-modal,
-  .print-hide {
-    display: none !important;
-  }
-  #print-modal.modal-overlay.show {
-    display: block !important;
-    position: static !important;
-    background: none !important;
-    padding: 0 !important;
-    overflow: visible !important;
-  }
-  #print-modal .modal-card {
-    box-shadow: none !important;
-    max-height: none !important;
-    max-width: 100% !important;
-    border: 1px solid #cbd5e1;
+// 1. FIREBASE CONFIGURATION (as-global-management)
+const firebaseConfig = {
+  apiKey: "AIzaSyCjhGH7znnOF6QV_EmRVOxfVUbJLe6E8hI",
+  authDomain: "as-global-management.firebaseapp.com",
+  projectId: "as-global-management",
+  storageBucket: "as-global-management.firebasestorage.app",
+  messagingSenderId: "733475933170",
+  appId: "1:733475933170:web:41c763502d6adc5ddaf96b",
+  measurementId: "G-WPVH9WWR22"
+};
+
+let db = null;
+if (typeof firebase !== "undefined") {
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    db = firebase.firestore();
+  } catch (e) {
+    console.error("Firebase init:", e);
   }
 }
+
+// 2. CONSTANTS & SERVICES DATA
+const GOOGLE_SHEET_WEBHOOK_URL = "";
+const CART_STORAGE_KEY = "asgm_cart_v18";
+const BOOKINGS_STORAGE_KEY = "asgm_bookings_v18";
+const SYNC_QUEUE_KEY = "asgm_sync_queue_v4";
+
+const BHK_MULTIPLIERS = {
+  "1bhk": 1.0,
+  "2bhk": 1.25,
+  "3bhk": 1.55,
+  "villa": 2.1,
+  "commercial": 2.4
+};
+
+const SERVICES = [
+  {
+    id: "cockroach",
+    name: "Cockroach Gel Treatment",
+    glyph: "🪳",
+    desc: "Odorless Bayer Maxforce gel dots applied along modular kitchens, hinges, and appliances. No need to empty cupboards.",
+    basePrice: 799,
+    rating: 4.9,
+    chips: ["Odorless Gel", "Kitchen-Safe", "Child & Pet Safe"],
+    protocol: "Targeted application of Fipronil micro-gel dots on cabinet hinges, refrigerator compressors, electrical channels, and drain edges.",
+    safety: "100% non-toxic to humans and animals. Safe around food items and utensils.",
+    warranty: "30-Day Zero-Infestation Guarantee. Complimentary re-application if roaches are sighted.",
+    prep: "No preparation required. You do not need to empty kitchen cabinets or vacate premises."
+  },
+  {
+    id: "termite",
+    name: "Termite Drill & Injection",
+    glyph: "🐜",
+    desc: "Deep chemical barrier drill-and-inject technology preserving wooden door frames, flooring, and wardrobes.",
+    basePrice: 2499,
+    rating: 4.9,
+    chips: ["Drill & Inject", "Written Warranty", "Wall Barrier"],
+    protocol: "12mm holes precision-drilled along skirting and door posts. Pressurized termiticide injection followed by color-matched sealing.",
+    safety: "Odorless synthetic barrier formulation approved for indoor residential usage.",
+    warranty: "1-Year Written Warranty for targeted drilling sites.",
+    prep: "Provide 2 feet of clear access to affected walls, wooden frames, and wardrobes."
+  },
+  {
+    id: "bedbugs",
+    name: "Bed Bug Steam Extermination",
+    glyph: "🛏️",
+    desc: "Comprehensive 2-visit high temperature dry steam + residual contact kill across mattresses, seams, and headboards.",
+    basePrice: 1599,
+    rating: 4.8,
+    chips: ["2 Visits Included", "Dry Steam", "Mattress Safe"],
+    protocol: "180°C superheated dry steam to eliminate bed bug eggs on contact, followed by odorless deltamethrin micro-mist.",
+    safety: "Targeted localized treatment. Mattresses are completely safe for sleeping within 3 hours.",
+    warranty: "Includes mandatory day-15 follow-up inspection and treatment.",
+    prep: "Remove bedsheets and pillow covers for high-heat laundry washing."
+  },
+  {
+    id: "rodent",
+    name: "Rodent Control & Exclusion",
+    glyph: "🐀",
+    desc: "Smart tamper-resistant bait stations, industrial glue boards, and structural entry-point exclusion for rats and mice.",
+    basePrice: 1199,
+    rating: 4.7,
+    chips: ["Smart Baits", "Entry Sealing", "Trapping"],
+    protocol: "Anticoagulant bait blocks secured inside lockable tamper-proof stations along perimeter runs and false ceilings.",
+    safety: "Tamper-resistant bait stations prevent accidental access by children or household pets.",
+    warranty: "30-Day Rodent Density Reduction Guarantee.",
+    prep: "Keep utility and plumbing access shafts accessible for technicians."
+  },
+  {
+    id: "mosquito",
+    name: "Mosquito Fogging & Larvicide",
+    glyph: "🦟",
+    desc: "Thermal outdoor fogging + anti-larval chemical treatment for gardens, terraces, parking lots, and societies.",
+    basePrice: 999,
+    rating: 4.8,
+    chips: ["Thermal Fog", "Anti-Larval", "Society Bulk"],
+    protocol: "Outdoor thermal pulse-jet fogging combined with Bacillus thuringiensis israelensis (BTI) microbial larvicide.",
+    safety: "Outdoor application only. WHO-approved public health standard chemical blend.",
+    warranty: "Immediate adult swarm eradication on day of service.",
+    prep: "Close external balcony doors and windows during active fogging operations."
+  },
+  {
+    id: "ants",
+    name: "General Pest Control",
+    glyph: "🕸️",
+    desc: "Residual perimeter spray covering red and black ants, spiders, silverfish, and crawling domestic insects.",
+    basePrice: 899,
+    rating: 4.7,
+    chips: ["Perimeter Spray", "Ants & Spiders", "Long-Lasting"],
+    protocol: "Odorless synthetic pyrethroid perimeter barrier spray along skirting boards, door thresholds, and window channels.",
+    safety: "CIB-registered non-hazardous chemical. Quick drying within 20 minutes.",
+    warranty: "30-Day General Crawling Insect Barrier Warranty.",
+    prep: "Ensure room corners and baseboards are swept clear."
+  },
+  {
+    id: "woodborer",
+    name: "Wood Borer Micro-Injection",
+    glyph: "🪵",
+    desc: "Specialized petroleum-based solvent injection into powder-falling pinholes to eradicate wood-boring beetle larvae.",
+    basePrice: 1399,
+    rating: 4.8,
+    chips: ["Syringe Injection", "Preserves Wood", "Deep Penetration"],
+    protocol: "Targeted syringe micro-injection of wood preservative directly into active frass-producing pinholes.",
+    safety: "Localized syringe application avoids chemical exposure to ambient room air.",
+    warranty: "60-Day Wood Borer Larvae Warranty.",
+    prep: "Wipe down furniture surface to reveal active pinholes."
+  },
+  {
+    id: "disinfection",
+    name: "Disinfection & Sanitization",
+    glyph: "🧴",
+    desc: "Hospital-grade ULV ultra-low volume cold misting eradicating 99.99% of pathogenic viruses and bacteria.",
+    basePrice: 1299,
+    rating: 4.9,
+    chips: ["Hospital Grade", "99.99% Kill", "Safe Mist"],
+    protocol: "Ultra-low volume atomization of quaternary ammonium formulation covering touch points and workstations.",
+    safety: "EPA-registered hospital disinfectant. Biodegradable and leaves no sticky residue.",
+    warranty: "Certified laboratory standard pathogen kill on application.",
+    prep: "Cover exposed food items and raw paper files."
+  }
+];
+
+const AVAILABLE_SLOTS = [
+  { label: "⚡ Emergency Window (Within 90 mins)", cutoffHour: 19 },
+  { label: "08:00 AM – 11:00 AM", cutoffHour: 11 },
+  { label: "11:00 AM – 02:00 PM", cutoffHour: 14 },
+  { label: "02:00 PM – 05:00 PM", cutoffHour: 17 },
+  { label: "05:00 PM – 08:00 PM", cutoffHour: 20 }
+];
+
+// 3. STATE AND HELPERS
+let currentBHK = "1bhk";
+let customPricingMap = {};
+let latestBooking = null;
+let portalRecords = [];
+let activeView = "home";
+let isSubmitting = false;
+let isCommercialSubmitting = false;
+let clickCount = 0;
+let clickTimer = null;
+let toastTimer = null;
+
+function readStorageJSON(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    return parsed !== null && typeof parsed === "object" ? parsed : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function writeStorageJSON(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.warn("Storage write skipped:", e);
+  }
+}
+
+function removeStorageItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (e) {
+    console.warn("Storage remove skipped:", e);
+  }
+}
+
+function loadSavedCart() {
+  const parsed = readStorageJSON(CART_STORAGE_KEY, []);
+  if (!Array.isArray(parsed)) return [];
+  const validIds = new Set(SERVICES.map((s) => s.id));
+  return parsed.filter((item) => item && typeof item.id === "string" && validIds.has(item.id));
+}
+
+let cart = loadSavedCart();
+
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => "₹" + Number(n || 0).toLocaleString("en-IN");
+
+function esc(str) {
+  return String(str || "").replace(/[&<>"']/g, (m) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[m]));
+}
+
+function cleanPhone(val) {
+  if (!val) return "";
+  let digits = String(val).replace(/\D/g, "");
+  if (digits.length === 12 && digits.startsWith("91")) {
+    digits = digits.slice(2);
+  } else if (digits.length === 11 && digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
+  return digits;
+}
+
+function isValidIndianPhone(val) {
+  const clean = cleanPhone(val);
+  return /^[6-9]\d{9}$/.test(clean);
+}
+
+function formatLocalDate(d) {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function formatReadableDate(dateStr) {
+  if (!dateStr) return "";
+  const parts = String(dateStr).split("-");
+  if (parts.length === 3) {
+    const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    return Number.isNaN(d.getTime()) ? String(dateStr) : d.toDateString();
+  }
+  const d = new Date(dateStr);
+  return Number.isNaN(d.getTime()) ? String(dateStr) : d.toDateString();
+}
+
+function withTimeout(promise, ms = 6000) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), ms)
+    )
+  ]);
+}
+
+async function postToSheetWithTimeout(payload, ms = 6000) {
+  if (!GOOGLE_SHEET_WEBHOOK_URL) return;
+  if (!navigator.onLine) throw new Error("Offline");
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  try {
+    await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function getServicePrice(serviceOrItem) {
+  const id = serviceOrItem.id;
+  if (
+    customPricingMap[id] &&
+    customPricingMap[id][currentBHK] !== undefined &&
+    customPricingMap[id][currentBHK] !== ""
+  ) {
+    return Number(customPricingMap[id][currentBHK]);
+  }
+  const base = Number(serviceOrItem.basePrice || 0);
+  const mult = BHK_MULTIPLIERS[currentBHK] || 1.0;
+  return Math.round((base * mult) / 10) * 10;
+}
+
+function initLivePricing() {
+  if (!db) return;
+  db.collection("settings").doc("service_prices").onSnapshot(
+    (doc) => {
+      if (doc.exists && doc.data() && doc.data().prices) {
+        customPricingMap = doc.data().prices;
+        renderServiceCards();
+        renderCart();
+        updateStickyBar();
+      }
+    },
+    (err) => {
+      console.warn("Live pricing sync skipped:", err.message);
+    }
+  );
+}
+
+function toast(msg) {
+  const t = $("toast");
+  if (!t) return;
+  clearTimeout(toastTimer);
+  t.textContent = msg;
+  t.classList.add("show");
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+// 4. NAVIGATION & HISTORY SYNC
+function hideModalUI(el) {
+  if (!el) return;
+  el.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function hideMobileDrawerUI() {
+  const drawer = $("mobile-drawer");
+  const overlay = $("drawer-overlay");
+  const toggle = $("menu-toggle");
+  if (drawer) drawer.classList.remove("open");
+  if (overlay) overlay.classList.remove("active");
+  if (toggle) toggle.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+window.addEventListener("popstate", () => {
+  const openModalEl = document.querySelector(".modal-overlay.show:not(#loading-modal)");
+  if (openModalEl) {
+    hideModalUI(openModalEl);
+    return;
+  }
+  const drawer = $("mobile-drawer");
+  if (drawer && drawer.classList.contains("open")) {
+    hideMobileDrawerUI();
+  }
+});
+
+function toggleMobileMenu() {
+  const drawer = $("mobile-drawer");
+  const overlay = $("drawer-overlay");
+  const toggle = $("menu-toggle");
+  if (!drawer || !overlay || !toggle) return;
+
+  if (drawer.classList.contains("open")) {
+    closeMobileMenu();
+  } else {
+    drawer.classList.add("open");
+    overlay.classList.add("active");
+    toggle.classList.add("open");
+    document.body.style.overflow = "hidden";
+    history.pushState({ drawer: true }, "");
+  }
+}
+
+function closeMobileMenu(skipHistory = false) {
+  const drawer = $("mobile-drawer");
+  const wasOpen = drawer && drawer.classList.contains("open");
+  hideMobileDrawerUI();
+  if (!skipHistory && wasOpen && history.state && history.state.drawer) {
+    history.back();
+  }
+}
+
+function goFromDrawer(viewId) {
+  closeMobileMenu(true);
+  go(viewId);
+}
+
+function go(viewId) {
+  activeView = viewId;
+  document.querySelectorAll(".view").forEach((v) => v.classList.remove("show"));
+  const target = $("view-" + viewId);
+  if (target) target.classList.add("show");
+
+  document.querySelectorAll(".desktop-nav .nav-link").forEach((b) => b.classList.remove("active"));
+  const navBtn = $("nav-" + viewId);
+  if (navBtn) navBtn.classList.add("active");
+
+  document.querySelectorAll(".mobile-nav-list button").forEach((b) => b.classList.remove("active"));
+  const mNavBtn = $("mnav-" + viewId);
+  if (mNavBtn) mNavBtn.classList.add("active");
+
+  if (viewId === "book") {
+    renderCart();
+    refreshSlots();
+  }
+  updateStickyBar();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function startNewBooking() {
+  go("services");
+}
+
+function setBHK(bhkKey, btnEl) {
+  currentBHK = bhkKey;
+  document.querySelectorAll(".bhk-btn").forEach((b) => {
+    const onclickAttr = b.getAttribute("onclick") || "";
+    b.classList.toggle(
+      "active",
+      onclickAttr.toLowerCase().includes(`'${bhkKey.toLowerCase()}'`)
+    );
+  });
+  if (btnEl) btnEl.classList.add("active");
+
+  renderServiceCards();
+  renderCart();
+  updateStickyBar();
+  toast(`Pricing updated for ${bhkKey.toUpperCase()} configuration`);
+}
+
+// 5. SERVICE CARDS & CART
+function createServiceCardHTML(s) {
+  const inCart = cart.some((item) => item.id === s.id);
+  const price = getServicePrice(s);
+  const chipsHTML = s.chips.map((c) => `<span class="chip">${c}</span>`).join("");
+
+  return `
+    <div class="card ${inCart ? "selected" : ""}" id="card-${s.id}">
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-glyph-tag">${s.glyph}</div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+            <span class="card-badge">★ ${s.rating}</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--primary);">30-Day Guarantee</span>
+          </div>
+        </div>
+        <h3>${s.name}</h3>
+        <p>${s.desc}</p>
+        <div class="chips">${chipsHTML}</div>
+        <div class="card-foot">
+          <div class="price-tag">${fmt(price)} <small>/ ${currentBHK.toUpperCase()}</small></div>
+          <div class="card-actions">
+            <button type="button" class="detail-link" onclick="openServiceModal('${s.id}')">Info</button>
+            <button type="button" class="action-btn ${inCart ? "added" : ""}" onclick="toggleCart('${s.id}')">
+              ${inCart ? "✓ Added" : "+ Add"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderServiceCards() {
+  const homeContainer = $("home-services-grid");
+  const catalogContainer = $("catalog-services-grid");
+
+  if (homeContainer) {
+    homeContainer.innerHTML = SERVICES.slice(0, 4).map(createServiceCardHTML).join("");
+  }
+  if (catalogContainer) {
+    catalogContainer.innerHTML = SERVICES.map(createServiceCardHTML).join("");
+  }
+}
+
+function toggleCart(serviceId) {
+  const existingIndex = cart.findIndex((item) => item.id === serviceId);
+
+  if (existingIndex > -1) {
+    cart = cart.filter((item) => item.id !== serviceId);
+    toast("Treatment removed");
+  } else {
+    const s = SERVICES.find((item) => item.id === serviceId);
+    if (!s) return;
+    cart.push({ id: s.id, name: s.name, basePrice: s.basePrice });
+    toast("✓ Treatment added to booking");
+  }
+
+  writeStorageJSON(CART_STORAGE_KEY, cart);
+  renderServiceCards();
+  renderCart();
+  updateStickyBar();
+}
+
+function renderCart() {
+  const count = cart.length;
+  const bDesktop = $("cart-badge");
+  const bMobile = $("cart-badge-m");
+  if (bDesktop) bDesktop.textContent = count;
+  if (bMobile) bMobile.textContent = count;
+
+  const container = $("cart-container");
+  const totalRow = $("cart-total-row");
+  const submitBtn = $("submit-btn");
+  if (!container) return;
+
+  if (count === 0) {
+    container.innerHTML = `
+      <div style="padding: 24px 16px; text-align: center; color: var(--primary); background: var(--primary-light); border: 1.5px dashed var(--primary); border-radius: 14px; font-size: 0.9rem;">
+        <b>⚠ No Treatment Selected Yet</b>
+        <p style="font-size: 0.8rem; margin: 6px 0 12px; color: var(--slate-700);">Please choose at least one pest eradication service.</p>
+        <button type="button" class="btn" style="padding: 8px 16px; font-size: 0.84rem; min-height: 40px;" onclick="go('services')">👉 Select a Treatment (+ Add)</button>
+      </div>
+    `;
+    if (totalRow) totalRow.style.display = "none";
+    if (submitBtn) {
+      submitBtn.textContent = "Select a Treatment First (+ Add)";
+      submitBtn.disabled = true;
+    }
+    return;
+  }
+
+  if (submitBtn && !isSubmitting) {
+    submitBtn.textContent = "Confirm Service Visit (Pay Post-Service) ✔";
+    submitBtn.disabled = false;
+  }
+
+  container.innerHTML = cart.map((item) => {
+    const itemPrice = getServicePrice(item);
+    return `
+      <div class="cart-item">
+        <div>
+          <span class="cart-item-title">${esc(item.name)}</span>
+          <span class="cart-item-subtitle">${currentBHK.toUpperCase()} · 30-Day Written Warranty</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <b style="font-size: 0.95rem;">${fmt(itemPrice)}</b>
+          <button type="button" class="cart-item-remove" onclick="toggleCart('${item.id}')" aria-label="Remove ${esc(item.name)}">✕</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const grandTotal = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
+  const totalVal = $("cart-total-val");
+  if (totalVal) totalVal.textContent = fmt(grandTotal);
+  if (totalRow) totalRow.style.display = "flex";
+}
+
+function updateStickyBar() {
+  const bar = $("sticky-bar");
+  if (!bar) return;
+
+  if (cart.length === 0 || activeView === "book" || activeView === "success") {
+    bar.classList.remove("show");
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
+  const sbCount = $("sb-count");
+  const sbTotal = $("sb-total");
+  if (sbCount) sbCount.textContent = `${cart.length} Treatment${cart.length > 1 ? "s" : ""}`;
+  if (sbTotal) sbTotal.textContent = fmt(total);
+  bar.classList.add("show");
+}
+
+// 6. MODALS
+function openModal(id, trackHistory = true) {
+  const el = $(id);
+  if (el) {
+    const alreadyOpen = el.classList.contains("show");
+    el.classList.add("show");
+    document.body.style.overflow = "hidden";
+    if (trackHistory && !alreadyOpen) {
+      history.pushState({ modalId: id }, "");
+    }
+  }
+}
+
+function closeModal(id, skipHistory = false) {
+  const el = $(id);
+  if (el) {
+    const wasOpen = el.classList.contains("show");
+    hideModalUI(el);
+    if (!skipHistory && wasOpen && history.state && history.state.modalId === id) {
+      history.back();
+    }
+  }
+}
+
+function openServiceModal(id) {
+  const s = SERVICES.find((item) => item.id === id);
+  if (!s) return;
+
+  $("modal-service-title").textContent = s.name;
+  $("modal-service-body").innerHTML = `
+    <div style="font-size: 0.9rem; line-height: 1.7; color: var(--slate-700);">
+      <p style="margin-bottom: 12px;">${s.desc}</p>
+      <div style="background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+        <b style="color: var(--primary); display: block;">🔬 Treatment Process:</b>
+        ${s.protocol}
+      </div>
+      <div style="background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+        <b style="color: var(--primary); display: block;">🛡️ Safety Information:</b>
+        ${s.safety}
+      </div>
+      <div style="background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2); padding: 12px; border-radius: 12px;">
+        <b style="color: var(--primary); display: block;">📜 Warranty &amp; Prep:</b>
+        ${s.warranty}<br>
+        <span style="font-size: 0.8rem; color: var(--slate-700);">${s.prep}</span>
+      </div>
+    </div>
+  `;
+
+  const addBtn = $("modal-service-add-btn");
+  const inCart = cart.some((item) => item.id === s.id);
+  addBtn.textContent = inCart ? "Remove from Booking" : "Add to Booking";
+  addBtn.onclick = () => {
+    toggleCart(s.id);
+    closeModal("service-modal");
+  };
+  openModal("service-modal");
+}
+
+// 7. FORM VALIDATION
+function validateLive(fieldId, isValid) {
+  const el = $(fieldId);
+  if (!el) return;
+  el.classList.toggle("valid", isValid);
+  el.classList.toggle("invalid", !isValid);
+}
+
+function validatePhoneLive(input) {
+  validateLive("f-phone", isValidIndianPhone(input.value));
+}
+
+// 8. REAL-TIME SLOTS
+async function getBookedSlotsForDate(dateVal) {
+  const bookedSlots = new Set();
+
+  if (db && dateVal) {
+    try {
+      const snap = await withTimeout(
+        db.collection("bookings").where("date", "==", dateVal).get(),
+        4500
+      );
+      snap.forEach((doc) => {
+        const data = doc.data();
+        if (data && data.slot && data.status !== "Cancelled") {
+          bookedSlots.add(data.slot);
+        }
+      });
+    } catch (err) {
+      console.warn("Could not query Firebase slots:", err);
+    }
+  }
+
+  const localBookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+  if (Array.isArray(localBookings)) {
+    localBookings.forEach((b) => {
+      if (b && b.date === dateVal && b.slot && b.status !== "Cancelled") {
+        bookedSlots.add(b.slot);
+      }
+    });
+  }
+
+  return bookedSlots;
+}
+
+async function refreshSlots(silent = false) {
+  const dateInput = $("in-date");
+  const slotSelect = $("in-slot");
+  if (!dateInput || !slotSelect) return;
+
+  const dateVal = dateInput.value;
+  if (!dateVal) return;
+
+  const prevSelectedSlot = slotSelect.value;
+  slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
+
+  const bookedSlots = await getBookedSlotsForDate(dateVal);
+
+  // Prevent stale async responses from overwriting a newly chosen date
+  if (dateInput.value !== dateVal) return;
+
+  const now = new Date();
+  const todayStr = formatLocalDate(now);
+  const isToday = dateVal === todayStr;
+  const currentHour = now.getHours();
+
+  slotSelect.innerHTML = '<option value="">Select available slot…</option>';
+  let availableCount = 0;
+
+  AVAILABLE_SLOTS.forEach((slot) => {
+    const isPassed = isToday && currentHour >= slot.cutoffHour;
+    const isBooked = bookedSlots.has(slot.label);
+
+    const opt = document.createElement("option");
+    opt.value = slot.label;
+
+    if (isBooked) {
+      opt.textContent = `❌ ${slot.label} (Booked / Unavailable)`;
+      opt.disabled = true;
+    } else if (isPassed) {
+      opt.textContent = `⏰ ${slot.label} (Window Passed)`;
+      opt.disabled = true;
+    } else {
+      opt.textContent = `✓ ${slot.label}`;
+      if (prevSelectedSlot === slot.label) opt.selected = true;
+      availableCount++;
+    }
+    slotSelect.appendChild(opt);
+  });
+
+  if (availableCount === 0 && !silent && activeView === "book") {
+    toast(`All slots booked for ${dateVal}. Please select another date.`);
+  }
+}
+
+function selectQuickDate(offsetDays, btn, silent = false) {
+  document.querySelectorAll(".qdate-pill").forEach((p) => p.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  const dateInput = $("in-date");
+  if (dateInput) {
+    dateInput.value = formatLocalDate(d);
+    validateLive("f-date", true);
+    refreshSlots(silent);
+  }
+}
+
+function handleDateChange() {
+  document.querySelectorAll(".qdate-pill").forEach((p) => p.classList.remove("active"));
+  const dateInput = $("in-date");
+  if (dateInput) {
+    validateLive("f-date", Boolean(dateInput.value) && dateInput.value >= dateInput.min);
+    refreshSlots();
+  }
+}
+
+function validateBookingForm() {
+  const nameOk = $("in-name").value.trim().length >= 2;
+  const phoneOk = isValidIndianPhone($("in-phone").value);
+  const addressOk = $("in-address").value.trim().length >= 8;
+  const dateInput = $("in-date");
+  const dateOk = dateInput.value !== "" && dateInput.value >= dateInput.min;
+  const slotOk = $("in-slot").value !== "";
+
+  validateLive("f-name", nameOk);
+  validateLive("f-phone", phoneOk);
+  validateLive("f-address", addressOk);
+  validateLive("f-date", dateOk);
+  validateLive("f-slot", slotOk);
+
+  if (!nameOk) { toast("Please enter your full name."); return false; }
+  if (!phoneOk) { toast("Please enter a valid 10-digit Indian mobile number."); return false; }
+  if (!addressOk) { toast("Please enter your street address & flat number."); return false; }
+  if (!dateOk || !slotOk) { toast("Please select a valid date and available slot."); return false; }
+
+  return true;
+}
+
+// 9. BOOKING SUBMISSION
+async function syncOfflineQueue() {
+  if (!GOOGLE_SHEET_WEBHOOK_URL || !navigator.onLine) return;
+  const queue = readStorageJSON(SYNC_QUEUE_KEY, []);
+  if (!Array.isArray(queue) || !queue.length) return;
+
+  const remaining = [];
+  for (const item of queue) {
+    try {
+      await postToSheetWithTimeout(item, 6000);
+    } catch (err) {
+      remaining.push(item);
+    }
+  }
+  writeStorageJSON(SYNC_QUEUE_KEY, remaining);
+}
+window.addEventListener("online", syncOfflineQueue);
+
+async function handleBookingSubmission(e) {
+  e.preventDefault();
+  if (isSubmitting) return;
+
+  if (cart.length === 0) {
+    toast("⚠ Please add at least one treatment before checkout.");
+    go("services");
+    return;
+  }
+
+  if (!validateBookingForm()) return;
+
+  const chosenDate = $("in-date").value;
+  const chosenSlot = $("in-slot").value;
+
+  isSubmitting = true;
+  const submitBtn = $("submit-btn");
+  submitBtn.disabled = true;
+
+  openModal("loading-modal", false);
+
+  try {
+    if (!db) {
+      throw new Error("Firebase is not initialized.");
+    }
+
+    // Re-check slot availability right before saving to prevent double-booking
+    const latestBookedSlots = await getBookedSlotsForDate(chosenDate);
+    if (latestBookedSlots.has(chosenSlot)) {
+      closeModal("loading-modal", true);
+      await refreshSlots();
+      toast("⚠ That arrival slot was just booked. Please select another slot.");
+      return;
+    }
+
+    const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
+    const serviceNames = cart.map((item) => item.name).join(", ");
+    const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
+    const sanitizedPhone = cleanPhone($("in-phone").value);
+
+    const booking = {
+      ref: ref,
+      name: $("in-name").value.trim(),
+      phone: sanitizedPhone,
+      type: currentBHK.toUpperCase(),
+      address: $("in-address").value.trim(),
+      date: chosenDate,
+      slot: chosenSlot,
+      notes: $("in-notes").value.trim(),
+      services: serviceNames,
+      total: total,
+      status: "Confirmed",
+      placed: new Date().toLocaleDateString("en-IN"),
+      createdAtMs: Date.now()
+    };
+
+    await withTimeout(db.collection("bookings").doc(ref).set({
+      ...booking,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }), 7000);
+
+    if (GOOGLE_SHEET_WEBHOOK_URL) {
+      try {
+        await postToSheetWithTimeout(booking, 6000);
+      } catch (sheetErr) {
+        console.warn("Sheet sync queued:", sheetErr);
+        const queue = readStorageJSON(SYNC_QUEUE_KEY, []);
+        if (Array.isArray(queue)) {
+          queue.push(booking);
+          writeStorageJSON(SYNC_QUEUE_KEY, queue);
+        }
+      }
+    }
+
+    const bookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+    const updatedBookings = Array.isArray(bookings) ? bookings : [];
+    updatedBookings.unshift(booking);
+    writeStorageJSON(BOOKINGS_STORAGE_KEY, updatedBookings);
+    latestBooking = booking;
+
+    cart = [];
+    removeStorageItem(CART_STORAGE_KEY);
+    $("booking-form").reset();
+    document.querySelectorAll(".field").forEach((f) => f.classList.remove("valid", "invalid"));
+    initDateInputs(true);
+
+    renderServiceCards();
+    renderCart();
+    updateStickyBar();
+
+    $("success-ref").textContent = ref;
+    $("success-details").innerHTML = `
+      Thank you <b>${esc(booking.name)}</b>. Your appointment for <b>${esc(booking.services)}</b> has been booked for
+      <b>${formatReadableDate(booking.date)}</b> (${esc(booking.slot)}).<br>
+      Payable amount: <b>${fmt(booking.total)}</b> upon inspection.
+    `;
+
+    closeModal("loading-modal", true);
+    go("success");
+  } catch (err) {
+    console.error("Booking save failed:", err);
+    closeModal("loading-modal", true);
+    toast("Could not save booking (" + (err.code || err.message) + "). Please try again.");
+  } finally {
+    isSubmitting = false;
+    if (cart.length > 0 && submitBtn) {
+      submitBtn.disabled = false;
+    }
+  }
+}
+
+// 10. PORTAL LOOKUP
+async function handlePortalLookup(e) {
+  e.preventDefault();
+  const inputVal = $("portal-input").value.trim();
+  const container = $("portal-results");
+
+  const isRefSearch = /^ASM-/i.test(inputVal);
+  const cleanedQuery = isRefSearch ? inputVal.toUpperCase() : cleanPhone(inputVal);
+
+  if (isRefSearch && cleanedQuery.length < 6) {
+    toast("Please enter a valid booking reference code (e.g. ASM-123456).");
+    return;
+  }
+  if (!isRefSearch && !isValidIndianPhone(cleanedQuery)) {
+    toast("Please enter a valid 10-digit mobile number or ASM reference code.");
+    return;
+  }
+
+  container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
+
+  let records = [];
+
+  if (db) {
+    try {
+      const query = isRefSearch
+        ? db.collection("bookings").where("ref", "==", cleanedQuery)
+        : db.collection("bookings").where("phone", "==", cleanedQuery);
+      const snapshot = await withTimeout(query.get(), 5000);
+      snapshot.forEach((doc) => records.push(doc.data()));
+    } catch (err) {
+      console.warn("Fallback to local records:", err);
+    }
+  }
+
+  const localBookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+  if (Array.isArray(localBookings)) {
+    const localFiltered = localBookings.filter((b) => {
+      if (!b) return false;
+      if (isRefSearch) return b.ref && b.ref.toUpperCase() === cleanedQuery;
+      return b.phone && cleanPhone(b.phone) === cleanedQuery;
+    });
+
+    localFiltered.forEach((lb) => {
+      if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
+    });
+  }
+
+  portalRecords = records;
+
+  if (records.length === 0) {
+    container.innerHTML = `
+      <div class="panel" style="text-align: center; color: var(--slate-600);">
+        No records found for <b>${esc(inputVal)}</b>.<br>
+        Please check your mobile number or booking reference code.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = records.map((b) => `
+    <div class="panel" style="margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+        <b>Booking Ref: <code style="color: var(--primary); font-weight: 800;">${esc(b.ref)}</code></b>
+        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary);">${esc(b.status)}</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 0.86rem;">
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${esc(b.services)}</b></div>
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${formatReadableDate(b.date)} (${esc(b.slot)})</b></div>
+        <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">AMOUNT</span><b>${fmt(b.total)} (Post-Service)</b></div>
+      </div>
+      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--slate-100); display: flex; gap: 8px;">
+        <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem; min-height: 38px;" onclick="openPrintModalData('${esc(b.ref)}')">🖨️ Warranty Card</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function copyBookingDetails() {
+  const b = latestBooking;
+  if (!b) return;
+
+  const text = `*AS Global Management Booking*\nRef: ${b.ref}\nServices: ${b.services}\nDate: ${formatReadableDate(b.date)} (${b.slot})\nTotal: ${fmt(b.total)}\nStatus: Pay Post-Service with 30-Day Warranty`;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => toast("✓ Booking details copied! Ready to paste into WhatsApp."))
+      .catch(() => toast("Ref: " + b.ref));
+  } else {
+    toast("Ref: " + b.ref);
+  }
+}
+
+async function handleCommercialInquiry(e) {
+  e.preventDefault();
+  if (isCommercialSubmitting) return;
+
+  const org = $("comm-org").value.trim();
+  const name = $("comm-name").value.trim();
+  if (org.length < 2 || name.length < 2) {
+    toast("Please enter your organization and contact name.");
+    return;
+  }
+  if (!isValidIndianPhone($("comm-phone").value)) {
+    toast("Please enter a valid 10-digit Indian mobile number.");
+    return;
+  }
+
+  const inquiry = {
+    org: org,
+    name: name,
+    phone: cleanPhone($("comm-phone").value),
+    type: $("comm-type").value,
+    notes: $("comm-notes").value.trim(),
+    date: new Date().toLocaleDateString("en-IN"),
+    createdAtMs: Date.now()
+  };
+
+  const btn = $("comm-submit-btn");
+  isCommercialSubmitting = true;
+  if (btn) btn.disabled = true;
+
+  try {
+    if (!db) throw new Error("Database unavailable");
+    await withTimeout(db.collection("commercial_inquiries").add({
+      ...inquiry,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }), 5000);
+
+    toast("✓ Commercial site audit inquiry registered. Our team will contact you.");
+    const form = $("comm-form");
+    if (form) form.reset();
+  } catch (err) {
+    console.warn("Commercial inquiry error:", err);
+    toast("⚠ Could not submit inquiry. Please check your connection and try again.");
+  } finally {
+    isCommercialSubmitting = false;
+    if (btn) btn.disabled = false;
+  }
+}
+
+function openPrintModalData(ref) {
+  const bookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
+  const localMatch = Array.isArray(bookings) ? bookings.find((item) => item && item.ref === ref) : null;
+  const b = portalRecords.find((item) => item && item.ref === ref) || localMatch;
+  if (b) showPrintModal(b);
+}
+
+function openPrintModalCurrent() {
+  if (latestBooking) showPrintModal(latestBooking);
+}
+
+function showPrintModal(b) {
+  latestBooking = b;
+  $("m-ref").textContent = b.ref;
+  $("m-date").textContent = b.placed || new Date().toLocaleDateString("en-IN");
+  $("m-name").textContent = b.name;
+  $("m-phone").textContent = b.phone;
+  $("m-address").textContent = `${b.type} — ${b.address}`;
+  $("m-slot").textContent = `${formatReadableDate(b.date)} (${b.slot})`;
+  $("m-services").textContent = b.services;
+  $("m-total").textContent = fmt(b.total) + " (Pay Post-Service)";
+  openModal("print-modal");
+}
+
+function handleLogoClick() {
+  clearTimeout(clickTimer);
+  clickCount++;
+  if (clickCount >= 3) {
+    clickCount = 0;
+    window.location.href = "admin.html";
+    return;
+  }
+  clickTimer = setTimeout(() => {
+    clickCount = 0;
+  }, 2000);
+}
+
+function initDateInputs(silent = true) {
+  const now = new Date();
+  const minDate = formatLocalDate(now);
+  const dateInput = $("in-date");
+  if (dateInput) dateInput.min = minDate;
+
+  if (now.getHours() >= 20) {
+    const todayBtn = $("btn-today");
+    if (todayBtn) todayBtn.style.display = "none";
+    selectQuickDate(1, $("btn-tmrw"), silent);
+  } else {
+    selectQuickDate(0, $("btn-today"), silent);
+  }
+}
+
+// 11. RUN ON LOAD
+window.addEventListener("DOMContentLoaded", () => {
+  initLivePricing();
+  initDateInputs(true);
+  renderServiceCards();
+  renderCart();
+  syncOfflineQueue().catch(() => {});
+  go("home");
+});
