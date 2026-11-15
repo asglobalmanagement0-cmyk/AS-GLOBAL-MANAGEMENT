@@ -17,7 +17,7 @@
   <meta property="og:description" content="Safe, odorless, government-compliant pest eradication. Book your visit in 60 seconds with written warranty coverage.">
   <meta property="og:image" content="logo.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#059669">
+  <meta name="theme-color" content="#163832">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
@@ -325,7 +325,7 @@
                 </div>
                 <div class="field">
                   <label for="comm-phone">Work Phone / Mobile *</label>
-                  <input type="tel" id="comm-phone" inputmode="tel" placeholder="10-digit mobile" maxlength="10" required>
+                  <input type="tel" id="comm-phone" inputmode="tel" placeholder="10-digit mobile" maxlength="15" required>
                 </div>
               </div>
               <div class="field">
@@ -342,10 +342,10 @@
                 <label for="comm-notes">Approximate Area &amp; Key Concerns</label>
                 <textarea id="comm-notes" rows="3" placeholder="e.g. 15,000 sq ft office cafeteria cockroach and rodent control..."></textarea>
               </div>
-              <button type="submit" class="btn block">Request Site Audit &amp; Proposal</button>
+              <button type="submit" class="btn block" id="comm-submit-btn">Request Site Audit &amp; Proposal</button>
             </form>
           </div>
-          <div class="panel" style="background: var(--slate-100);">
+          <div class="panel" style="background: var(--primary-soft);">
             <h3>🛡️ Corporate Compliance Standards</h3>
             <ul style="margin-left: 18px; font-size: 0.88rem; line-height: 1.8; color: var(--slate-700);">
               <li><b>Zero-Disruption Scheduling:</b> Night-shift and weekend treatments.</li>
@@ -379,7 +379,7 @@
               </div>
               <div class="field" id="f-phone">
                 <label for="in-phone">Mobile Number *</label>
-                <input type="tel" id="in-phone" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile number" maxlength="10" required oninput="validatePhoneLive(this)">
+                <input type="tel" id="in-phone" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile number" maxlength="15" required oninput="validatePhoneLive(this)">
                 <div class="err">Please enter a valid 10-digit Indian mobile number.</div>
               </div>
             </div>
@@ -398,12 +398,12 @@
                   <button type="button" class="qdate-pill" id="btn-tmrw" onclick="selectQuickDate(1, this)">Tomorrow</button>
                   <button type="button" class="qdate-pill" onclick="selectQuickDate(2, this)">In 2 Days</button>
                 </div>
-                <input type="date" id="in-date" onchange="handleDateChange()">
+                <input type="date" id="in-date" required onchange="handleDateChange()">
                 <div class="err">Please select a valid future date.</div>
               </div>
               <div class="field" id="f-slot">
                 <label for="in-slot">Preferred Arrival Slot *</label>
-                <select id="in-slot" onchange="validateLive('f-slot', this.value !== '')">
+                <select id="in-slot" required onchange="validateLive('f-slot', this.value !== '')">
                   <option value="">Checking slot availability…</option>
                 </select>
                 <div class="err">Please select an available arrival window.</div>
@@ -447,7 +447,7 @@
           <div style="font-size: 3rem; margin-bottom: 12px;">✅</div>
           <h2>Booking Confirmed!</h2>
           <p style="color: var(--slate-600); margin-bottom: 14px;">Your service reference code has been generated:</p>
-          <div style="font-size: 1.35rem; font-weight: 800; font-family: 'Space Grotesk'; color: var(--primary-dark); background: var(--primary-light); padding: 8px 24px; border-radius: 12px; display: inline-block; margin-bottom: 20px;" id="success-ref">
+          <div style="font-size: 1.35rem; font-weight: 800; font-family: 'Space Grotesk'; color: var(--primary); background: var(--primary-light); padding: 8px 24px; border-radius: 12px; display: inline-block; margin-bottom: 20px;" id="success-ref">
             ASM-000000
           </div>
           <p id="success-details" style="font-size: 0.92rem; color: var(--slate-700); line-height: 1.65; margin-bottom: 24px;"></p>
@@ -464,8 +464,8 @@
   <!-- Sticky Mobile Cart Bar -->
   <div id="sticky-bar" class="sticky-bar">
     <div>
-      <span id="sb-count" style="font-size: 0.72rem; color: var(--slate-400); display: block; font-weight: 700; text-transform: uppercase;">0 Treatments</span>
-      <span id="sb-total" style="font-size: 1.15rem; font-weight: 800; color: #34d399;">₹0</span>
+      <span id="sb-count" style="font-size: 0.72rem; color: #cde5d2; display: block; font-weight: 700; text-transform: uppercase;">0 Treatments</span>
+      <span id="sb-total" style="font-size: 1.15rem; font-weight: 800; color: #DAF1DE;">₹0</span>
     </div>
     <button class="sticky-bar-btn" onclick="go('book')">Schedule →</button>
   </div>
@@ -485,11 +485,11 @@
   <div class="modal-overlay" id="service-modal" onclick="if(event.target===this)closeModal('service-modal')">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modal-service-title" style="color: var(--primary-dark);">Service Details</h3>
+        <h3 id="modal-service-title" style="color: var(--primary);">Service Details</h3>
         <button class="close-btn" onclick="closeModal('service-modal')" aria-label="Close modal">✕</button>
       </div>
       <div id="modal-service-body"></div>
-      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
         <button class="btn secondary" onclick="closeModal('service-modal')">Close</button>
         <button class="btn" id="modal-service-add-btn">Add to Booking</button>
       </div>
@@ -501,13 +501,13 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <h2 style="font-size: 1.3rem; color: var(--primary-dark);">AS GLOBAL MANAGEMENT</h2>
+          <h2 style="font-size: 1.3rem; color: var(--primary);">AS GLOBAL MANAGEMENT</h2>
           <p style="font-size: 0.78rem; color: var(--slate-600);">Govt. Approved Pest Management &amp; Disinfection Services</p>
           <p style="font-size: 0.76rem; color: var(--slate-400);">Contact: asglobalmanagement0@gmail.com</p>
         </div>
         <button class="close-btn print-hide" onclick="closeModal('print-modal')" aria-label="Close invoice">✕</button>
       </div>
-      <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 14px;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
         <div><b>Booking Ref:</b> <span id="m-ref"></span></div>
         <div><b>Date Issued:</b> <span id="m-date"></span></div>
       </div>
@@ -518,16 +518,16 @@
           <tr><td style="padding: 6px 0; border-bottom: 1px solid var(--slate-100);">Service Address:</td><td id="m-address" style="text-align: right; font-weight: 700;"></td></tr>
           <tr><td style="padding: 6px 0; border-bottom: 1px solid var(--slate-100);">Scheduled Arrival:</td><td id="m-slot" style="text-align: right; font-weight: 700;"></td></tr>
           <tr><td style="padding: 6px 0; border-bottom: 1px solid var(--slate-100);">Treatments Booked:</td><td id="m-services" style="text-align: right; font-weight: 700;"></td></tr>
-          <tr><td style="padding: 8px 0; font-size: 1.1rem; color: var(--primary-dark); font-weight: 800;">Total Payable:</td><td id="m-total" style="text-align: right; font-size: 1.1rem; color: var(--primary-dark); font-weight: 800;"></td></tr>
+          <tr><td style="padding: 8px 0; font-size: 1.1rem; color: var(--primary); font-weight: 800;">Total Payable:</td><td id="m-total" style="text-align: right; font-size: 1.1rem; color: var(--primary); font-weight: 800;"></td></tr>
         </table>
       </div>
       <div style="background: var(--primary-light); border: 1.5px dashed var(--primary); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
-        <b style="font-size: 0.84rem; color: var(--primary-dark);">🛡️ 30-Day Written Warranty Policy:</b>
+        <b style="font-size: 0.84rem; color: var(--primary);">🛡️ 30-Day Written Warranty Policy:</b>
         <p style="font-size: 0.78rem; color: var(--slate-700); margin-top: 4px;">
           This official certificate entitles the registered property holder to a complimentary re-treatment if covered infestation recurs within 30 days of the service execution date. Present this reference code upon requesting re-treatment.
         </p>
       </div>
-      <div class="print-hide" style="display: flex; justify-content: flex-end; gap: 10px;">
+      <div class="print-hide" style="display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
         <button class="btn secondary" onclick="copyBookingDetails()">📋 Copy</button>
         <button class="btn secondary" onclick="closeModal('print-modal')">Close</button>
         <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
@@ -545,7 +545,7 @@
           <div class="logo-mark" style="width: 36px; height: 36px;">
             <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
           </div>
-          <b style="color: var(--white); font-size: 0.95rem;">AS GLOBAL MANAGEMENT</b>
+          <b style="color: var(--primary-light); font-size: 0.95rem;">AS GLOBAL MANAGEMENT</b>
         </div>
         <p style="font-size: 0.84rem; line-height: 1.6;">
           Certified pest control and disinfection service provider. Odorless treatments with written 30-day warranty coverage across Hyderabad and Telangana.
@@ -570,7 +570,7 @@
           08:00 AM – 09:00 PM<br>
           Emergency Service Available
         </p>
-        <span style="font-size: 0.76rem; color: #6ee7b7;">🛡️ CIB Registered Non-Hazardous Chemicals</span>
+        <span style="font-size: 0.76rem; color: #DAF1DE;">🛡️ CIB Registered Non-Hazardous Chemicals</span>
       </div>
     </div>
     <div class="foot-bottom">
