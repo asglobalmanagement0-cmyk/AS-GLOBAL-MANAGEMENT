@@ -331,6 +331,7 @@ header {
   gap: 10px;
 }
 
+.mobile-nav-list button:hover,
 .mobile-nav-list button.active {
   background: var(--primary-light);
   color: var(--primary);
@@ -750,11 +751,12 @@ main {
   font-size: 0.82rem;
   font-weight: 700;
   border: 1.5px solid var(--primary);
-  background: var(--white);
+  background: var(--primary-light);
   color: var(--primary);
   min-height: 40px;
 }
 
+.action-btn:hover,
 .action-btn.added {
   background: var(--primary);
   color: var(--primary-light);
@@ -873,10 +875,10 @@ main {
   width: 100%;
   min-height: 48px;
   padding: 12px 14px;
-  border: 1.5px solid var(--slate-200);
+  border: 1.5px solid rgba(22, 56, 50, 0.2);
   border-radius: 12px;
   color: var(--slate-900);
-  background: var(--slate-50);
+  background: rgba(218, 241, 222, 0.35);
 }
 
 .field input:focus, .field select:focus, .field textarea:focus {
@@ -1143,7 +1145,7 @@ main {
    ------------------------------------------------------------------------- */
 footer {
   background: var(--primary-deep);
-  color: #cde5d2;
+  color: #DAF1DE;
   margin-top: auto;
   width: 100%;
 }
@@ -1167,7 +1169,7 @@ footer h4 {
 
 .foot-links a {
   display: block;
-  color: #cde5d2;
+  color: #DAF1DE;
   font-size: 0.86rem;
   margin-bottom: 8px;
   min-height: 24px;
