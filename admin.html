@@ -16,8 +16,10 @@
 
   <style>
     :root {
-      --primary: #059669;
-      --primary-dark: #064e3b;
+      --primary: #163832;
+      --primary-hover: #1e4b43;
+      --primary-dark: #0f2924;
+      --primary-light: #DAF1DE;
       --slate-900: #0f172a;
       --slate-700: #334155;
       --slate-200: #e2e8f0;
@@ -35,6 +37,7 @@
       justify-content: center;
       min-height: 100vh;
       padding: 16px;
+      background: radial-gradient(130% 90% at 50% -10%, #DAF1DE 0%, #f8fafc 55%, #f1f5f9 100%);
     }
     .login-card {
       background: var(--white);
@@ -43,10 +46,10 @@
       border-radius: 16px;
       padding: 32px 24px;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-      border: 1px solid var(--slate-200);
+      border: 1px solid rgba(22, 56, 50, 0.2);
       text-align: center;
     }
-    .login-card h2 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 8px; color: var(--primary-dark); }
+    .login-card h2 { font-family: 'Space Grotesk', sans-serif; margin-bottom: 8px; color: var(--primary); }
     .login-card p { font-size: 0.85rem; color: #64748b; margin-bottom: 24px; }
 
     .form-group { text-align: left; margin-bottom: 16px; }
@@ -54,12 +57,13 @@
     .form-group input {
       width: 100%;
       padding: 12px 14px;
-      border: 1.5px solid var(--slate-200);
+      border: 1.5px solid rgba(22, 56, 50, 0.2);
       border-radius: 10px;
       font-size: 0.95rem;
+      background: rgba(218, 241, 222, 0.25);
       outline: none;
     }
-    .form-group input:focus { border-color: var(--primary); }
+    .form-group input:focus { border-color: var(--primary); background: var(--white); }
 
     .btn {
       padding: 10px 16px;
@@ -71,11 +75,17 @@
       cursor: pointer;
       font-size: 0.88rem;
       transition: background 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
-    .btn:hover { background: var(--primary-dark); }
+    .btn:hover { background: var(--primary-hover); }
     .btn.full { width: 100%; padding: 12px; font-size: 0.95rem; }
-    .btn.secondary { background: var(--slate-100); color: var(--slate-900); border: 1px solid var(--slate-200); }
+    .btn.secondary { background: var(--primary-light); color: var(--primary); border: 1px solid rgba(22, 56, 50, 0.25); }
+    .btn.secondary:hover { background: var(--primary); color: var(--primary-light); }
     .btn.danger { background: #fee2e2; color: var(--danger); padding: 6px 10px; font-size: 0.78rem; }
+    .btn.danger:hover { background: #fecaca; }
     .btn.logout-btn { padding: 8px 16px; font-size: 0.85rem; background: var(--slate-700); }
 
     .error-msg {
@@ -92,7 +102,7 @@
     #dashboard-view { display: none; padding-bottom: 60px; }
     .dash-header {
       background: var(--white);
-      border-bottom: 1px solid var(--slate-200);
+      border-bottom: 1px solid rgba(22, 56, 50, 0.15);
       padding: 16px clamp(16px, 3vw, 32px);
       display: flex;
       justify-content: space-between;
@@ -100,7 +110,7 @@
       flex-wrap: wrap;
       gap: 12px;
     }
-    .dash-header h1 { font-size: 1.25rem; font-family: 'Space Grotesk', sans-serif; color: var(--primary-dark); }
+    .dash-header h1 { font-size: 1.25rem; font-family: 'Space Grotesk', sans-serif; color: var(--primary); }
 
     .container { max-width: 1240px; margin: 24px auto; padding: 0 16px; }
 
@@ -113,16 +123,16 @@
     .tab-btn {
       padding: 10px 18px;
       border-radius: 10px;
-      border: 1px solid var(--slate-200);
-      background: var(--white);
+      border: 1px solid rgba(22, 56, 50, 0.2);
+      background: var(--primary-light);
       font-weight: 700;
       font-size: 0.88rem;
-      color: var(--slate-700);
+      color: var(--primary);
       cursor: pointer;
     }
     .tab-btn.active {
       background: var(--primary);
-      color: var(--white);
+      color: var(--primary-light);
       border-color: var(--primary);
     }
 
@@ -137,7 +147,7 @@
     }
     .stat-card {
       background: var(--white);
-      border: 1px solid var(--slate-200);
+      border: 1px solid rgba(22, 56, 50, 0.15);
       border-radius: 12px;
       padding: 18px;
     }
@@ -162,43 +172,45 @@
     }
     .table-wrapper { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
-    th { background: var(--slate-100); padding: 12px 16px; font-weight: 700; color: var(--slate-700); white-space: nowrap; }
+    th { background: var(--primary-light); padding: 12px 16px; font-weight: 700; color: var(--primary); white-space: nowrap; }
     td { padding: 14px 16px; border-top: 1px solid var(--slate-200); vertical-align: top; }
     tr:hover { background: #f8fafc; }
 
     .status-select {
       padding: 6px 10px;
       border-radius: 8px;
-      border: 1px solid var(--slate-200);
+      border: 1px solid rgba(22, 56, 50, 0.25);
       font-weight: 700;
       font-size: 0.8rem;
-      background: #ecfdf5;
-      color: var(--primary-dark);
+      background: var(--primary-light);
+      color: var(--primary);
       cursor: pointer;
     }
 
     .price-input {
       width: 92px;
       padding: 8px 10px;
-      border: 1.5px solid var(--slate-200);
+      border: 1.5px solid rgba(22, 56, 50, 0.2);
       border-radius: 8px;
       font-weight: 700;
       font-size: 0.9rem;
+      background: rgba(218, 241, 222, 0.25);
     }
-    .price-input:focus { border-color: var(--primary); outline: none; }
+    .price-input:focus { border-color: var(--primary); background: var(--white); outline: none; }
 
     .toast {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: var(--slate-900);
-      color: var(--white);
+      background: var(--primary);
+      color: var(--primary-light);
       padding: 12px 20px;
       border-radius: 10px;
       font-weight: 600;
       font-size: 0.88rem;
       display: none;
       z-index: 999;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
     .toast.show { display: block; }
   </style>
@@ -214,15 +226,18 @@
 
       <form onsubmit="handleAdminLogin(event)">
         <div class="form-group">
-          <label>Admin Email</label>
+          <label for="admin-email">Admin Email</label>
           <input type="email" id="admin-email" placeholder="admin@example.com" required>
         </div>
         <div class="form-group">
-          <label>Password</label>
+          <label for="admin-password">Password</label>
           <input type="password" id="admin-password" placeholder="••••••••" required>
         </div>
         <button type="submit" class="btn full" id="login-btn">Secure Login →</button>
       </form>
+      <div style="margin-top: 16px;">
+        <a href="index.html" style="font-size: 0.82rem; font-weight: 700; color: var(--primary); text-decoration: none;">← Back to Website</a>
+      </div>
     </div>
   </div>
 
@@ -233,7 +248,8 @@
         <h1>AS GLOBAL MANAGEMENT</h1>
         <small style="color: #64748b;">Project: <b id="project-id-badge"></b> · Live Dispatch &amp; Pricing</small>
       </div>
-      <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <a href="index.html" class="btn secondary" style="padding: 8px 14px; font-size: 0.82rem;">View Website</a>
         <span id="user-display" style="font-size: 0.82rem; font-weight: 600; color: var(--slate-700);"></span>
         <button class="btn logout-btn" onclick="handleLogout()">Sign Out</button>
       </div>
@@ -339,11 +355,12 @@
                   <th>Phone</th>
                   <th>Facility Type</th>
                   <th>Notes</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="commercial-table-body">
                 <tr>
-                  <td colspan="5" style="text-align: center; color: #94a3b8; padding: 24px;">Loading inquiries...</td>
+                  <td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Loading inquiries...</td>
                 </tr>
               </tbody>
             </table>
@@ -356,7 +373,7 @@
   <div id="admin-toast" class="toast"></div>
 
   <script>
-    // NEW FIREBASE CONFIGURATION (as-global-management)
+    // FIREBASE CONFIGURATION (as-global-management)
     const firebaseConfig = {
       apiKey: "AIzaSyCjhGH7znnOF6QV_EmRVOxfVUbJLe6E8hI",
       authDomain: "as-global-management.firebaseapp.com",
@@ -387,9 +404,18 @@
 
     let unsubscribeBookings = null;
     let unsubscribeCommercial = null;
+    let bookingsById = {};
 
     function calcDefaultPrice(basePrice, bhk) {
       return Math.round((basePrice * (BHK_MULTIPLIERS[bhk] || 1)) / 10) * 10;
+    }
+
+    function getSlotDocId(dateVal, slotLabel) {
+      const slug = String(slotLabel || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      return `${dateVal}__${slug}`;
     }
 
     function escapeHTML(str) {
@@ -400,6 +426,10 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function cleanTelHref(phone) {
+      return String(phone || "").replace(/[^+\d]/g, "");
     }
 
     function showToast(msg) {
@@ -471,8 +501,13 @@
           let count = 0;
           let completedCount = 0;
           const bookings = [];
+          bookingsById = {};
 
-          snapshot.forEach(doc => bookings.push({ id: doc.id, ...doc.data() }));
+          snapshot.forEach(doc => {
+            const item = { id: doc.id, ...doc.data() };
+            bookings.push(item);
+            bookingsById[doc.id] = item;
+          });
           bookings.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
 
           if (bookings.length === 0) {
@@ -488,16 +523,17 @@
             if (b.status !== "Cancelled") totalRev += Number(b.total || 0);
             if (b.status === "Completed") completedCount++;
             const status = b.status || "Confirmed";
+            const safeTel = cleanTelHref(b.phone);
 
             return `
               <tr>
                 <td><b>${escapeHTML(b.ref || b.id)}</b></td>
                 <td>
-                  <b>${escapeHTML(b.name)}</b> <small style="color:#059669;">(${escapeHTML(b.type || "")})</small><br>
+                  <b>${escapeHTML(b.name)}</b> <small style="color:var(--primary); font-weight:700;">(${escapeHTML(b.type || "")})</small><br>
                   <small style="color:#64748b;">${escapeHTML(b.address)}</small>
                   ${b.notes ? `<br><small style="color:#0f172a;">Note: ${escapeHTML(b.notes)}</small>` : ""}
                 </td>
-                <td><a href="tel:${escapeHTML(b.phone)}" style="color:var(--primary); font-weight:700;">${escapeHTML(b.phone)}</a></td>
+                <td><a href="tel:${escapeHTML(safeTel)}" style="color:var(--primary); font-weight:700;">${escapeHTML(b.phone)}</a></td>
                 <td>${escapeHTML(b.services)}</td>
                 <td>${escapeHTML(b.date)}<br><small style="color:#64748b;">${escapeHTML(b.slot)}</small></td>
                 <td><b>₹${Number(b.total || 0).toLocaleString("en-IN")}</b></td>
@@ -525,8 +561,39 @@
     }
 
     async function updateBookingStatus(docId, newStatus) {
+      const b = bookingsById[docId];
+      const slotDocId = b ? (b.slotDocId || (b.date && b.slot ? getSlotDocId(b.date, b.slot) : "")) : "";
+
       try {
-        await db.collection("bookings").doc(docId).update({ status: newStatus });
+        if (newStatus !== "Cancelled" && b && b.status === "Cancelled" && slotDocId) {
+          const existingSlot = await db.collection("booked_slots").doc(slotDocId).get();
+          if (existingSlot.exists && existingSlot.data().bookingRef !== (b.ref || docId)) {
+            alert("Cannot restore: another customer has already booked this date & slot.");
+            startLiveBookingsListener();
+            return;
+          }
+        }
+
+        const batch = db.batch();
+        const bookingRef = db.collection("bookings").doc(docId);
+        batch.update(bookingRef, { status: newStatus });
+
+        if (slotDocId) {
+          const slotRef = db.collection("booked_slots").doc(slotDocId);
+          if (newStatus === "Cancelled") {
+            batch.delete(slotRef);
+          } else if (b && b.status === "Cancelled") {
+            batch.set(slotRef, {
+              date: b.date,
+              slot: b.slot,
+              active: true,
+              bookingRef: b.ref || docId,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
+        }
+
+        await batch.commit();
         showToast(`Status updated to ${newStatus}`);
       } catch (err) {
         alert("Failed to update status: " + err.message);
@@ -535,9 +602,17 @@
 
     async function deleteBooking(docId) {
       if (!confirm(`Delete booking ${docId}?`)) return;
+      const b = bookingsById[docId];
+      const slotDocId = b ? (b.slotDocId || (b.date && b.slot ? getSlotDocId(b.date, b.slot) : "")) : "";
+
       try {
-        await db.collection("bookings").doc(docId).delete();
-        showToast("Booking deleted.");
+        const batch = db.batch();
+        batch.delete(db.collection("bookings").doc(docId));
+        if (slotDocId) {
+          batch.delete(db.collection("booked_slots").doc(slotDocId));
+        }
+        await batch.commit();
+        showToast("Booking deleted & slot freed.");
       } catch (err) {
         alert("Failed to delete booking: " + err.message);
       }
@@ -643,24 +718,38 @@
           items.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
 
           if (items.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 24px; color: #94a3b8;">No commercial inquiries yet.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 24px; color: #94a3b8;">No commercial inquiries yet.</td></tr>`;
             return;
           }
 
-          tbody.innerHTML = items.map(c => `
-            <tr>
-              <td><b>${escapeHTML(c.org)}</b></td>
-              <td>${escapeHTML(c.name)}</td>
-              <td><a href="tel:${escapeHTML(c.phone)}" style="color:var(--primary); font-weight:700;">${escapeHTML(c.phone)}</a></td>
-              <td>${escapeHTML(c.type || c.facilityType)}</td>
-              <td>${escapeHTML(c.notes || "-")}</td>
-            </tr>
-          `).join("");
+          tbody.innerHTML = items.map(c => {
+            const safeTel = cleanTelHref(c.phone);
+            return `
+              <tr>
+                <td><b>${escapeHTML(c.org)}</b></td>
+                <td>${escapeHTML(c.name)}</td>
+                <td><a href="tel:${escapeHTML(safeTel)}" style="color:var(--primary); font-weight:700;">${escapeHTML(c.phone)}</a></td>
+                <td>${escapeHTML(c.type || c.facilityType)}</td>
+                <td>${escapeHTML(c.notes || "-")}</td>
+                <td><button class="btn danger" onclick="deleteCommercialInquiry('${escapeHTML(c.id)}')">Delete</button></td>
+              </tr>
+            `;
+          }).join("");
         },
         err => {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red; padding: 24px;">Permission Denied loading commercial inquiries.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red; padding: 24px;">Permission Denied loading commercial inquiries.</td></tr>`;
         }
       );
+    }
+
+    async function deleteCommercialInquiry(docId) {
+      if (!confirm("Delete this commercial inquiry?")) return;
+      try {
+        await db.collection("commercial_inquiries").doc(docId).delete();
+        showToast("Commercial inquiry deleted.");
+      } catch (err) {
+        alert("Failed to delete inquiry: " + err.message);
+      }
     }
   </script>
 </body>
