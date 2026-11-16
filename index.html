@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>AS Global Management — Certified Pest Control &amp; Disinfection Services</title>
-  <meta name="description" content="Certified, odorless residential and commercial pest control. Cockroach, termite, bed bug, and rodent elimination with written 30-day warranty. Pay post-service.">
+  <meta name="description" content="Certified, odorless residential pest control. Cockroach, termite, bed bug, and rodent elimination with written 30-day warranty. Pay post-service.">
   <meta name="keywords" content="pest control, termite treatment, cockroach control, bed bugs removal, disinfection service, Hyderabad pest control">
   <meta name="author" content="AS Global Management">
   <meta name="robots" content="index, follow">
@@ -86,7 +86,6 @@
         <button id="nav-home" class="nav-link active" onclick="go('home')">Home</button>
         <button id="nav-services" class="nav-link" onclick="go('services')">Services</button>
         <button id="nav-portal" class="nav-link" onclick="go('portal')">Customer Portal</button>
-        <button id="nav-commercial" class="nav-link" onclick="go('commercial')">Commercial</button>
         <button id="nav-book" class="nav-link cta-btn" onclick="go('book')">
           Book Visit <span class="cart-badge" id="cart-badge">0</span>
         </button>
@@ -108,7 +107,6 @@
       <button id="mnav-home" class="active" onclick="goFromDrawer('home')">🏠 Home</button>
       <button id="mnav-services" onclick="goFromDrawer('services')">🔬 All Services</button>
       <button id="mnav-portal" onclick="goFromDrawer('portal')">🔍 Customer Portal</button>
-      <button id="mnav-commercial" onclick="goFromDrawer('commercial')">🏢 Commercial Audits</button>
       <button id="mnav-book" class="cta-mobile" onclick="goFromDrawer('book')">
         📅 Book Service (<span id="cart-badge-m">0</span>)
       </button>
@@ -128,7 +126,7 @@
           <div class="eyebrow">✓ Odorless &amp; CIB-Approved Chemicals</div>
           <h1>Targeted pest elimination with <span>30-Day Written Warranty.</span></h1>
           <p>
-            Certified cockroach, termite, bed bug, and rodent eradication across residential apartments, villas, and commercial properties. <b>Pay only after service inspection.</b>
+            Certified cockroach, termite, bed bug, and rodent eradication across residential apartments and villas. <b>Pay only after service inspection.</b>
           </p>
           <div class="hero-cta">
             <button class="btn" onclick="go('book')">Book a Service Visit →</button>
@@ -230,7 +228,7 @@
         <div class="sec-head" style="margin-top: 30px;">
           <span class="eyebrow">Customer Feedback</span>
           <h2>Verified Client Reviews</h2>
-          <p>Read authenticated experiences from residential and commercial clients across Hyderabad.</p>
+          <p>Read authenticated experiences from residential clients across Hyderabad.</p>
         </div>
         <div class="testi-grid">
           <div class="testi-card">
@@ -261,7 +259,7 @@
                 <div class="testi-star">★★★★★</div>
               </div>
             </div>
-            <p>"We engaged AS Global for commercial kitchen sanitization and rodent proofing at our restaurant. Compliance certificates issued immediately. Very professional team."</p>
+            <p>"We engaged AS Global for full-home sanitization and rodent proofing at our villa. Warranty certificate was issued immediately. Very professional team."</p>
           </div>
         </div>
         <div style="height: 30px;"></div>
@@ -315,63 +313,6 @@
         </div>
 
         <div id="portal-results"></div>
-      </div>
-    </section>
-
-    <!-- VIEW: COMMERCIAL AUDITS -->
-    <section class="view" id="view-commercial">
-      <div class="wrap page">
-        <div class="sec-head">
-          <span class="eyebrow">Enterprise &amp; Compliance</span>
-          <h2>Commercial Pest Control &amp; Audits</h2>
-          <p>HACCP, FSSAI, and ISO-compliant pest audit and ongoing management contracts for corporate, healthcare, warehouse, and hospitality sectors.</p>
-        </div>
-
-        <div class="booking-grid">
-          <div class="panel">
-            <h3>🏢 Commercial Inspection Request</h3>
-            <form id="comm-form" onsubmit="handleCommercialInquiry(event)">
-              <div class="field">
-                <label for="comm-org">Company / Organization Name *</label>
-                <input type="text" id="comm-org" placeholder="e.g. Apex Biotech Ltd." required>
-              </div>
-              <div class="row2">
-                <div class="field">
-                  <label for="comm-name">Contact Person *</label>
-                  <input type="text" id="comm-name" placeholder="Full name" required>
-                </div>
-                <div class="field">
-                  <label for="comm-phone">Work Phone / Mobile *</label>
-                  <input type="tel" id="comm-phone" inputmode="tel" placeholder="10-digit mobile" maxlength="15" required>
-                </div>
-              </div>
-              <div class="field">
-                <label for="comm-type">Facility Type *</label>
-                <select id="comm-type">
-                  <option value="IT Park / Corporate Office">IT Park / Corporate Office</option>
-                  <option value="Restaurant / Food Processing">Restaurant / Food Processing (FSSAI audit)</option>
-                  <option value="Hospital / Healthcare">Hospital / Healthcare Clinic</option>
-                  <option value="Warehouse / Logistics">Warehouse / Logistics Park</option>
-                  <option value="Residential Gated Community">Residential Gated Community</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="comm-notes">Approximate Area &amp; Key Concerns</label>
-                <textarea id="comm-notes" rows="3" placeholder="e.g. 15,000 sq ft office cafeteria cockroach and rodent control..."></textarea>
-              </div>
-              <button type="submit" class="btn block" id="comm-submit-btn">Request Site Audit &amp; Proposal</button>
-            </form>
-          </div>
-          <div class="panel" style="background: var(--green-softer); border-color: #cce3d5;">
-            <h3>🛡️ Corporate Compliance Standards</h3>
-            <ul style="margin-left: 18px; font-size: 0.88rem; line-height: 1.8; color: var(--ink-2);">
-              <li><b>Zero-Disruption Scheduling:</b> Night-shift and weekend treatments.</li>
-              <li><b>Regulatory Documentation:</b> Material Safety Data Sheets (MSDS) provided.</li>
-              <li><b>Integrated Pest Management:</b> Non-toxic baiting + structural exclusion.</li>
-              <li><b>Dedicated Account Manager:</b> Single point of contact for routine audits.</li>
-            </ul>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -578,7 +519,8 @@
       <div class="foot-links">
         <h4>Client Resources</h4>
         <a href="#portal" onclick="event.preventDefault(); go('portal');">Customer Booking Portal</a>
-        <a href="#commercial" onclick="event.preventDefault(); go('commercial');">Commercial Site Audits</a>
+        <a href="#services" onclick="event.preventDefault(); go('services');">View All Treatments</a>
+        <a href="#book" onclick="event.preventDefault(); go('book');">Book Service Visit</a>
       </div>
       <div>
         <h4>Operating Hours</h4>
