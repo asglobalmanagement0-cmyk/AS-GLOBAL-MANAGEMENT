@@ -2,7 +2,6 @@
    AS GLOBAL MANAGEMENT — FULL SECURE & CONNECTED ENGINE
    ========================================================================= */
 
-// 1. FIREBASE CONFIGURATION (as-global-management)
 const firebaseConfig = {
   apiKey: "AIzaSyCjhGH7znnOF6QV_EmRVOxfVUbJLe6E8hI",
   authDomain: "as-global-management.firebaseapp.com",
@@ -25,7 +24,6 @@ if (typeof firebase !== "undefined") {
   }
 }
 
-// 2. CONSTANTS & SERVICES DATA
 const GOOGLE_SHEET_WEBHOOK_URL = "";
 const CART_STORAGE_KEY = "asgm_cart_v18";
 const BOOKINGS_STORAGE_KEY = "asgm_bookings_v18";
@@ -138,7 +136,7 @@ const SERVICES = [
     basePrice: 1299,
     rating: 4.9,
     chips: ["Hospital Grade", "99.99% Kill", "Safe Mist"],
-    protocol: "Ultra-low volume atomization of quaternary ammonium formulation covering touch points and workstations.",
+    protocol: "Ultra-low volume atomization of quaternary ammonium formulation covering touch points and home surfaces.",
     safety: "EPA-registered hospital disinfectant. Biodegradable and leaves no sticky residue.",
     warranty: "Certified laboratory standard pathogen kill on application.",
     prep: "Cover exposed food items and raw paper files."
@@ -153,14 +151,12 @@ const AVAILABLE_SLOTS = [
   { label: "05:00 PM – 08:00 PM", cutoffHour: 20 }
 ];
 
-// 3. STATE AND HELPERS
 let currentBHK = "1bhk";
 let customPricingMap = {};
 let latestBooking = null;
 let portalRecords = [];
 let activeView = "home";
 let isSubmitting = false;
-let isCommercialSubmitting = false;
 let clickCount = 0;
 let clickTimer = null;
 let toastTimer = null;
@@ -226,8 +222,7 @@ function cleanPhone(val) {
 }
 
 function isValidIndianPhone(val) {
-  const clean = cleanPhone(val);
-  return /^[6-9]\d{9}$/.test(clean);
+  return /^[6-9]\d{9}$/.test(cleanPhone(val));
 }
 
 function formatLocalDate(d) {
@@ -259,9 +254,7 @@ function getSlotDocId(dateVal, slotLabel) {
 function withTimeout(promise, ms = 6000) {
   return Promise.race([
     promise,
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Request timed out")), ms)
-    )
+    new Promise((_, reject) => setTimeout(() => reject(new Error("Request timed out")), ms))
   ]);
 }
 
@@ -285,14 +278,11 @@ async function postToSheetWithTimeout(payload, ms = 6000) {
 
 function getServicePrice(serviceOrItem) {
   const id = serviceOrItem.id;
-  if (
-    customPricingMap[id] &&
-    customPricingMap[id][currentBHK] !== undefined &&
-    customPricingMap[id][currentBHK] !== ""
-  ) {
+  if (customPricingMap[id] && customPricingMap[id][currentBHK] !== undefined && customPricingMap[id][currentBHK] !== "") {
     return Number(customPricingMap[id][currentBHK]);
   }
-  const base = Number(serviceOrItem.basePrice || 0);
+  const freshService = SERVICES.find((s) => s.id === id);
+  const base = Number((freshService ? freshService.basePrice : serviceOrItem.basePrice) || 0);
   const mult = BHK_MULTIPLIERS[currentBHK] || 1.0;
   return Math.round((base * mult) / 10) * 10;
 }
@@ -308,9 +298,7 @@ function initLivePricing() {
         updateStickyBar();
       }
     },
-    (err) => {
-      console.warn("Live pricing sync skipped:", err.message);
-    }
+    (err) => console.warn("Live pricing sync skipped:", err.message)
   );
 }
 
@@ -323,7 +311,6 @@ function toast(msg) {
   toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-// 4. NAVIGATION & HISTORY SYNC
 function hideModalUI(el) {
   if (!el) return;
   el.classList.remove("show");
@@ -352,12 +339,18 @@ window.addEventListener("popstate", () => {
   }
 });
 
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const openModalEl = document.querySelector(".modal-overlay.show:not(#loading-modal)");
+    if (openModalEl) closeModal(openModalEl.id);
+  }
+});
+
 function toggleMobileMenu() {
   const drawer = $("mobile-drawer");
   const overlay = $("drawer-overlay");
   const toggle = $("menu-toggle");
   if (!drawer || !overlay || !toggle) return;
-
   if (drawer.classList.contains("open")) {
     closeMobileMenu();
   } else {
@@ -373,9 +366,7 @@ function closeMobileMenu(skipHistory = false) {
   const drawer = $("mobile-drawer");
   const wasOpen = drawer && drawer.classList.contains("open");
   hideMobileDrawerUI();
-  if (!skipHistory && wasOpen && history.state && history.state.drawer) {
-    history.back();
-  }
+  if (!skipHistory && wasOpen && history.state && history.state.drawer) history.back();
 }
 
 function goFromDrawer(viewId) {
@@ -384,9 +375,13 @@ function goFromDrawer(viewId) {
 }
 
 function go(viewId) {
+  let target = $("view-" + viewId);
+  if (!target) {
+    viewId = "home";
+    target = $("view-home");
+  }
   activeView = viewId;
   document.querySelectorAll(".view").forEach((v) => v.classList.remove("show"));
-  const target = $("view-" + viewId);
   if (target) target.classList.add("show");
 
   document.querySelectorAll(".desktop-nav .nav-link").forEach((b) => b.classList.remove("active"));
@@ -410,28 +405,23 @@ function startNewBooking() {
 }
 
 function setBHK(bhkKey, btnEl) {
+  if (!BHK_MULTIPLIERS[bhkKey]) return;
   currentBHK = bhkKey;
   document.querySelectorAll(".bhk-btn").forEach((b) => {
     const onclickAttr = b.getAttribute("onclick") || "";
-    b.classList.toggle(
-      "active",
-      onclickAttr.toLowerCase().includes(`'${bhkKey.toLowerCase()}'`)
-    );
+    b.classList.toggle("active", onclickAttr.toLowerCase().includes(`'${bhkKey.toLowerCase()}'`));
   });
   if (btnEl) btnEl.classList.add("active");
-
   renderServiceCards();
   renderCart();
   updateStickyBar();
   toast(`Pricing updated for ${bhkKey.toUpperCase()} configuration`);
 }
 
-// 5. SERVICE CARDS & CART
 function createServiceCardHTML(s) {
   const inCart = cart.some((item) => item.id === s.id);
   const price = getServicePrice(s);
   const chipsHTML = s.chips.map((c) => `<span class="chip">${c}</span>`).join("");
-
   return `
     <div class="card ${inCart ? "selected" : ""}" id="card-${s.id}">
       <div class="card-body">
@@ -462,18 +452,12 @@ function createServiceCardHTML(s) {
 function renderServiceCards() {
   const homeContainer = $("home-services-grid");
   const catalogContainer = $("catalog-services-grid");
-
-  if (homeContainer) {
-    homeContainer.innerHTML = SERVICES.slice(0, 4).map(createServiceCardHTML).join("");
-  }
-  if (catalogContainer) {
-    catalogContainer.innerHTML = SERVICES.map(createServiceCardHTML).join("");
-  }
+  if (homeContainer) homeContainer.innerHTML = SERVICES.slice(0, 4).map(createServiceCardHTML).join("");
+  if (catalogContainer) catalogContainer.innerHTML = SERVICES.map(createServiceCardHTML).join("");
 }
 
 function toggleCart(serviceId) {
   const existingIndex = cart.findIndex((item) => item.id === serviceId);
-
   if (existingIndex > -1) {
     cart = cart.filter((item) => item.id !== serviceId);
     toast("Treatment removed");
@@ -483,7 +467,6 @@ function toggleCart(serviceId) {
     cart.push({ id: s.id, name: s.name, basePrice: s.basePrice });
     toast("✓ Treatment added to booking");
   }
-
   writeStorageJSON(CART_STORAGE_KEY, cart);
   renderServiceCards();
   renderCart();
@@ -548,12 +531,10 @@ function renderCart() {
 function updateStickyBar() {
   const bar = $("sticky-bar");
   if (!bar) return;
-
   if (cart.length === 0 || activeView === "book" || activeView === "success") {
     bar.classList.remove("show");
     return;
   }
-
   const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
   const sbCount = $("sb-count");
   const sbTotal = $("sb-total");
@@ -562,16 +543,13 @@ function updateStickyBar() {
   bar.classList.add("show");
 }
 
-// 6. MODALS
 function openModal(id, trackHistory = true) {
   const el = $(id);
   if (el) {
     const alreadyOpen = el.classList.contains("show");
     el.classList.add("show");
     document.body.style.overflow = "hidden";
-    if (trackHistory && !alreadyOpen) {
-      history.pushState({ modalId: id }, "");
-    }
+    if (trackHistory && !alreadyOpen) history.pushState({ modalId: id }, "");
   }
 }
 
@@ -580,16 +558,13 @@ function closeModal(id, skipHistory = false) {
   if (el) {
     const wasOpen = el.classList.contains("show");
     hideModalUI(el);
-    if (!skipHistory && wasOpen && history.state && history.state.modalId === id) {
-      history.back();
-    }
+    if (!skipHistory && wasOpen && history.state && history.state.modalId === id) history.back();
   }
 }
 
 function openServiceModal(id) {
   const s = SERVICES.find((item) => item.id === id);
   if (!s) return;
-
   $("modal-service-title").textContent = s.name;
   $("modal-service-body").innerHTML = `
     <div style="font-size: 0.9rem; line-height: 1.7; color: var(--slate-700);">
@@ -609,7 +584,6 @@ function openServiceModal(id) {
       </div>
     </div>
   `;
-
   const addBtn = $("modal-service-add-btn");
   const inCart = cart.some((item) => item.id === s.id);
   addBtn.textContent = inCart ? "Remove from Booking" : "Add to Booking";
@@ -620,7 +594,6 @@ function openServiceModal(id) {
   openModal("service-modal");
 }
 
-// 7. FORM VALIDATION
 function validateLive(fieldId, isValid) {
   const el = $(fieldId);
   if (!el) return;
@@ -632,36 +605,25 @@ function validatePhoneLive(input) {
   validateLive("f-phone", isValidIndianPhone(input.value));
 }
 
-// 8. REAL-TIME SLOTS (PRIVACY-SAFE VIA booked_slots COLLECTION)
 async function getBookedSlotsForDate(dateVal) {
   const bookedSlots = new Set();
-
   if (db && dateVal) {
     try {
-      const snap = await withTimeout(
-        db.collection("booked_slots").where("date", "==", dateVal).get(),
-        4500
-      );
+      const snap = await withTimeout(db.collection("booked_slots").where("date", "==", dateVal).get(), 4500);
       snap.forEach((doc) => {
         const data = doc.data();
-        if (data && data.slot && data.active !== false) {
-          bookedSlots.add(data.slot);
-        }
+        if (data && data.slot && data.active !== false) bookedSlots.add(data.slot);
       });
     } catch (err) {
       console.warn("Could not query booked_slots:", err);
     }
   }
-
   const localBookings = readStorageJSON(BOOKINGS_STORAGE_KEY, []);
   if (Array.isArray(localBookings)) {
     localBookings.forEach((b) => {
-      if (b && b.date === dateVal && b.slot && b.status !== "Cancelled") {
-        bookedSlots.add(b.slot);
-      }
+      if (b && b.date === dateVal && b.slot && b.status !== "Cancelled") bookedSlots.add(b.slot);
     });
   }
-
   return bookedSlots;
 }
 
@@ -677,12 +639,10 @@ async function refreshSlots(silent = false) {
   slotSelect.innerHTML = '<option value="">Checking slot availability…</option>';
 
   const bookedSlots = await getBookedSlotsForDate(dateVal);
-
   if (dateInput.value !== dateVal) return;
 
   const now = new Date();
-  const todayStr = formatLocalDate(now);
-  const isToday = dateVal === todayStr;
+  const isToday = dateVal === formatLocalDate(now);
   const currentHour = now.getHours();
 
   slotSelect.innerHTML = '<option value="">Select available slot…</option>';
@@ -691,7 +651,6 @@ async function refreshSlots(silent = false) {
   AVAILABLE_SLOTS.forEach((slot) => {
     const isPassed = isToday && currentHour >= slot.cutoffHour;
     const isBooked = bookedSlots.has(slot.label);
-
     const opt = document.createElement("option");
     opt.value = slot.label;
 
@@ -750,20 +709,27 @@ function validateBookingForm() {
   validateLive("f-date", dateOk);
   validateLive("f-slot", slotOk);
 
-  if (!nameOk) { toast("Please enter your full name."); return false; }
-  if (!phoneOk) { toast("Please enter a valid 10-digit Indian mobile number."); return false; }
-  if (!addressOk) { toast("Please enter your street address & flat number."); return false; }
-  if (!dateOk || !slotOk) { toast("Please select a valid date and available slot."); return false; }
+  const firstInvalid = [
+    [!nameOk, "f-name", "Please enter your full name."],
+    [!phoneOk, "f-phone", "Please enter a valid 10-digit Indian mobile number."],
+    [!addressOk, "f-address", "Please enter your street address & flat number."],
+    [!dateOk, "f-date", "Please select a valid date."],
+    [!slotOk, "f-slot", "Please select an available arrival slot."]
+  ].find(([bad]) => bad);
 
+  if (firstInvalid) {
+    const [, fieldId, msg] = firstInvalid;
+    $(fieldId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    toast(msg);
+    return false;
+  }
   return true;
 }
 
-// 9. BOOKING SUBMISSION (ATOMIC TRANSACTION AGAINST DOUBLE-BOOKING)
 async function syncOfflineQueue() {
   if (!GOOGLE_SHEET_WEBHOOK_URL || !navigator.onLine) return;
   const queue = readStorageJSON(SYNC_QUEUE_KEY, []);
   if (!Array.isArray(queue) || !queue.length) return;
-
   const remaining = [];
   for (const item of queue) {
     try {
@@ -779,13 +745,11 @@ window.addEventListener("online", syncOfflineQueue);
 async function handleBookingSubmission(e) {
   e.preventDefault();
   if (isSubmitting) return;
-
   if (cart.length === 0) {
     toast("⚠ Please add at least one treatment before checkout.");
     go("services");
     return;
   }
-
   if (!validateBookingForm()) return;
 
   const chosenDate = $("in-date").value;
@@ -795,19 +759,15 @@ async function handleBookingSubmission(e) {
   isSubmitting = true;
   const submitBtn = $("submit-btn");
   submitBtn.disabled = true;
-
   openModal("loading-modal", false);
 
   try {
-    if (!db) {
-      throw new Error("Firebase is not initialized.");
-    }
+    if (!db) throw new Error("Firebase is not initialized.");
 
     const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
     const serviceNames = cart.map((item) => item.name).join(", ");
     const sanitizedPhone = cleanPhone($("in-phone").value);
     const slotDocRef = db.collection("booked_slots").doc(slotDocId);
-
     let booking = null;
 
     await withTimeout(db.runTransaction(async (tx) => {
@@ -830,9 +790,7 @@ async function handleBookingSubmission(e) {
           break;
         }
       }
-      if (!bookingDocRef) {
-        throw new Error("Could not generate a unique reference ID. Please retry.");
-      }
+      if (!bookingDocRef) throw new Error("Could not generate a unique reference ID. Please retry.");
 
       booking = {
         ref: ref,
@@ -858,7 +816,6 @@ async function handleBookingSubmission(e) {
         bookingRef: ref,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-
       tx.set(bookingDocRef, {
         ...booking,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -869,7 +826,6 @@ async function handleBookingSubmission(e) {
       try {
         await postToSheetWithTimeout(booking, 6000);
       } catch (sheetErr) {
-        console.warn("Sheet sync queued:", sheetErr);
         const queue = readStorageJSON(SYNC_QUEUE_KEY, []);
         if (Array.isArray(queue)) {
           queue.push(booking);
@@ -900,7 +856,6 @@ async function handleBookingSubmission(e) {
       <b>${formatReadableDate(booking.date)}</b> (${esc(booking.slot)}).<br>
       Payable amount: <b>${fmt(booking.total)}</b> upon inspection.
     `;
-
     closeModal("loading-modal", true);
     go("success");
   } catch (err) {
@@ -914,18 +869,14 @@ async function handleBookingSubmission(e) {
     }
   } finally {
     isSubmitting = false;
-    if (cart.length > 0 && submitBtn) {
-      submitBtn.disabled = false;
-    }
+    if (cart.length > 0 && submitBtn) submitBtn.disabled = false;
   }
 }
 
-// 10. PORTAL LOOKUP
 async function handlePortalLookup(e) {
   e.preventDefault();
   const inputVal = $("portal-input").value.trim();
   const container = $("portal-results");
-
   const isRefSearch = /^ASM-/i.test(inputVal);
   const cleanedQuery = isRefSearch ? inputVal.toUpperCase() : cleanPhone(inputVal);
 
@@ -939,21 +890,15 @@ async function handlePortalLookup(e) {
   }
 
   container.innerHTML = `<div class="panel" style="text-align:center;">Searching records...</div>`;
-
   let records = [];
 
   if (db) {
     try {
       if (isRefSearch) {
         const docSnap = await withTimeout(db.collection("bookings").doc(cleanedQuery).get(), 5000);
-        if (docSnap.exists) {
-          records.push(docSnap.data());
-        }
+        if (docSnap.exists) records.push(docSnap.data());
       } else {
-        const snapshot = await withTimeout(
-          db.collection("bookings").where("phone", "==", cleanedQuery).get(),
-          5000
-        );
+        const snapshot = await withTimeout(db.collection("bookings").where("phone", "==", cleanedQuery).get(), 5000);
         snapshot.forEach((doc) => records.push(doc.data()));
       }
     } catch (err) {
@@ -968,7 +913,6 @@ async function handlePortalLookup(e) {
       if (isRefSearch) return b.ref && b.ref.toUpperCase() === cleanedQuery;
       return b.phone && cleanPhone(b.phone) === cleanedQuery;
     });
-
     localFiltered.forEach((lb) => {
       if (!records.some((r) => r.ref === lb.ref)) records.push(lb);
     });
@@ -1007,63 +951,13 @@ async function handlePortalLookup(e) {
 function copyBookingDetails() {
   const b = latestBooking;
   if (!b) return;
-
   const text = `*AS Global Management Booking*\nRef: ${b.ref}\nServices: ${b.services}\nDate: ${formatReadableDate(b.date)} (${b.slot})\nTotal: ${fmt(b.total)}\nStatus: Pay Post-Service with 30-Day Warranty`;
-
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text)
       .then(() => toast("✓ Booking details copied! Ready to paste into WhatsApp."))
       .catch(() => toast("Ref: " + b.ref));
   } else {
     toast("Ref: " + b.ref);
-  }
-}
-
-async function handleCommercialInquiry(e) {
-  e.preventDefault();
-  if (isCommercialSubmitting) return;
-
-  const org = $("comm-org").value.trim();
-  const name = $("comm-name").value.trim();
-  if (org.length < 2 || name.length < 2) {
-    toast("Please enter your organization and contact name.");
-    return;
-  }
-  if (!isValidIndianPhone($("comm-phone").value)) {
-    toast("Please enter a valid 10-digit Indian mobile number.");
-    return;
-  }
-
-  const inquiry = {
-    org: org,
-    name: name,
-    phone: cleanPhone($("comm-phone").value),
-    type: $("comm-type").value,
-    notes: $("comm-notes").value.trim(),
-    date: new Date().toLocaleDateString("en-IN"),
-    createdAtMs: Date.now()
-  };
-
-  const btn = $("comm-submit-btn");
-  isCommercialSubmitting = true;
-  if (btn) btn.disabled = true;
-
-  try {
-    if (!db) throw new Error("Database unavailable");
-    await withTimeout(db.collection("commercial_inquiries").add({
-      ...inquiry,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }), 5000);
-
-    toast("✓ Commercial site audit inquiry registered. Our team will contact you.");
-    const form = $("comm-form");
-    if (form) form.reset();
-  } catch (err) {
-    console.warn("Commercial inquiry error:", err);
-    toast("⚠ Could not submit inquiry. Please check your connection and try again.");
-  } finally {
-    isCommercialSubmitting = false;
-    if (btn) btn.disabled = false;
   }
 }
 
@@ -1099,17 +993,13 @@ function handleLogoClick() {
     window.location.href = "admin.html";
     return;
   }
-  clickTimer = setTimeout(() => {
-    clickCount = 0;
-  }, 2000);
+  clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
 }
 
 function initDateInputs(silent = true) {
   const now = new Date();
-  const minDate = formatLocalDate(now);
   const dateInput = $("in-date");
-  if (dateInput) dateInput.min = minDate;
-
+  if (dateInput) dateInput.min = formatLocalDate(now);
   if (now.getHours() >= 20) {
     const todayBtn = $("btn-today");
     if (todayBtn) todayBtn.style.display = "none";
@@ -1119,7 +1009,6 @@ function initDateInputs(silent = true) {
   }
 }
 
-// 11. RUN ON LOAD
 window.addEventListener("DOMContentLoaded", () => {
   initLivePricing();
   initDateInputs(true);
