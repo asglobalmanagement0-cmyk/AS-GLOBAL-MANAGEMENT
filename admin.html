@@ -4,83 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AS Global Management — Admin Dashboard</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Sora:wght@700;800&display=swap" rel="stylesheet">
-
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
-
   <style>
-    :root {
-      --green: #0e6b43;
-      --green-dark: #0a4d30;
-      --green-soft: #eaf5ef;
-      --green-softer: #f2f9f5;
-      --ink: #0d1f17;
-      --ink-2: #33463c;
-      --muted: #5c6f65;
-      --line: #e4ece7;
-      --bg: #f7faf8;
-      --danger: #c0392b;
-      --white: #ffffff;
-    }
-
+    :root { --green: #0e6b43; --green-dark: #0a4d30; --green-soft: #eaf5ef; --green-softer: #f2f9f5; --ink: #0d1f17; --ink-2: #33463c; --muted: #5c6f65; --line: #e4ece7; --bg: #f7faf8; --danger: #c0392b; --white: #ffffff; }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
     body { background: var(--bg); color: var(--ink); min-height: 100vh; }
-
-    #auth-view {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 16px;
-      background: radial-gradient(900px 420px at 50% 0%, rgba(14, 107, 67, 0.1), transparent 65%), var(--bg);
-    }
-    .login-card {
-      background: var(--white);
-      max-width: 400px;
-      width: 100%;
-      border-radius: 16px;
-      padding: 32px 24px;
-      box-shadow: 0 16px 40px rgba(13, 40, 28, 0.1);
-      border: 1px solid var(--line);
-      text-align: center;
-    }
+    #auth-view { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; background: radial-gradient(900px 420px at 50% 0%, rgba(14, 107, 67, 0.1), transparent 65%), var(--bg); }
+    .login-card { background: var(--white); max-width: 400px; width: 100%; border-radius: 16px; padding: 32px 24px; box-shadow: 0 16px 40px rgba(13, 40, 28, 0.1); border: 1px solid var(--line); text-align: center; }
     .login-card h2 { font-family: 'Sora', sans-serif; margin-bottom: 8px; color: var(--green-dark); }
     .login-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 24px; }
-
     .form-group { text-align: left; margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--ink-2); }
-    .form-group input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid var(--line);
-      border-radius: 10px;
-      font-size: 0.95rem;
-      background: var(--bg);
-      outline: none;
-    }
+    .form-group input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 10px; font-size: 0.95rem; background: var(--bg); outline: none; }
     .form-group input:focus { border-color: var(--green); background: var(--white); box-shadow: 0 0 0 3px rgba(14, 107, 67, 0.12); }
-
-    .btn {
-      padding: 10px 16px;
-      background: var(--green);
-      color: var(--white);
-      font-weight: 700;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 0.88rem;
-      transition: background 0.2s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .btn { padding: 10px 16px; background: var(--green); color: var(--white); font-weight: 700; border: none; border-radius: 10px; cursor: pointer; font-size: 0.88rem; transition: background 0.2s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
     .btn:hover { background: var(--green-dark); }
     .btn.full { width: 100%; padding: 12px; font-size: 0.95rem; }
     .btn.secondary { background: var(--green-soft); color: var(--green-dark); border: 1px solid #cce3d5; }
@@ -88,144 +30,42 @@
     .btn.danger { background: #fdf2f0; color: var(--danger); border: 1px solid #f5c6c0; padding: 6px 10px; font-size: 0.78rem; }
     .btn.danger:hover { background: var(--danger); color: #fff; }
     .btn.logout-btn { padding: 8px 16px; font-size: 0.85rem; background: var(--ink-2); }
-
-    .error-msg {
-      background: #fdf2f0;
-      color: var(--danger);
-      font-size: 0.82rem;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      display: none;
-      font-weight: 600;
-    }
-
+    .error-msg { background: #fdf2f0; color: var(--danger); font-size: 0.82rem; padding: 10px; border-radius: 8px; margin-bottom: 16px; display: none; font-weight: 600; }
     #dashboard-view { display: none; padding-bottom: 60px; }
-    .dash-header {
-      background: var(--white);
-      border-bottom: 1px solid var(--line);
-      padding: 16px clamp(16px, 3vw, 32px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+    .dash-header { background: var(--white); border-bottom: 1px solid var(--line); padding: 16px clamp(16px, 3vw, 32px); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .dash-header h1 { font-size: 1.25rem; font-family: 'Sora', sans-serif; color: var(--green-dark); }
-
     .container { max-width: 1240px; margin: 24px auto; padding: 0 16px; }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    .tab-btn {
-      padding: 10px 18px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: var(--white);
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: var(--ink-2);
-      cursor: pointer;
-    }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 18px; border-radius: 10px; border: 1px solid var(--line); background: var(--white); font-weight: 700; font-size: 0.88rem; color: var(--ink-2); cursor: pointer; }
     .tab-btn:hover { background: var(--green-softer); color: var(--green-dark); }
-    .tab-btn.active {
-      background: var(--green);
-      color: var(--white);
-      border-color: var(--green);
-    }
-
+    .tab-btn.active { background: var(--green); color: var(--white); border-color: var(--green); }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .stat-card {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 18px;
-    }
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
     .stat-card span { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; }
     .stat-card b { display: block; font-size: 1.8rem; font-family: 'Sora', sans-serif; color: var(--ink); }
-
-    .table-card {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 14px rgba(13, 40, 28, 0.05);
-    }
-    .table-header {
-      padding: 16px;
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+    .table-card { background: var(--white); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 14px rgba(13, 40, 28, 0.05); }
+    .table-header { padding: 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .table-wrapper { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
     th { background: var(--green-soft); padding: 12px 16px; font-weight: 700; color: var(--green-dark); white-space: nowrap; }
     td { padding: 14px 16px; border-top: 1px solid var(--line); vertical-align: top; }
     tr:hover { background: var(--green-softer); }
-
-    .status-select {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid #cce3d5;
-      font-weight: 700;
-      font-size: 0.8rem;
-      background: var(--green-soft);
-      color: var(--green-dark);
-      cursor: pointer;
-    }
-
-    .price-input {
-      width: 92px;
-      padding: 8px 10px;
-      border: 1.5px solid var(--line);
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      background: var(--bg);
-    }
+    .status-select { padding: 6px 10px; border-radius: 8px; border: 1px solid #cce3d5; font-weight: 700; font-size: 0.8rem; background: var(--green-soft); color: var(--green-dark); cursor: pointer; }
+    .price-input { width: 92px; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 8px; font-weight: 700; font-size: 0.9rem; background: var(--bg); }
     .price-input:focus { border-color: var(--green); background: var(--white); outline: none; }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--ink);
-      color: var(--white);
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.88rem;
-      display: none;
-      z-index: 999;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: var(--white); padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 0.88rem; display: none; z-index: 999; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
     .toast.show { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- 1. LOGIN VIEW -->
   <div id="auth-view">
     <div class="login-card">
       <h2>Admin Login</h2>
       <p>AS Global Management Portal</p>
       <div id="login-error" class="error-msg"></div>
-
       <form onsubmit="handleAdminLogin(event)">
         <div class="form-group">
           <label for="admin-email">Admin Email</label>
@@ -243,7 +83,6 @@
     </div>
   </div>
 
-  <!-- 2. SECURE DASHBOARD VIEW -->
   <div id="dashboard-view">
     <header class="dash-header">
       <div>
@@ -261,24 +100,13 @@
       <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('bookings', this)">📋 Customer Bookings</button>
         <button class="tab-btn" onclick="switchTab('pricing', this)">💰 Edit Service Prices</button>
-        <button class="tab-btn" onclick="switchTab('commercial', this)">🏢 Commercial Inquiries</button>
       </div>
 
-      <!-- TAB 1: BOOKINGS -->
       <section id="tab-bookings" class="tab-panel active">
         <div class="stats-row">
-          <div class="stat-card">
-            <span>Total Bookings</span>
-            <b id="stat-total">0</b>
-          </div>
-          <div class="stat-card">
-            <span>Expected Revenue</span>
-            <b id="stat-revenue" style="color: var(--green);">₹0</b>
-          </div>
-          <div class="stat-card">
-            <span>Completed Jobs</span>
-            <b id="stat-completed">0</b>
-          </div>
+          <div class="stat-card"><span>Total Bookings</span><b id="stat-total">0</b></div>
+          <div class="stat-card"><span>Expected Revenue</span><b id="stat-revenue" style="color: var(--green);">₹0</b></div>
+          <div class="stat-card"><span>Completed Jobs</span><b id="stat-completed">0</b></div>
         </div>
 
         <div class="table-card">
@@ -301,16 +129,13 @@
                 </tr>
               </thead>
               <tbody id="bookings-table-body">
-                <tr>
-                  <td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Loading bookings...</td>
-                </tr>
+                <tr><td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">Loading bookings...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- TAB 2: EDIT SERVICE PRICES -->
       <section id="tab-pricing" class="tab-panel">
         <div class="table-card">
           <div class="table-header">
@@ -336,34 +161,6 @@
                 </tr>
               </thead>
               <tbody id="pricing-table-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 3: COMMERCIAL INQUIRIES -->
-      <section id="tab-commercial" class="tab-panel">
-        <div class="table-card">
-          <div class="table-header">
-            <h2 style="font-size: 1.1rem; font-family: 'Sora', sans-serif;">Commercial Inquiries</h2>
-          </div>
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Organization</th>
-                  <th>Contact Person</th>
-                  <th>Phone</th>
-                  <th>Facility Type</th>
-                  <th>Notes</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="commercial-table-body">
-                <tr>
-                  <td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Loading inquiries...</td>
-                </tr>
-              </tbody>
             </table>
           </div>
         </div>
@@ -403,7 +200,6 @@
     ];
 
     let unsubscribeBookings = null;
-    let unsubscribeCommercial = null;
     let bookingsById = {};
 
     function calcDefaultPrice(basePrice, bhk) {
@@ -411,21 +207,13 @@
     }
 
     function getSlotDocId(dateVal, slotLabel) {
-      const slug = String(slotLabel || "")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+      const slug = String(slotLabel || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
       return `${dateVal}__${slug}`;
     }
 
     function escapeHTML(str) {
       if (!str) return "";
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     function cleanTelHref(phone) {
@@ -449,19 +237,16 @@
     auth.onAuthStateChanged(user => {
       const authView = document.getElementById("auth-view");
       const dashView = document.getElementById("dashboard-view");
-
       if (user) {
         authView.style.display = "none";
         dashView.style.display = "block";
         document.getElementById("user-display").textContent = user.email;
         startLiveBookingsListener();
-        startLiveCommercialListener();
         loadPricingEditor();
       } else {
         authView.style.display = "flex";
         dashView.style.display = "none";
         if (unsubscribeBookings) unsubscribeBookings();
-        if (unsubscribeCommercial) unsubscribeCommercial();
       }
     });
 
@@ -471,11 +256,9 @@
       const pass = document.getElementById("admin-password").value;
       const errBox = document.getElementById("login-error");
       const btn = document.getElementById("login-btn");
-
       errBox.style.display = "none";
       btn.textContent = "Verifying...";
       btn.disabled = true;
-
       try {
         await auth.signInWithEmailAndPassword(email, pass);
       } catch (err) {
@@ -487,9 +270,7 @@
       }
     }
 
-    function handleLogout() {
-      auth.signOut();
-    }
+    function handleLogout() { auth.signOut(); }
 
     function startLiveBookingsListener() {
       const tbody = document.getElementById("bookings-table-body");
@@ -497,9 +278,7 @@
 
       unsubscribeBookings = db.collection("bookings").onSnapshot(
         snapshot => {
-          let totalRev = 0;
-          let count = 0;
-          let completedCount = 0;
+          let totalRev = 0, count = 0, completedCount = 0;
           const bookings = [];
           bookingsById = {};
 
@@ -563,7 +342,6 @@
     async function updateBookingStatus(docId, newStatus) {
       const b = bookingsById[docId];
       const slotDocId = b ? (b.slotDocId || (b.date && b.slot ? getSlotDocId(b.date, b.slot) : "")) : "";
-
       try {
         if (newStatus !== "Cancelled" && b && b.status === "Cancelled" && slotDocId) {
           const existingSlot = await db.collection("booked_slots").doc(slotDocId).get();
@@ -573,11 +351,8 @@
             return;
           }
         }
-
         const batch = db.batch();
-        const bookingRef = db.collection("bookings").doc(docId);
-        batch.update(bookingRef, { status: newStatus });
-
+        batch.update(db.collection("bookings").doc(docId), { status: newStatus });
         if (slotDocId) {
           const slotRef = db.collection("booked_slots").doc(slotDocId);
           if (newStatus === "Cancelled") {
@@ -592,7 +367,6 @@
             });
           }
         }
-
         await batch.commit();
         showToast(`Status updated to ${newStatus}`);
       } catch (err) {
@@ -604,13 +378,10 @@
       if (!confirm(`Delete booking ${docId}?`)) return;
       const b = bookingsById[docId];
       const slotDocId = b ? (b.slotDocId || (b.date && b.slot ? getSlotDocId(b.date, b.slot) : "")) : "";
-
       try {
         const batch = db.batch();
         batch.delete(db.collection("bookings").doc(docId));
-        if (slotDocId) {
-          batch.delete(db.collection("booked_slots").doc(slotDocId));
-        }
+        if (slotDocId) batch.delete(db.collection("booked_slots").doc(slotDocId));
         await batch.commit();
         showToast("Booking deleted & slot freed.");
       } catch (err) {
@@ -622,9 +393,7 @@
       let savedPrices = {};
       try {
         const doc = await db.collection("settings").doc("service_prices").get();
-        if (doc.exists && doc.data().prices) {
-          savedPrices = doc.data().prices;
-        }
+        if (doc.exists && doc.data().prices) savedPrices = doc.data().prices;
       } catch (err) {
         console.warn("Could not load saved prices:", err.message);
       }
@@ -634,7 +403,6 @@
     function renderPricingRows(savedPrices) {
       const tbody = document.getElementById("pricing-table-body");
       const bhkKeys = ["1bhk", "2bhk", "3bhk", "villa"];
-
       tbody.innerHTML = DEFAULT_SERVICES.map(svc => {
         const override = savedPrices[svc.id] || {};
         return `
@@ -642,21 +410,9 @@
             <td><b>${escapeHTML(svc.name)}</b></td>
             ${bhkKeys.map(k => {
               const val = override[k] !== undefined ? override[k] : calcDefaultPrice(svc.basePrice, k);
-              return `
-                <td>
-                  <input type="number" min="0" step="10"
-                    class="price-input"
-                    data-service="${svc.id}"
-                    data-bhk="${k}"
-                    value="${Number(val)}">
-                </td>
-              `;
+              return `<td><input type="number" min="0" step="10" class="price-input" data-service="${svc.id}" data-bhk="${k}" value="${Number(val)}"></td>`;
             }).join("")}
-            <td>
-              <button type="button" class="btn secondary" style="padding:6px 10px; font-size:0.78rem;" onclick="autoFillRow('${svc.id}')">
-                Auto-fill BHK
-              </button>
-            </td>
+            <td><button type="button" class="btn secondary" style="padding:6px 10px; font-size:0.78rem;" onclick="autoFillRow('${svc.id}')">Auto-fill BHK</button></td>
           </tr>
         `;
       }).join("");
@@ -677,7 +433,6 @@
       const btn = document.getElementById("save-prices-btn");
       btn.disabled = true;
       btn.textContent = "Saving...";
-
       const pricesPayload = {};
       document.querySelectorAll(".price-input").forEach(input => {
         const svcId = input.dataset.service;
@@ -686,7 +441,6 @@
         if (!pricesPayload[svcId]) pricesPayload[svcId] = {};
         pricesPayload[svcId][bhk] = val;
       });
-
       try {
         await db.collection("settings").doc("service_prices").set({
           prices: pricesPayload,
@@ -705,51 +459,6 @@
     function resetDefaultPrices() {
       if (!confirm("Reset inputs to default prices? Click Save All Prices afterward to publish.")) return;
       renderPricingRows({});
-    }
-
-    function startLiveCommercialListener() {
-      const tbody = document.getElementById("commercial-table-body");
-      if (unsubscribeCommercial) unsubscribeCommercial();
-
-      unsubscribeCommercial = db.collection("commercial_inquiries").onSnapshot(
-        snap => {
-          const items = [];
-          snap.forEach(d => items.push({ id: d.id, ...d.data() }));
-          items.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
-
-          if (items.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 24px; color: #94a3b8;">No commercial inquiries yet.</td></tr>`;
-            return;
-          }
-
-          tbody.innerHTML = items.map(c => {
-            const safeTel = cleanTelHref(c.phone);
-            return `
-              <tr>
-                <td><b>${escapeHTML(c.org)}</b></td>
-                <td>${escapeHTML(c.name)}</td>
-                <td><a href="tel:${escapeHTML(safeTel)}" style="color:var(--green); font-weight:700;">${escapeHTML(c.phone)}</a></td>
-                <td>${escapeHTML(c.type || c.facilityType)}</td>
-                <td>${escapeHTML(c.notes || "-")}</td>
-                <td><button class="btn danger" onclick="deleteCommercialInquiry('${escapeHTML(c.id)}')">Delete</button></td>
-              </tr>
-            `;
-          }).join("");
-        },
-        err => {
-          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red; padding: 24px;">Permission Denied loading commercial inquiries.</td></tr>`;
-        }
-      );
-    }
-
-    async function deleteCommercialInquiry(docId) {
-      if (!confirm("Delete this commercial inquiry?")) return;
-      try {
-        await db.collection("commercial_inquiries").doc(docId).delete();
-        showToast("Commercial inquiry deleted.");
-      } catch (err) {
-        alert("Failed to delete inquiry: " + err.message);
-      }
     }
   </script>
 </body>
