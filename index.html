@@ -284,14 +284,14 @@
         <div class="sec-head">
           <span class="eyebrow">Customer Self-Service</span>
           <h2>Track Your Bookings &amp; Warranty</h2>
-          <p>Enter your 10-digit mobile number OR your 9-digit Reference Code (e.g. ASM-123456).</p>
+          <p>Enter your 9-character Reference Code (e.g. ASM-123456) or your 10-digit mobile number.</p>
         </div>
 
         <div class="panel" style="max-width: 520px; margin-bottom: 24px;">
           <form onsubmit="handlePortalLookup(event)">
             <div class="field">
-              <label for="portal-input">Registered Mobile Number or Booking Reference Code</label>
-              <input type="text" id="portal-input" placeholder="e.g. 9876543210 or ASM-123456" required>
+              <label for="portal-input">Booking Reference Code or Registered Mobile Number</label>
+              <input type="text" id="portal-input" placeholder="e.g. ASM-123456 or 9876543210" required>
             </div>
             <button type="submit" class="btn block">Lookup Service Records</button>
           </form>
@@ -464,7 +464,7 @@
   <!-- Sticky Mobile Cart Bar -->
   <div id="sticky-bar" class="sticky-bar">
     <div>
-      <span id="sb-count" style="font-size: 0.72rem; color: #cde5d2; display: block; font-weight: 700; text-transform: uppercase;">0 Treatments</span>
+      <span id="sb-count" style="font-size: 0.72rem; color: #DAF1DE; display: block; font-weight: 700; text-transform: uppercase;">0 Treatments</span>
       <span id="sb-total" style="font-size: 1.15rem; font-weight: 800; color: #DAF1DE;">₹0</span>
     </div>
     <button class="sticky-bar-btn" onclick="go('book')">Schedule →</button>
