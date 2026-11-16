@@ -35,8 +35,7 @@ const BHK_MULTIPLIERS = {
   "1bhk": 1.0,
   "2bhk": 1.25,
   "3bhk": 1.55,
-  "villa": 2.1,
-  "commercial": 2.4
+  "villa": 2.1
 };
 
 const SERVICES = [
@@ -595,16 +594,16 @@ function openServiceModal(id) {
   $("modal-service-body").innerHTML = `
     <div style="font-size: 0.9rem; line-height: 1.7; color: var(--slate-700);">
       <p style="margin-bottom: 12px;">${s.desc}</p>
-      <div style="background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
-        <b style="color: var(--primary); display: block;">🔬 Treatment Process:</b>
+      <div style="background: var(--primary-light); border: 1px solid #cce3d5; padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+        <b style="color: var(--primary-dark); display: block;">🔬 Treatment Process:</b>
         ${s.protocol}
       </div>
-      <div style="background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2); padding: 12px; border-radius: 12px; margin-bottom: 10px;">
-        <b style="color: var(--primary); display: block;">🛡️ Safety Information:</b>
+      <div style="background: var(--primary-light); border: 1px solid #cce3d5; padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+        <b style="color: var(--primary-dark); display: block;">🛡️ Safety Information:</b>
         ${s.safety}
       </div>
-      <div style="background: var(--primary-light); border: 1px solid rgba(22, 56, 50, 0.2); padding: 12px; border-radius: 12px;">
-        <b style="color: var(--primary); display: block;">📜 Warranty &amp; Prep:</b>
+      <div style="background: var(--primary-light); border: 1px solid #cce3d5; padding: 12px; border-radius: 12px;">
+        <b style="color: var(--primary-dark); display: block;">📜 Warranty &amp; Prep:</b>
         ${s.warranty}<br>
         <span style="font-size: 0.8rem; color: var(--slate-700);">${s.prep}</span>
       </div>
@@ -639,7 +638,6 @@ async function getBookedSlotsForDate(dateVal) {
 
   if (db && dateVal) {
     try {
-      // Queries only non-PII slot lock documents (no customer names/phones/addresses exposed)
       const snap = await withTimeout(
         db.collection("booked_slots").where("date", "==", dateVal).get(),
         4500
@@ -680,7 +678,6 @@ async function refreshSlots(silent = false) {
 
   const bookedSlots = await getBookedSlotsForDate(dateVal);
 
-  // Prevent stale async responses from overwriting a newly chosen date
   if (dateInput.value !== dateVal) return;
 
   const now = new Date();
@@ -814,7 +811,6 @@ async function handleBookingSubmission(e) {
     let booking = null;
 
     await withTimeout(db.runTransaction(async (tx) => {
-      // 1. Atomically verify the slot is not already locked
       const slotSnap = await tx.get(slotDocRef);
       if (slotSnap.exists && slotSnap.data() && slotSnap.data().active !== false) {
         const slotErr = new Error("That arrival slot was just booked.");
@@ -822,7 +818,6 @@ async function handleBookingSubmission(e) {
         throw slotErr;
       }
 
-      // 2. Generate a non-colliding booking reference
       let ref = "";
       let bookingDocRef = null;
       for (let attempt = 0; attempt < 5; attempt++) {
@@ -856,7 +851,6 @@ async function handleBookingSubmission(e) {
         createdAtMs: Date.now()
       };
 
-      // 3. Write non-PII slot lock + full booking atomically
       tx.set(slotDocRef, {
         date: chosenDate,
         slot: chosenSlot,
@@ -951,7 +945,6 @@ async function handlePortalLookup(e) {
   if (db) {
     try {
       if (isRefSearch) {
-        // Direct document get works even when list queries on bookings are restricted to admins
         const docSnap = await withTimeout(db.collection("bookings").doc(cleanedQuery).get(), 5000);
         if (docSnap.exists) {
           records.push(docSnap.data());
@@ -996,15 +989,15 @@ async function handlePortalLookup(e) {
   container.innerHTML = records.map((b) => `
     <div class="panel" style="margin-bottom: 14px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-        <b>Booking Ref: <code style="color: var(--primary); font-weight: 800;">${esc(b.ref)}</code></b>
-        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary);">${esc(b.status)}</span>
+        <b>Booking Ref: <code style="color: var(--primary-dark); font-weight: 800;">${esc(b.ref)}</code></b>
+        <span style="font-size:0.75rem; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--primary-light); color:var(--primary-dark);">${esc(b.status)}</span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 0.86rem;">
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">SERVICES</span><b>${esc(b.services)}</b></div>
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">VISIT SLOT</span><b>${formatReadableDate(b.date)} (${esc(b.slot)})</b></div>
         <div><span style="color: var(--slate-400); display: block; font-size: 0.72rem;">AMOUNT</span><b>${fmt(b.total)} (Post-Service)</b></div>
       </div>
-      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--slate-100); display: flex; gap: 8px;">
+      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--slate-200); display: flex; gap: 8px;">
         <button type="button" class="btn secondary" style="padding: 6px 14px; font-size: 0.8rem; min-height: 38px;" onclick="openPrintModalData('${esc(b.ref)}')">🖨️ Warranty Card</button>
       </div>
     </div>
