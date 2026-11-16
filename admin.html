@@ -19,7 +19,9 @@
       --primary: #163832;
       --primary-hover: #1e4b43;
       --primary-dark: #0f2924;
-      --primary-light: #DAF1DE;
+      --primary-light: #E0F7E0;
+      --primary-selected: #A6E5A6;
+      --primary-selected-hover: #8fd98f;
       --slate-900: #0f172a;
       --slate-700: #334155;
       --slate-200: #e2e8f0;
@@ -29,7 +31,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background: #f8fafc; color: var(--slate-900); min-height: 100vh; }
+    body { background: #f4fbf4; color: var(--slate-900); min-height: 100vh; }
 
     #auth-view {
       display: flex;
@@ -37,7 +39,7 @@
       justify-content: center;
       min-height: 100vh;
       padding: 16px;
-      background: radial-gradient(130% 90% at 50% -10%, #DAF1DE 0%, #f8fafc 55%, #f1f5f9 100%);
+      background: radial-gradient(130% 90% at 50% -10%, #A6E5A6 0%, #E0F7E0 50%, #f4fbf4 100%);
     }
     .login-card {
       background: var(--white);
@@ -60,17 +62,17 @@
       border: 1.5px solid rgba(22, 56, 50, 0.2);
       border-radius: 10px;
       font-size: 0.95rem;
-      background: rgba(218, 241, 222, 0.25);
+      background: rgba(224, 247, 224, 0.5);
       outline: none;
     }
     .form-group input:focus { border-color: var(--primary); background: var(--white); }
 
     .btn {
       padding: 10px 16px;
-      background: var(--primary);
-      color: var(--white);
-      font-weight: 700;
-      border: none;
+      background: var(--primary-selected);
+      color: var(--primary-dark);
+      font-weight: 800;
+      border: 1.5px solid var(--primary);
       border-radius: 10px;
       cursor: pointer;
       font-size: 0.88rem;
@@ -80,13 +82,14 @@
       align-items: center;
       justify-content: center;
     }
-    .btn:hover { background: var(--primary-hover); }
+    .btn:hover { background: var(--primary-selected-hover); color: var(--primary-dark); }
     .btn.full { width: 100%; padding: 12px; font-size: 0.95rem; }
     .btn.secondary { background: var(--primary-light); color: var(--primary); border: 1px solid rgba(22, 56, 50, 0.25); }
-    .btn.secondary:hover { background: var(--primary); color: var(--primary-light); }
-    .btn.danger { background: #fee2e2; color: var(--danger); padding: 6px 10px; font-size: 0.78rem; }
+    .btn.secondary:hover { background: var(--primary-selected); color: var(--primary-dark); border-color: var(--primary); }
+    .btn.danger { background: #fee2e2; color: var(--danger); border-color: #fca5a5; padding: 6px 10px; font-size: 0.78rem; }
     .btn.danger:hover { background: #fecaca; }
-    .btn.logout-btn { padding: 8px 16px; font-size: 0.85rem; background: var(--slate-700); }
+    .btn.logout-btn { padding: 8px 16px; font-size: 0.85rem; background: var(--primary-light); color: var(--primary); border-color: rgba(22, 56, 50, 0.25); }
+    .btn.logout-btn:hover { background: var(--primary-selected); color: var(--primary-dark); }
 
     .error-msg {
       background: #fee2e2;
@@ -130,9 +133,10 @@
       color: var(--primary);
       cursor: pointer;
     }
+    .tab-btn:hover,
     .tab-btn.active {
-      background: var(--primary);
-      color: var(--primary-light);
+      background: var(--primary-selected);
+      color: var(--primary-dark);
       border-color: var(--primary);
     }
 
@@ -147,7 +151,7 @@
     }
     .stat-card {
       background: var(--white);
-      border: 1px solid rgba(22, 56, 50, 0.15);
+      border: 1px solid rgba(22, 56, 50, 0.18);
       border-radius: 12px;
       padding: 18px;
     }
@@ -156,7 +160,7 @@
 
     .table-card {
       background: var(--white);
-      border: 1px solid var(--slate-200);
+      border: 1px solid rgba(22, 56, 50, 0.18);
       border-radius: 14px;
       overflow: hidden;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -174,7 +178,7 @@
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
     th { background: var(--primary-light); padding: 12px 16px; font-weight: 700; color: var(--primary); white-space: nowrap; }
     td { padding: 14px 16px; border-top: 1px solid var(--slate-200); vertical-align: top; }
-    tr:hover { background: #f8fafc; }
+    tr:hover { background: rgba(224, 247, 224, 0.35); }
 
     .status-select {
       padding: 6px 10px;
@@ -186,6 +190,11 @@
       color: var(--primary);
       cursor: pointer;
     }
+    .status-select:focus {
+      background: var(--primary-selected);
+      border-color: var(--primary);
+      outline: none;
+    }
 
     .price-input {
       width: 92px;
@@ -194,7 +203,7 @@
       border-radius: 8px;
       font-weight: 700;
       font-size: 0.9rem;
-      background: rgba(218, 241, 222, 0.25);
+      background: rgba(224, 247, 224, 0.5);
     }
     .price-input:focus { border-color: var(--primary); background: var(--white); outline: none; }
 
@@ -202,15 +211,16 @@
       position: fixed;
       bottom: 24px;
       right: 24px;
-      background: var(--primary);
-      color: var(--primary-light);
+      background: var(--primary-selected);
+      color: var(--primary-dark);
+      border: 1.5px solid var(--primary);
       padding: 12px 20px;
       border-radius: 10px;
-      font-weight: 600;
+      font-weight: 800;
       font-size: 0.88rem;
       display: none;
       z-index: 999;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
     }
     .toast.show { display: block; }
   </style>
