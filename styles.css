@@ -1,5 +1,5 @@
 /* =========================================================================
-   AS GLOBAL MANAGEMENT — MAIN STYLESHEET (#163832 & #DAF1DE)
+   AS GLOBAL MANAGEMENT — MAIN STYLESHEET (#E0F7E0 & #A6E5A6 THEME)
    ========================================================================= */
 
 :root {
@@ -7,9 +7,11 @@
   --primary-hover: #1e4b43;
   --primary-dark: #0f2924;
   --primary-deep: #163832;
-  --primary-light: #DAF1DE;
-  --primary-soft: #DAF1DE;
-  --primary-glow: rgba(22, 56, 50, 0.22);
+  --primary-light: #E0F7E0;
+  --primary-soft: #E0F7E0;
+  --primary-selected: #A6E5A6;
+  --primary-selected-hover: #8fd98f;
+  --primary-glow: rgba(166, 229, 166, 0.45);
   --accent: #f59e0b;
   --accent-light: #fef3c7;
   --slate-900: #0f172a;
@@ -53,7 +55,7 @@ html {
 
 body {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: radial-gradient(130% 90% at 50% -10%, #DAF1DE 0%, #f8fafc 48%, #f1f5f9 100%);
+  background: radial-gradient(130% 90% at 50% -10%, #A6E5A6 0%, #E0F7E0 45%, #f5fcf5 100%);
   color: var(--slate-900);
   line-height: 1.5;
   min-height: 100vh;
@@ -93,7 +95,7 @@ button {
   user-select: none;
 }
 
-button:active, .action-btn:active, .bhk-btn:active, .qdate-pill:active {
+button:active, .action-btn:active, .bhk-btn:active, .qdate-pill:active, .detail-link:active {
   transform: scale(0.96) !important;
 }
 
@@ -118,7 +120,7 @@ header {
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(22, 56, 50, 0.12);
+  border-bottom: 1px solid rgba(22, 56, 50, 0.15);
   box-shadow: 0 2px 10px rgba(22, 56, 50, 0.05);
   width: 100%;
 }
@@ -199,35 +201,34 @@ header {
   border-radius: 10px;
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--slate-600);
-  background: transparent;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px solid rgba(22, 56, 50, 0.14);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
 }
 
-.nav-link:hover {
-  color: var(--primary);
-  background: var(--primary-light);
-}
-
+.nav-link:hover,
 .nav-link.active {
-  color: var(--primary);
-  background: var(--primary-light);
+  color: var(--primary-dark);
+  background: var(--primary-selected);
+  border-color: var(--primary);
 }
 
 .nav-link.cta-btn {
-  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
-  color: var(--white);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary);
   padding: 9px 18px;
   border-radius: 999px;
   box-shadow: 0 4px 14px var(--primary-glow);
 }
 
 .nav-link.cta-btn:hover {
-  background: var(--primary-dark);
-  color: var(--white);
+  background: var(--primary-selected-hover);
+  color: var(--primary-dark);
 }
 
 .cart-badge {
@@ -239,8 +240,8 @@ header {
   padding: 0 6px;
   margin-left: 6px;
   border-radius: 999px;
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-light);
   font-size: 0.72rem;
   font-weight: 800;
 }
@@ -255,6 +256,7 @@ header {
   width: 44px;
   height: 44px;
   background: var(--primary-light);
+  border: 1px solid rgba(22, 56, 50, 0.2);
   border-radius: 12px;
   padding: 10px;
   z-index: 100;
@@ -324,8 +326,9 @@ header {
   font-size: 1rem;
   border-radius: 14px;
   font-weight: 700;
-  color: var(--slate-700);
-  background: transparent;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px solid rgba(22, 56, 50, 0.14);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -333,14 +336,16 @@ header {
 
 .mobile-nav-list button:hover,
 .mobile-nav-list button.active {
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border-color: var(--primary);
 }
 
 .mobile-nav-list button.cta-mobile {
   margin-top: 14px;
-  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
-  color: var(--white);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary);
   text-align: center;
   justify-content: center;
   box-shadow: 0 4px 14px var(--primary-glow);
@@ -437,13 +442,13 @@ main {
 }
 
 .hero-text h1 span {
-  background: linear-gradient(135deg, #21574e, var(--primary));
+  background: linear-gradient(135deg, #163832, #266b52);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero-text p {
-  color: var(--slate-600);
+  color: var(--slate-700);
   font-size: clamp(0.92rem, 1.8vw, 1.02rem);
   margin-bottom: 22px;
   max-width: 540px;
@@ -461,19 +466,21 @@ main {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--primary-hover), var(--primary));
-  color: var(--white);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary);
   padding: 12px 22px;
   border-radius: 14px;
   font-size: 0.94rem;
-  font-weight: 700;
+  font-weight: 800;
   box-shadow: 0 4px 14px var(--primary-glow);
   text-align: center;
   min-height: 48px;
 }
 
 .btn:hover {
-  background: var(--primary-dark);
+  background: var(--primary-selected-hover);
+  color: var(--primary-dark);
 }
 
 .btn.secondary {
@@ -485,8 +492,8 @@ main {
 
 .btn.secondary:hover {
   border-color: var(--primary);
-  background: var(--primary);
-  color: var(--primary-light);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
 }
 
 .btn.block {
@@ -539,7 +546,7 @@ main {
 
 .trust-panel {
   background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(22, 56, 50, 0.15);
+  border: 1px solid rgba(22, 56, 50, 0.18);
   border-radius: var(--radius-md);
   padding: 16px;
   box-shadow: var(--shadow-sm);
@@ -622,9 +629,10 @@ main {
   min-height: 40px;
 }
 
+.bhk-btn:hover,
 .bhk-btn.active {
-  background: var(--primary);
-  color: var(--primary-light);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
   border-color: var(--primary);
   box-shadow: 0 3px 10px var(--primary-glow);
 }
@@ -649,8 +657,8 @@ main {
 
 .card.selected {
   border-color: var(--primary);
-  background: var(--primary-soft);
-  box-shadow: 0 0 0 2px var(--primary);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 2px var(--primary-selected);
 }
 
 .card-body {
@@ -681,6 +689,11 @@ main {
   border: 1px solid rgba(22, 56, 50, 0.2);
 }
 
+.card.selected .card-glyph-tag {
+  background: var(--primary-selected);
+  border-color: var(--primary);
+}
+
 .card-badge {
   font-size: 0.72rem;
   font-weight: 700;
@@ -689,6 +702,12 @@ main {
   background: var(--primary-light);
   color: var(--primary);
   border: 1px solid rgba(22, 56, 50, 0.2);
+}
+
+.card.selected .card-badge {
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border-color: var(--primary);
 }
 
 .card h3 {
@@ -719,12 +738,18 @@ main {
   border-radius: 999px;
 }
 
+.card.selected .chip {
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border-color: rgba(22, 56, 50, 0.35);
+}
+
 .card-foot {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 12px;
-  border-top: 1px solid var(--slate-100);
+  border-top: 1px solid rgba(22, 56, 50, 0.12);
   margin-top: auto;
 }
 
@@ -737,7 +762,7 @@ main {
 .price-tag small {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--slate-400);
+  color: var(--slate-600);
 }
 
 .card-actions {
@@ -750,7 +775,7 @@ main {
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 700;
-  border: 1.5px solid var(--primary);
+  border: 1.5px solid rgba(22, 56, 50, 0.3);
   background: var(--primary-light);
   color: var(--primary);
   min-height: 40px;
@@ -758,8 +783,9 @@ main {
 
 .action-btn:hover,
 .action-btn.added {
-  background: var(--primary);
-  color: var(--primary-light);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border-color: var(--primary);
 }
 
 .detail-link {
@@ -773,9 +799,11 @@ main {
   min-height: 40px;
 }
 
-.detail-link:hover {
-  background: var(--primary);
-  color: var(--primary-light);
+.detail-link:hover,
+.card.selected .detail-link {
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border-color: var(--primary);
 }
 
 /* -------------------------------------------------------------------------
@@ -808,8 +836,9 @@ main {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--primary);
-  color: var(--primary-light);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -878,7 +907,7 @@ main {
   border: 1.5px solid rgba(22, 56, 50, 0.2);
   border-radius: 12px;
   color: var(--slate-900);
-  background: rgba(218, 241, 222, 0.35);
+  background: rgba(224, 247, 224, 0.5);
 }
 
 .field input:focus, .field select:focus, .field textarea:focus {
@@ -895,7 +924,7 @@ main {
 
 .field.valid input, .field.valid textarea {
   border-color: var(--primary);
-  background: var(--primary-soft);
+  background: var(--primary-light);
 }
 
 .field .err {
@@ -934,9 +963,10 @@ main {
   min-height: 42px;
 }
 
+.qdate-pill:hover,
 .qdate-pill.active {
-  background: var(--primary);
-  color: var(--primary-light);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
   border-color: var(--primary);
 }
 
@@ -1013,10 +1043,10 @@ main {
   background: rgba(22, 56, 50, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  color: var(--white);
+  color: var(--primary-light);
   padding: 10px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(218, 241, 222, 0.25);
+  border: 1.5px solid var(--primary-selected);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1030,13 +1060,17 @@ main {
 }
 
 .sticky-bar-btn {
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
   padding: 10px 22px;
   border-radius: 999px;
   font-weight: 800;
   font-size: 0.88rem;
   min-height: 44px;
+}
+
+.sticky-bar-btn:hover {
+  background: var(--primary-light);
 }
 
 .modal-overlay {
@@ -1087,17 +1121,23 @@ main {
   border-radius: 50%;
   font-size: 1.2rem;
   color: var(--primary);
+  border: 1px solid rgba(22, 56, 50, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
+.close-btn:hover {
+  background: var(--primary-selected);
+  color: var(--primary-dark);
+}
+
 .spinner {
   width: 50px;
   height: 50px;
   border: 5px solid var(--primary-light);
-  border-top-color: var(--primary);
+  border-top-color: var(--primary-selected);
   border-radius: 50%;
   animation: spin 0.85s linear infinite;
   margin: 0 auto 16px;
@@ -1119,12 +1159,12 @@ main {
   bottom: calc(20px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: var(--primary);
-  color: var(--primary-light);
+  background: var(--primary-selected);
+  color: var(--primary-dark);
   padding: 12px 22px;
   border-radius: 999px;
-  border: 1px solid rgba(218, 241, 222, 0.3);
-  font-weight: 700;
+  border: 1.5px solid var(--primary);
+  font-weight: 800;
   font-size: 0.86rem;
   transition: transform 0.3s var(--ease), opacity 0.3s;
   opacity: 0;
@@ -1145,7 +1185,7 @@ main {
    ------------------------------------------------------------------------- */
 footer {
   background: var(--primary-deep);
-  color: #DAF1DE;
+  color: #E0F7E0;
   margin-top: auto;
   width: 100%;
 }
@@ -1160,7 +1200,7 @@ footer {
 }
 
 footer h4 {
-  color: var(--primary-light);
+  color: var(--primary-selected);
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1169,19 +1209,19 @@ footer h4 {
 
 .foot-links a {
   display: block;
-  color: #DAF1DE;
+  color: #E0F7E0;
   font-size: 0.86rem;
   margin-bottom: 8px;
   min-height: 24px;
 }
 
 .foot-links a:hover {
-  color: var(--primary-light);
+  color: var(--primary-selected);
   text-decoration: underline;
 }
 
 .foot-bottom {
-  border-top: 1px solid rgba(218, 241, 222, 0.18);
+  border-top: 1px solid rgba(224, 247, 224, 0.2);
   padding: 16px clamp(16px, 4vw, 32px);
   display: flex;
   justify-content: space-between;
