@@ -249,6 +249,14 @@ function formatReadableDate(dateStr) {
   return Number.isNaN(d.getTime()) ? String(dateStr) : d.toDateString();
 }
 
+function getSlotDocId(dateVal, slotLabel) {
+  const slug = String(slotLabel || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${dateVal}__${slug}`;
+}
+
 function withTimeout(promise, ms = 6000) {
   return Promise.race([
     promise,
@@ -625,24 +633,25 @@ function validatePhoneLive(input) {
   validateLive("f-phone", isValidIndianPhone(input.value));
 }
 
-// 8. REAL-TIME SLOTS
+// 8. REAL-TIME SLOTS (PRIVACY-SAFE VIA booked_slots COLLECTION)
 async function getBookedSlotsForDate(dateVal) {
   const bookedSlots = new Set();
 
   if (db && dateVal) {
     try {
+      // Queries only non-PII slot lock documents (no customer names/phones/addresses exposed)
       const snap = await withTimeout(
-        db.collection("bookings").where("date", "==", dateVal).get(),
+        db.collection("booked_slots").where("date", "==", dateVal).get(),
         4500
       );
       snap.forEach((doc) => {
         const data = doc.data();
-        if (data && data.slot && data.status !== "Cancelled") {
+        if (data && data.slot && data.active !== false) {
           bookedSlots.add(data.slot);
         }
       });
     } catch (err) {
-      console.warn("Could not query Firebase slots:", err);
+      console.warn("Could not query booked_slots:", err);
     }
   }
 
@@ -752,7 +761,7 @@ function validateBookingForm() {
   return true;
 }
 
-// 9. BOOKING SUBMISSION
+// 9. BOOKING SUBMISSION (ATOMIC TRANSACTION AGAINST DOUBLE-BOOKING)
 async function syncOfflineQueue() {
   if (!GOOGLE_SHEET_WEBHOOK_URL || !navigator.onLine) return;
   const queue = readStorageJSON(SYNC_QUEUE_KEY, []);
@@ -784,6 +793,7 @@ async function handleBookingSubmission(e) {
 
   const chosenDate = $("in-date").value;
   const chosenSlot = $("in-slot").value;
+  const slotDocId = getSlotDocId(chosenDate, chosenSlot);
 
   isSubmitting = true;
   const submitBtn = $("submit-btn");
@@ -796,40 +806,70 @@ async function handleBookingSubmission(e) {
       throw new Error("Firebase is not initialized.");
     }
 
-    // Re-check slot availability right before saving to prevent double-booking
-    const latestBookedSlots = await getBookedSlotsForDate(chosenDate);
-    if (latestBookedSlots.has(chosenSlot)) {
-      closeModal("loading-modal", true);
-      await refreshSlots();
-      toast("⚠ That arrival slot was just booked. Please select another slot.");
-      return;
-    }
-
     const total = cart.reduce((sum, item) => sum + getServicePrice(item), 0);
     const serviceNames = cart.map((item) => item.name).join(", ");
-    const ref = "ASM-" + Math.floor(100000 + Math.random() * 900000);
     const sanitizedPhone = cleanPhone($("in-phone").value);
+    const slotDocRef = db.collection("booked_slots").doc(slotDocId);
 
-    const booking = {
-      ref: ref,
-      name: $("in-name").value.trim(),
-      phone: sanitizedPhone,
-      type: currentBHK.toUpperCase(),
-      address: $("in-address").value.trim(),
-      date: chosenDate,
-      slot: chosenSlot,
-      notes: $("in-notes").value.trim(),
-      services: serviceNames,
-      total: total,
-      status: "Confirmed",
-      placed: new Date().toLocaleDateString("en-IN"),
-      createdAtMs: Date.now()
-    };
+    let booking = null;
 
-    await withTimeout(db.collection("bookings").doc(ref).set({
-      ...booking,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }), 7000);
+    await withTimeout(db.runTransaction(async (tx) => {
+      // 1. Atomically verify the slot is not already locked
+      const slotSnap = await tx.get(slotDocRef);
+      if (slotSnap.exists && slotSnap.data() && slotSnap.data().active !== false) {
+        const slotErr = new Error("That arrival slot was just booked.");
+        slotErr.code = "SLOT_TAKEN";
+        throw slotErr;
+      }
+
+      // 2. Generate a non-colliding booking reference
+      let ref = "";
+      let bookingDocRef = null;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const candidate = "ASM-" + Math.floor(100000 + Math.random() * 900000);
+        const candidateRef = db.collection("bookings").doc(candidate);
+        const candidateSnap = await tx.get(candidateRef);
+        if (!candidateSnap.exists) {
+          ref = candidate;
+          bookingDocRef = candidateRef;
+          break;
+        }
+      }
+      if (!bookingDocRef) {
+        throw new Error("Could not generate a unique reference ID. Please retry.");
+      }
+
+      booking = {
+        ref: ref,
+        name: $("in-name").value.trim(),
+        phone: sanitizedPhone,
+        type: currentBHK.toUpperCase(),
+        address: $("in-address").value.trim(),
+        date: chosenDate,
+        slot: chosenSlot,
+        slotDocId: slotDocId,
+        notes: $("in-notes").value.trim(),
+        services: serviceNames,
+        total: total,
+        status: "Confirmed",
+        placed: new Date().toLocaleDateString("en-IN"),
+        createdAtMs: Date.now()
+      };
+
+      // 3. Write non-PII slot lock + full booking atomically
+      tx.set(slotDocRef, {
+        date: chosenDate,
+        slot: chosenSlot,
+        active: true,
+        bookingRef: ref,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      tx.set(bookingDocRef, {
+        ...booking,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }), 8000);
 
     if (GOOGLE_SHEET_WEBHOOK_URL) {
       try {
@@ -860,7 +900,7 @@ async function handleBookingSubmission(e) {
     renderCart();
     updateStickyBar();
 
-    $("success-ref").textContent = ref;
+    $("success-ref").textContent = booking.ref;
     $("success-details").innerHTML = `
       Thank you <b>${esc(booking.name)}</b>. Your appointment for <b>${esc(booking.services)}</b> has been booked for
       <b>${formatReadableDate(booking.date)}</b> (${esc(booking.slot)}).<br>
@@ -872,7 +912,12 @@ async function handleBookingSubmission(e) {
   } catch (err) {
     console.error("Booking save failed:", err);
     closeModal("loading-modal", true);
-    toast("Could not save booking (" + (err.code || err.message) + "). Please try again.");
+    if (err && err.code === "SLOT_TAKEN") {
+      await refreshSlots(true);
+      toast("⚠ That arrival slot was just booked. Please select another slot.");
+    } else {
+      toast("Could not save booking (" + (err.code || err.message) + "). Please try again.");
+    }
   } finally {
     isSubmitting = false;
     if (cart.length > 0 && submitBtn) {
@@ -905,11 +950,19 @@ async function handlePortalLookup(e) {
 
   if (db) {
     try {
-      const query = isRefSearch
-        ? db.collection("bookings").where("ref", "==", cleanedQuery)
-        : db.collection("bookings").where("phone", "==", cleanedQuery);
-      const snapshot = await withTimeout(query.get(), 5000);
-      snapshot.forEach((doc) => records.push(doc.data()));
+      if (isRefSearch) {
+        // Direct document get works even when list queries on bookings are restricted to admins
+        const docSnap = await withTimeout(db.collection("bookings").doc(cleanedQuery).get(), 5000);
+        if (docSnap.exists) {
+          records.push(docSnap.data());
+        }
+      } else {
+        const snapshot = await withTimeout(
+          db.collection("bookings").where("phone", "==", cleanedQuery).get(),
+          5000
+        );
+        snapshot.forEach((doc) => records.push(doc.data()));
+      }
     } catch (err) {
       console.warn("Fallback to local records:", err);
     }
@@ -934,7 +987,7 @@ async function handlePortalLookup(e) {
     container.innerHTML = `
       <div class="panel" style="text-align: center; color: var(--slate-600);">
         No records found for <b>${esc(inputVal)}</b>.<br>
-        Please check your mobile number or booking reference code.
+        ${!isRefSearch ? "For privacy, cross-device lookup requires your <b>ASM-XXXXXX</b> reference code." : "Please double-check your booking reference code."}
       </div>
     `;
     return;
